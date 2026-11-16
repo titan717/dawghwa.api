@@ -4,7 +4,7 @@ import { describe, it, expect } from "vitest";
 import { getAllScrapers } from "@/lib/scrapers";
 import { checkSourceHealth, SourceStatus } from "@/lib/utils/source-health";
 
-describe("Source Scrapers", () => {
+describe.runIf(process.env.LIVE_TESTS === "1")("Source Scrapers (live network)", () => {
   const scrapers = getAllScrapers();
 
   describe("All scrapers basic functionality", () => {
