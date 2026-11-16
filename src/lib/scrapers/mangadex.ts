@@ -40,7 +40,7 @@ export class MangaDexScraper extends BaseScraper {
   private readonly BASE_URL = "https://mangadex.org";
   private readonly API_URL = "https://api.mangadex.org";
   private readonly COVER_URL = "https://uploads.mangadex.org/covers";
-  private readonly USER_AGENT = "comick-source-api/1.0";
+  private readonly USER_AGENT = "dawghwa-api/1.0 (+https://github.com/titan717/dawghwa.api)";
   private readonly RATINGS =
     "contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica";
 

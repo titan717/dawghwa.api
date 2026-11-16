@@ -1,4 +1,4 @@
-# Contributing to Comick Source API
+# Contributing to Dawghwa API
 
 Thanks for your interest in contributing! Here's what you need to know.
 

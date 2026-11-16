@@ -340,7 +340,7 @@ export default function Home() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16">
         <header className="mb-12 md:mb-20">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-4 md:mb-6 tracking-tight">
-            Comick Source API
+            Dawghwa API
           </h1>
           <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-2xl">
             RESTful API for manga and comic metadata. Search across multiple

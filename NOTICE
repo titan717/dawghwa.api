@@ -1,0 +1,12 @@
+Dawghwa API
+https://github.com/titan717/dawghwa.api
+
+This project is a fork of "comick-source-api" by GooglyBlox
+(https://github.com/GooglyBlox/comick-source-api), used under the MIT License.
+The original copyright notice and license text are preserved unchanged in LICENSE.
+
+The unmodified upstream baseline is available in this repository's history
+under the git tag `upstream-baseline` (upstream commit 086d006).
+
+Modifications and additions (c) 2026 Dawghwa API contributors, also released
+under the MIT License.

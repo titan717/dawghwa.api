@@ -1,6 +1,6 @@
 {
-  "name": "comick-source-api",
-  "version": "0.1.0",
+  "name": "dawghwa-api",
+  "version": "1.0.0-alpha.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -29,5 +29,11 @@
     "tsx": "^4.21.0",
     "typescript": "^5",
     "vitest": "^1.0.4"
+  },
+  "description": "Dawghwa API - manga source metadata API (fork of GooglyBlox/comick-source-api)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/titan717/dawghwa.api.git"
   }
 }

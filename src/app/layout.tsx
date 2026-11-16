@@ -14,7 +14,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Comick Source API",
+  title: "Dawghwa API",
   description:
     "RESTful API for manga and comic metadata. Search across multiple sources, retrieve chapter lists, and monitor source health. Supports MangaPark, AsuraScan, AtsuMoe, and more.",
   keywords: [
@@ -26,9 +26,9 @@ export const metadata: Metadata = {
     "mangapark",
     "asurascan",
   ],
-  authors: [{ name: "GooglyBlox" }],
+  authors: [{ name: "Dawghwa" }, { name: "GooglyBlox (upstream)" }],
   openGraph: {
-    title: "Comick Source API",
+    title: "Dawghwa API",
     description: "RESTful API for manga and comic metadata",
     type: "website",
   },
