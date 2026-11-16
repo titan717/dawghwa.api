@@ -1,0 +1,610 @@
+{
+  "generatedAt": "2026-11-16T14:43:00.507Z",
+  "elapsedMs": 16109,
+  "counts": {
+    "cloudflare": 22,
+    "healthy": 58,
+    "error": 1,
+    "timeout": 1
+  },
+  "sources": {
+    "arya-scans": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 294,
+      "lastChecked": "2026-11-16T14:42:44.404Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "asmodeus-scans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1363,
+      "lastChecked": "2026-11-16T14:42:44.405Z",
+      "circuit": "closed"
+    },
+    "asurascan": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1921,
+      "lastChecked": "2026-11-16T14:42:44.402Z",
+      "circuit": "closed"
+    },
+    "athrea-scans": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 368,
+      "lastChecked": "2026-11-16T14:42:44.405Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "atsumoe": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 292,
+      "lastChecked": "2026-11-16T14:42:44.405Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "baetoon": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1474,
+      "lastChecked": "2026-11-16T14:42:44.659Z",
+      "circuit": "closed"
+    },
+    "chikari": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 502,
+      "lastChecked": "2026-11-16T14:42:44.688Z",
+      "circuit": "closed"
+    },
+    "comix": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 291,
+      "lastChecked": "2026-11-16T14:42:44.404Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "danke-furs-lesen": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 542,
+      "lastChecked": "2026-11-16T14:42:44.695Z",
+      "circuit": "closed"
+    },
+    "demonicscans": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 370,
+      "lastChecked": "2026-11-16T14:42:44.697Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "diva-scans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1638,
+      "lastChecked": "2026-11-16T14:42:44.698Z",
+      "circuit": "closed"
+    },
+    "drake-scans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 2232,
+      "lastChecked": "2026-11-16T14:42:44.773Z",
+      "circuit": "closed"
+    },
+    "dynasty-reader": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1138,
+      "lastChecked": "2026-11-16T14:42:44.404Z",
+      "circuit": "closed"
+    },
+    "elf-toon": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1700,
+      "lastChecked": "2026-11-16T14:42:45.067Z",
+      "circuit": "closed"
+    },
+    "eva-scans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 2101,
+      "lastChecked": "2026-11-16T14:42:45.073Z",
+      "circuit": "closed"
+    },
+    "flamecomics": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 285,
+      "lastChecked": "2026-11-16T14:42:44.403Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "galaxy-degen-scans": {
+      "status": "error",
+      "message": "HTTP 403 from upstream gdscans.com",
+      "responseTime": 579,
+      "lastChecked": "2026-11-16T14:42:45.191Z",
+      "errorCode": "UPSTREAM_HTTP_ERROR",
+      "circuit": "closed"
+    },
+    "genz-toons": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1196,
+      "lastChecked": "2026-11-16T14:42:45.237Z",
+      "circuit": "closed"
+    },
+    "greed-scans": {
+      "status": "timeout",
+      "message": "Greed Scans did not finish within 15000ms",
+      "responseTime": 15002,
+      "lastChecked": "2026-11-16T14:42:45.504Z",
+      "errorCode": "UPSTREAM_TIMEOUT",
+      "circuit": "closed"
+    },
+    "hachirumi": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 2291,
+      "lastChecked": "2026-11-16T14:42:45.542Z",
+      "circuit": "closed"
+    },
+    "hive-toon": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 504,
+      "lastChecked": "2026-11-16T14:42:45.768Z",
+      "circuit": "closed"
+    },
+    "kappabeast": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1322,
+      "lastChecked": "2026-11-16T14:42:45.770Z",
+      "circuit": "closed"
+    },
+    "kayn-scans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 2210,
+      "lastChecked": "2026-11-16T14:42:46.133Z",
+      "circuit": "closed"
+    },
+    "kdt-scans": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 219,
+      "lastChecked": "2026-11-16T14:42:46.272Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "kenscans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 3519,
+      "lastChecked": "2026-11-16T14:42:46.323Z",
+      "circuit": "closed"
+    },
+    "kero-scans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 2260,
+      "lastChecked": "2026-11-16T14:42:46.336Z",
+      "circuit": "closed"
+    },
+    "ks-group": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 4060,
+      "lastChecked": "2026-11-16T14:42:46.433Z",
+      "circuit": "closed"
+    },
+    "kuramanga": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1164,
+      "lastChecked": "2026-11-16T14:42:46.491Z",
+      "circuit": "closed"
+    },
+    "lagoonscans": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 249,
+      "lastChecked": "2026-11-16T14:42:46.767Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "lhtranslation": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 248,
+      "lastChecked": "2026-11-16T14:42:46.938Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "lua-comic": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 515,
+      "lastChecked": "2026-11-16T14:42:47.005Z",
+      "circuit": "closed"
+    },
+    "luminare-translations": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 242,
+      "lastChecked": "2026-11-16T14:42:47.016Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "madarascans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1694,
+      "lastChecked": "2026-11-16T14:42:47.092Z",
+      "circuit": "closed"
+    },
+    "magus-manga": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 251,
+      "lastChecked": "2026-11-16T14:42:47.174Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "mangaball": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 609,
+      "lastChecked": "2026-11-16T14:42:47.186Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "mangacloud": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 238,
+      "lastChecked": "2026-11-16T14:42:47.258Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "mangadex": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 675,
+      "lastChecked": "2026-11-16T14:42:44.398Z",
+      "circuit": "closed"
+    },
+    "mangago": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1317,
+      "lastChecked": "2026-11-16T14:42:47.425Z",
+      "circuit": "closed"
+    },
+    "mangak": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 507,
+      "lastChecked": "2026-11-16T14:42:47.496Z",
+      "circuit": "closed"
+    },
+    "mangakatana": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1100,
+      "lastChecked": "2026-11-16T14:42:44.404Z",
+      "circuit": "closed"
+    },
+    "mangaread": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 772,
+      "lastChecked": "2026-11-16T14:42:47.520Z",
+      "circuit": "closed"
+    },
+    "mangasushi": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 4193,
+      "lastChecked": "2026-11-16T14:42:47.655Z",
+      "circuit": "closed"
+    },
+    "mangataro": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 8962,
+      "lastChecked": "2026-11-16T14:42:47.795Z",
+      "circuit": "closed"
+    },
+    "manhuaplus": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 707,
+      "lastChecked": "2026-11-16T14:42:47.833Z",
+      "circuit": "closed"
+    },
+    "manhuaus": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 512,
+      "lastChecked": "2026-11-16T14:42:48.003Z",
+      "circuit": "closed"
+    },
+    "mgeko": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 767,
+      "lastChecked": "2026-11-16T14:42:48.292Z",
+      "circuit": "closed"
+    },
+    "mist-scans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 942,
+      "lastChecked": "2026-11-16T14:42:48.343Z",
+      "circuit": "closed"
+    },
+    "mkissa": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 793,
+      "lastChecked": "2026-11-16T14:42:48.515Z",
+      "circuit": "closed"
+    },
+    "novelcool": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1335,
+      "lastChecked": "2026-11-16T14:42:48.540Z",
+      "circuit": "closed"
+    },
+    "nyx-scans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 706,
+      "lastChecked": "2026-11-16T14:42:48.596Z",
+      "circuit": "closed"
+    },
+    "orion-scans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 627,
+      "lastChecked": "2026-11-16T14:42:48.742Z",
+      "circuit": "closed"
+    },
+    "philia-scans": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 278,
+      "lastChecked": "2026-11-16T14:42:48.786Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "project-suki": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 241,
+      "lastChecked": "2026-11-16T14:42:49.059Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "qi-scans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1011,
+      "lastChecked": "2026-11-16T14:42:49.064Z",
+      "circuit": "closed"
+    },
+    "rage-scans": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 252,
+      "lastChecked": "2026-11-16T14:42:49.285Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "raven-scans": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 251,
+      "lastChecked": "2026-11-16T14:42:49.300Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "rd-scans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1359,
+      "lastChecked": "2026-11-16T14:42:49.302Z",
+      "circuit": "closed"
+    },
+    "reimanga": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 480,
+      "lastChecked": "2026-11-16T14:42:49.308Z",
+      "circuit": "closed"
+    },
+    "rinko-comics": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 4345,
+      "lastChecked": "2026-11-16T14:42:49.369Z",
+      "circuit": "closed"
+    },
+    "ritharscans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 3225,
+      "lastChecked": "2026-11-16T14:42:49.537Z",
+      "circuit": "closed"
+    },
+    "rizz-fables": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 3367,
+      "lastChecked": "2026-11-16T14:42:49.551Z",
+      "circuit": "closed"
+    },
+    "rokari-comics": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 2237,
+      "lastChecked": "2026-11-16T14:42:49.788Z",
+      "circuit": "closed"
+    },
+    "roliascan": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1357,
+      "lastChecked": "2026-11-16T14:42:49.842Z",
+      "circuit": "closed"
+    },
+    "sana-scans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 599,
+      "lastChecked": "2026-11-16T14:42:49.875Z",
+      "circuit": "closed"
+    },
+    "scythe-scans": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 269,
+      "lastChecked": "2026-11-16T14:42:50.075Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "siren-scans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 897,
+      "lastChecked": "2026-11-16T14:42:50.344Z",
+      "circuit": "closed"
+    },
+    "spider-scans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 2570,
+      "lastChecked": "2026-11-16T14:42:50.474Z",
+      "circuit": "closed"
+    },
+    "stonescape": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 710,
+      "lastChecked": "2026-11-16T14:42:50.493Z",
+      "circuit": "closed"
+    },
+    "swarm": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1718,
+      "lastChecked": "2026-11-16T14:42:50.661Z",
+      "circuit": "closed"
+    },
+    "tcb-scans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 3757,
+      "lastChecked": "2026-11-16T14:42:51.199Z",
+      "circuit": "closed"
+    },
+    "temple-scan": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 229,
+      "lastChecked": "2026-11-16T14:42:51.203Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "thunderscans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 2487,
+      "lastChecked": "2026-11-16T14:42:51.241Z",
+      "circuit": "closed"
+    },
+    "topmanhua": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 281,
+      "lastChecked": "2026-11-16T14:42:51.432Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "valir-scans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1675,
+      "lastChecked": "2026-11-16T14:42:51.713Z",
+      "circuit": "closed"
+    },
+    "violetscans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 4478,
+      "lastChecked": "2026-11-16T14:42:51.848Z",
+      "circuit": "closed"
+    },
+    "vortex-scans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 344,
+      "lastChecked": "2026-11-16T14:42:52.025Z",
+      "circuit": "closed"
+    },
+    "webtoon": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 2535,
+      "lastChecked": "2026-11-16T14:42:44.403Z",
+      "circuit": "closed"
+    },
+    "webtoonclub": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1594,
+      "lastChecked": "2026-11-16T14:42:52.369Z",
+      "circuit": "closed"
+    },
+    "weebcentral": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 258,
+      "lastChecked": "2026-11-16T14:42:44.401Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    },
+    "writers'-scans": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 1304,
+      "lastChecked": "2026-11-16T14:42:52.379Z",
+      "circuit": "closed"
+    },
+    "xcomic": {
+      "status": "healthy",
+      "message": "Source is operational",
+      "responseTime": 3756,
+      "lastChecked": "2026-11-16T14:42:52.762Z",
+      "circuit": "closed"
+    },
+    "yaksha-comics": {
+      "status": "cloudflare",
+      "message": "Cloudflare / anti-bot protection detected",
+      "responseTime": 241,
+      "lastChecked": "2026-11-16T14:42:52.918Z",
+      "errorCode": "UPSTREAM_BLOCKED",
+      "circuit": "closed"
+    }
+  }
+}

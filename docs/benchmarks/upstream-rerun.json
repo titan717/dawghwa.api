@@ -1,0 +1,73 @@
+{
+  "label": "upstream-rerun",
+  "base": "http://localhost:3001",
+  "at": "2026-11-16T14:40:35.673Z",
+  "results": [
+    {
+      "name": "GET /api/sources",
+      "ms": 52,
+      "ok": true,
+      "info": "200 n=96"
+    },
+    {
+      "name": "search mangadex #1",
+      "ms": 577,
+      "ok": true,
+      "info": "200 n=2"
+    },
+    {
+      "name": "search mangadex #2",
+      "ms": 374,
+      "ok": true,
+      "info": "200 n=2"
+    },
+    {
+      "name": "search mangadex #3",
+      "ms": 74,
+      "ok": true,
+      "info": "200 n=2"
+    },
+    {
+      "name": "chapters mangadex #1",
+      "ms": 742,
+      "ok": true,
+      "info": "200 n=317"
+    },
+    {
+      "name": "chapters mangadex #2",
+      "ms": 62,
+      "ok": true,
+      "info": "200 n=317"
+    },
+    {
+      "name": "chapters mangadex #3",
+      "ms": 76,
+      "ok": true,
+      "info": "200 n=317"
+    },
+    {
+      "name": "10x concurrent identical chapters (cold key)",
+      "ms": 412,
+      "ok": true,
+      "info": "200,200,200,200,200,200,200,200,200,200"
+    },
+    {
+      "name": "search ALL sources #1",
+      "ms": 20019,
+      "ok": true,
+      "info": "ttfb=233ms sources=96 failed=31"
+    },
+    {
+      "name": "search ALL sources #2",
+      "ms": 20018,
+      "ok": true,
+      "info": "ttfb=274ms sources=96 failed=31"
+    },
+    {
+      "name": "frontpage comix trending",
+      "ms": 141,
+      "ok": true,
+      "info": "500"
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "at": "2026-11-16T14:41:44.447Z",
+  "note": "MangaDex, cold keys, alternating order, n=10 each",
+  "summary": {
+    "http://localhost:3001": {
+      "searchMedianMs": 798,
+      "chaptersMedianMs": 406,
+      "search": [
+        {
+          "ms": 798,
+          "status": 200
+        },
+        {
+          "ms": 872,
+          "status": 200
+        },
+        {
+          "ms": 1108,
+          "status": 200
+        },
+        {
+          "ms": 782,
+          "status": 200
+        },
+        {
+          "ms": 356,
+          "status": 200
+        },
+        {
+          "ms": 883,
+          "status": 200
+        },
+        {
+          "ms": 744,
+          "status": 200
+        },
+        {
+          "ms": 735,
+          "status": 200
+        },
+        {
+          "ms": 402,
+          "status": 200
+        },
+        {
+          "ms": 815,
+          "status": 200
+        }
+      ],
+      "chapters": [
+        {
+          "ms": 654,
+          "status": 200
+        },
+        {
+          "ms": 396,
+          "status": 200
+        },
+        {
+          "ms": 478,
+          "status": 200
+        },
+        {
+          "ms": 406,
+          "status": 200
+        },
+        {
+          "ms": 382,
+          "status": 200
+        },
+        {
+          "ms": 315,
+          "status": 200
+        },
+        {
+          "ms": 395,
+          "status": 200
+        },
+        {
+          "ms": 424,
+          "status": 200
+        },
+        {
+          "ms": 333,
+          "status": 200
+        },
+        {
+          "ms": 531,
+          "status": 200
+        }
+      ]
+    },
+    "http://localhost:3002": {
+      "searchMedianMs": 714,
+      "chaptersMedianMs": 397,
+      "search": [
+        {
+          "ms": 818,
+          "status": 200
+        },
+        {
+          "ms": 942,
+          "status": 200
+        },
+        {
+          "ms": 742,
+          "status": 200
+        },
+        {
+          "ms": 341,
+          "status": 200
+        },
+        {
+          "ms": 493,
+          "status": 200
+        },
+        {
+          "ms": 340,
+          "status": 200
+        },
+        {
+          "ms": 326,
+          "status": 200
+        },
+        {
+          "ms": 353,
+          "status": 200
+        },
+        {
+          "ms": 852,
+          "status": 200
+        },
+        {
+          "ms": 714,
+          "status": 200
+        }
+      ],
+      "chapters": [
+        {
+          "ms": 344,
+          "status": 200
+        },
+        {
+          "ms": 326,
+          "status": 200
+        },
+        {
+          "ms": 590,
+          "status": 200
+        },
+        {
+          "ms": 315,
+          "status": 200
+        },
+        {
+          "ms": 486,
+          "status": 200
+        },
+        {
+          "ms": 348,
+          "status": 200
+        },
+        {
+          "ms": 397,
+          "status": 200
+        },
+        {
+          "ms": 329,
+          "status": 200
+        },
+        {
+          "ms": 489,
+          "status": 200
+        },
+        {
+          "ms": 1014,
+          "status": 200
+        }
+      ]
+    }
+  }
+}
