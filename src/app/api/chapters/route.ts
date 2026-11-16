@@ -1,53 +1,55 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getScraper, getScraperByName } from "@/lib/scrapers";
+import { z } from "zod";
+import { booleanish, httpUrlSchema, json, readJson, route, sourceIdSchema } from "@/lib/api/handler";
+import { getChapters, resolveSourceUrl } from "@/lib/services/catalog";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
-export async function POST(request: NextRequest) {
-  try {
-    const { url, source } = await request.json();
+const bodySchema = z.object({
+  url: httpUrlSchema,
+  source: sourceIdSchema.optional(),
+  /** Pagination over the (cached) chapter list. Omit both for the full list. */
+  offset: z.number().int().min(0).max(100_000).optional(),
+  limit: z.number().int().min(1).max(5_000).optional(),
+  /** "source" keeps the adapter's order (upstream behaviour). */
+  order: z.enum(["source", "asc", "desc"]).optional(),
+  refresh: booleanish.optional(),
+});
 
-    if (!url) {
-      return NextResponse.json({ error: "URL is required" }, { status: 400 });
-    }
+/**
+ * POST /api/chapters
+ * { url, source?, offset?, limit?, order?: "source"|"asc"|"desc", refresh? }
+ */
+export const POST = route(async (req, ctx) => {
+  const body = await readJson(req, bodySchema);
+  const { provider, url } = resolveSourceUrl(body.url, body.source);
+  const r = await getChapters(provider, url.toString(), { forceRefresh: body.refresh });
 
-    let scraper;
-
-    // Try to get scraper by source name first
-    if (source) {
-      scraper = getScraperByName(source);
-    }
-
-    // Fallback to URL detection
-    if (!scraper) {
-      scraper = getScraper(url);
-    }
-
-    if (!scraper) {
-      return NextResponse.json(
-        {
-          error:
-            "No scraper found for this URL. Please provide a valid manga URL or source name.",
-        },
-        { status: 400 },
-      );
-    }
-
-    const chapters = await scraper.getChapterList(url);
-
-    return NextResponse.json({
-      chapters,
-      source: scraper.getName(),
-      totalChapters: chapters.length,
-    });
-  } catch (error: unknown) {
-    console.error("Chapters error:", error);
-    return NextResponse.json(
-      {
-        error:
-          error instanceof Error ? error.message : "Failed to fetch chapters",
-      },
-      { status: 500 },
-    );
+  let list = r.chapters;
+  if (body.order === "asc" || body.order === "desc") {
+    const dir = body.order === "asc" ? 1 : -1;
+    list = [...list].sort((a, b) => (a.number - b.number) * dir);
   }
-}
+  const offset = body.offset ?? 0;
+  const limit = body.limit ?? list.length;
+  const page = offset === 0 && limit >= list.length ? list : list.slice(offset, offset + limit);
+
+  return json(
+    {
+      chapters: page,
+      source: provider.name,
+      sourceId: provider.id,
+      totalChapters: r.chapters.length,
+      pagination: {
+        offset,
+        limit,
+        returned: page.length,
+        total: r.chapters.length,
+        hasMore: offset + page.length < r.chapters.length,
+      },
+      meta: { cache: r.cache, age: r.age },
+    },
+    ctx,
+  );
+});

@@ -1,106 +1,124 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { route } from "@/lib/api/handler";
+import { DawghwaError } from "@/lib/core/errors";
+import { upstreamFetch } from "@/lib/core/http";
+import { assertPublicDestination } from "@/lib/core/net-guard";
+import { getRegistry } from "@/lib/providers/registry";
+import type { Provider } from "@/lib/providers/provider";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
-export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const targetUrl = searchParams.get("url");
+const MAX_REDIRECTS = 3;
+const MAX_HTML_BYTES = 5 * 1024 * 1024;
 
-    if (!targetUrl) {
-      return NextResponse.json(
-        { error: "Missing URL parameter" },
-        { status: 400 },
-      );
-    }
-
-    const decodedUrl = decodeURIComponent(targetUrl);
-
-    // Only allow AsuraScans and WeebCentral URLs
-    const isAsuraScanDomain =
-      /https?:\/\/(www\.)?(asuracomic\.net|asurascans\.com)/.test(decodedUrl);
-    const isWeebCentralDomain =
-      /https?:\/\/(www\.)?weebcentral\.com/.test(decodedUrl);
-
-    if (!isAsuraScanDomain && !isWeebCentralDomain) {
-      return NextResponse.json(
-        {
-          error:
-            "Invalid URL - only AsuraScans and WeebCentral URLs are allowed",
-        },
-        { status: 400 },
-      );
-    }
-
-    // Set referer based on the domain
-    const referer = isWeebCentralDomain
-      ? "https://weebcentral.com/"
-      : "https://asurascans.com/";
-
-    const response = await fetch(decodedUrl, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        Accept:
-          "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        "Accept-Language": "en-US,en;q=0.5",
-        "Accept-Encoding": "gzip, deflate, br",
-        Referer: referer,
-        DNT: "1",
-        Connection: "keep-alive",
-        "Upgrade-Insecure-Requests": "1",
-        "Sec-Fetch-Dest": "document",
-        "Sec-Fetch-Mode": "navigate",
-        "Sec-Fetch-Site": "same-origin",
-        "Cache-Control": "no-cache",
-        Pragma: "no-cache",
-      },
-    });
-
-    if (!response.ok) {
-      console.error(
-        `Failed to fetch HTML: ${response.status} ${response.statusText}`,
-      );
-      return NextResponse.json(
-        {
-          error: `Failed to fetch HTML: ${response.status}`,
-          details: response.statusText,
-        },
-        { status: response.status },
-      );
-    }
-
-    const html = await response.text();
-
-    return new NextResponse(html, {
-      status: 200,
-      headers: {
-        "Content-Type": "text/html; charset=utf-8",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET",
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Cache-Control": "public, max-age=300",
-      },
-    });
-  } catch (error) {
-    console.error("HTML proxy error:", error);
-    return NextResponse.json(
-      {
-        error: "Failed to proxy HTML",
-        details: error instanceof Error ? error.message : "Unknown error",
-      },
-      { status: 500 },
-    );
-  }
+/**
+ * Allowed proxy destinations: exactly the domains of sources that upstream
+ * marks client-only (AsuraScan, WeebCentral). Nothing else is reachable.
+ */
+function proxyProviders(): Provider[] {
+  return getRegistry()
+    .all()
+    .filter((p) => p.capabilities.clientOnly && p.operational);
 }
 
-export async function OPTIONS() {
-  return new NextResponse(null, {
+function validateTarget(raw: string): { url: URL; provider: Provider } {
+  if (raw.length > 2048) throw new DawghwaError("VALIDATION_ERROR", "url is too long");
+  let url: URL;
+  try {
+    url = new URL(raw);
+  } catch {
+    throw new DawghwaError("VALIDATION_ERROR", "url must be an absolute https URL");
+  }
+  if (url.protocol !== "https:") throw new DawghwaError("PROXY_FORBIDDEN", "Only https URLs can be proxied");
+  if (url.username || url.password) throw new DawghwaError("PROXY_FORBIDDEN", "Credentials in URLs are not allowed");
+  if (url.port && url.port !== "443") throw new DawghwaError("PROXY_FORBIDDEN", "Custom ports are not allowed");
+  const provider = proxyProviders().find((p) => p.ownsUrl(url));
+  if (!provider) {
+    throw new DawghwaError("PROXY_FORBIDDEN", "Destination host is not on the proxy allowlist", {
+      details: { allowedDomains: proxyProviders().flatMap((p) => p.descriptor.domains) },
+    });
+  }
+  return { url, provider };
+}
+
+function corsHeaders(): Record<string, string> {
+  return {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+  };
+}
+
+/**
+ * GET /api/proxy/html?url=<https url on an allowlisted host>
+ *
+ * Fetches HTML for client-only sources. Hardened against SSRF: exact host
+ * allowlist (upstream used an unanchored regex, so
+ * `https://evil.example/?u=https://weebcentral.com` passed), https only,
+ * DNS/IP checks, manual redirect handling with every hop re-validated, size
+ * and time limits, no client headers or cookies forwarded, and the returned
+ * HTML is sandboxed by CSP so it can never run scripts on the API origin.
+ */
+export const GET = route(async (req, ctx) => {
+  const raw = req.nextUrl.searchParams.get("url");
+  if (!raw) throw new DawghwaError("VALIDATION_ERROR", "Missing URL parameter");
+
+  let { url, provider } = validateTarget(raw);
+  let res: Response | undefined;
+  for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
+    await assertPublicDestination(url.toString());
+    const current = url;
+    const { value } = await provider.run(
+      "chapters",
+      () =>
+        upstreamFetch(current.toString(), {
+          redirect: "manual",
+          headers: {
+            Referer: `${current.protocol}//${current.host}/`,
+            Accept: "text/html,application/xhtml+xml;q=0.9,*/*;q=0.5",
+          },
+        }),
+      { timeoutMs: 15_000 },
+    );
+    res = value;
+    if (res.status >= 300 && res.status < 400 && res.headers.get("location")) {
+      if (hop === MAX_REDIRECTS) throw new DawghwaError("UPSTREAM_ERROR", "Too many redirects");
+      ({ url, provider } = validateTarget(new URL(res.headers.get("location")!, current).toString()));
+      continue;
+    }
+    break;
+  }
+  if (!res) throw new DawghwaError("UPSTREAM_ERROR", "No response from upstream");
+
+  if (!res.ok) {
+    throw new DawghwaError("UPSTREAM_HTTP_ERROR", `Failed to fetch HTML: upstream responded with HTTP ${res.status}`, {
+      details: { upstreamStatus: res.status },
+    });
+  }
+  const type = (res.headers.get("content-type") || "").toLowerCase();
+  if (type && !type.includes("text/html") && !type.includes("application/xhtml")) {
+    throw new DawghwaError("PROXY_FORBIDDEN", "Upstream content is not HTML");
+  }
+  const html = await res.text();
+  if (html.length > MAX_HTML_BYTES) throw new DawghwaError("UPSTREAM_RESPONSE_TOO_LARGE", "Upstream page is too large");
+
+  const out = new NextResponse(html, {
     status: 200,
     headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "public, max-age=300",
+      // Never let proxied third-party HTML execute on our origin.
+      "Content-Security-Policy": "sandbox; default-src 'none'; img-src * data:; style-src 'unsafe-inline' *",
+      "X-Content-Type-Options": "nosniff",
+      "Cross-Origin-Resource-Policy": "cross-origin",
+      ...corsHeaders(),
     },
   });
+  ctx.headers.forEach((v, k) => out.headers.set(k, v));
+  return out;
+});
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204, headers: corsHeaders() });
 }

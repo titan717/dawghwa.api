@@ -48,10 +48,11 @@ const endpoints: EndpointProps[] = [
     response: `{
   "sources": [
     {
-      "id": "mangapark",
+      "id": "mangadex",
       "name": "MangaPark",
-      "baseUrl": "https://mangapark.io",
-      "description": "MangaPark - https://mangapark.io"
+      "baseUrl": "https://mangadex.org",
+      "description": "MangaDex - https://mangadex.org",
+      "status": "active"
     }
   ]
 }`,
@@ -62,14 +63,14 @@ const endpoints: EndpointProps[] = [
     description: "Search for manga across one or all sources",
     request: `{
   "query": "solo leveling",
-  "source": "mangapark"  // or "all" for all sources
+  "source": "mangadex"  // or "all" for all sources
 }`,
     response: `{
   "results": [
     {
       "id": "343921",
       "title": "Solo Leveling",
-      "url": "https://mangapark.io/title/75577-en-solo-leveling",
+      "url": "https://mangadex.org/title/...",
       "coverImage": "https://...",
       "latestChapter": 179,
       "lastUpdated": "2 days ago"
@@ -83,8 +84,9 @@ const endpoints: EndpointProps[] = [
     path: "/api/chapters",
     description: "Get chapter list for a manga",
     request: `{
-  "url": "https://mangapark.io/title/75577-en-solo-leveling",
-  "source": "mangapark"  // optional
+  "url": "https://mangadex.org/title/37f5cce0-8070-4ada-96e5-fa24b1bd4ff9",
+  "source": "mangadex",  // optional
+  "offset": 0, "limit": 100  // optional pagination
 }`,
     response: `{
   "chapters": [
@@ -100,12 +102,41 @@ const endpoints: EndpointProps[] = [
 }`,
   },
   {
+    method: "POST",
+    path: "/api/pages",
+    description: "Chapter page image URLs (only sources with a documented page API, e.g. MangaDex)",
+    request: `{
+  "source": "mangadex",
+  "chapterId": "<chapter uuid>",
+  "dataSaver": false        // optional
+}`,
+    response: `{
+  "pages": [{ "index": 0, "url": "https://.../data/<hash>/1.png" }],
+  "totalPages": 18,
+  "source": "MangaDex",
+  "sourceId": "mangadex"
+}`,
+  },
+  {
+    method: "POST",
+    path: "/api/manga",
+    description: "Basic metadata (title, source id) for a manga URL",
+    request: `{
+  "url": "https://mangadex.org/title/<uuid>"
+}`,
+    response: `{
+  "manga": { "title": "...", "id": "...", "url": "..." },
+  "source": "MangaDex",
+  "sourceId": "mangadex"
+}`,
+  },
+  {
     method: "GET",
     path: "/api/health",
     description: "Check health status of all sources (cached for 5 minutes)",
     response: `{
   "sources": {
-    "mangapark": {
+    "mangadex": {
       "status": "healthy",
       "message": "Source is operational",
       "responseTime": 1234,

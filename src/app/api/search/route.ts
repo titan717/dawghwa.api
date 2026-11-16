@@ -1,141 +1,136 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getScraperByName, getAllScrapers } from "@/lib/scrapers";
-import { BaseScraper } from "@/lib/scrapers/base";
+import { z } from "zod";
+import { booleanish, chargeExpensive, json, readJson, route, sourceIdSchema } from "@/lib/api/handler";
+import { DawghwaError } from "@/lib/core/errors";
+import { getRegistry } from "@/lib/providers/registry";
+import type { Provider } from "@/lib/providers/provider";
+import { searchAll, searchProvider, StreamingSourceResult } from "@/lib/services/search";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
-const SCRAPER_TIMEOUT_MS = 20000;
+const bodySchema = z.object({
+  query: z.string({ required_error: "Search query is required" }).trim().min(1, "Search query is required").max(200, "query must be at most 200 characters"),
+  /** A source id/name, or "all" (default). */
+  source: sourceIdSchema.optional(),
+  /** Explicit subset of sources for a multi-source search. */
+  sources: z.array(sourceIdSchema).min(1).max(100).optional(),
+  /** Stream NDJSON (default for multi-source) or return one JSON document. */
+  stream: booleanish.optional(),
+  refresh: booleanish.optional(),
+});
 
-interface StreamingSearchResult {
-  source: string;
-  results: unknown[];
-  error?: string;
-  done: boolean;
-}
-
-interface FinalSummary {
-  done: true;
-  totalSources: number;
-  completedSources: number;
-  failedSources: number;
-}
-
-async function searchWithTimeout(
-  scraper: BaseScraper,
-  query: string,
-  timeoutMs: number
-): Promise<StreamingSearchResult> {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-
-  try {
-    console.log(`[Search] Starting search for ${scraper.getName()} with query: "${query}"`);
-    
-    const results = await Promise.race([
-      scraper.search(query),
-      new Promise<never>((_, reject) => {
-        controller.signal.addEventListener("abort", () => {
-          reject(new Error(`Timeout after ${timeoutMs}ms`));
-        });
-      }),
-    ]);
-
-    console.log(`[Search] ${scraper.getName()} returned ${results.length} results`);
-    return {
-      source: scraper.getName(),
-      results,
-      done: false,
-    };
-  } catch (error) {
-    console.error(`[Search] Error searching ${scraper.getName()}:`, error);
-    return {
-      source: scraper.getName(),
-      results: [],
-      error: error instanceof Error ? error.message : "Search failed",
-      done: false,
-    };
-  } finally {
-    clearTimeout(timeoutId);
+function resolveMany(ids: string[]): Provider[] {
+  const registry = getRegistry();
+  const out: Provider[] = [];
+  for (const id of ids) {
+    const p = registry.get(id);
+    if (!p) throw new DawghwaError("SOURCE_NOT_FOUND", `Unknown source "${id}"`, { details: { source: id } });
+    if (!out.includes(p)) out.push(p);
   }
+  return out;
 }
 
-function handleAllSourcesSearch(query: string): Response {
-  const scrapers = getAllScrapers();
-  let completedCount = 0;
-  let failedCount = 0;
+/**
+ * POST /api/search
+ * { query, source?: id | "all", sources?: id[], stream?: boolean, refresh?: boolean }
+ */
+export const POST = route(async (req, ctx) => {
+  const body = await readJson(req, bodySchema);
+  const multi = body.sources !== undefined || !body.source || body.source.toLowerCase() === "all";
 
-  const stream = new ReadableStream({
-    async start(controller) {
-      const encoder = new TextEncoder();
-
-      const searchPromises = scrapers.map(async (scraper) => {
-        const result = await searchWithTimeout(scraper, query, SCRAPER_TIMEOUT_MS);
-        
-        completedCount++;
-        if (result.error) {
-          failedCount++;
-        }
-
-        const line = JSON.stringify(result) + "\n";
-        controller.enqueue(encoder.encode(line));
+  if (!multi) {
+    const provider = getRegistry().get(body.source!);
+    if (!provider) {
+      throw new DawghwaError("SOURCE_NOT_FOUND", `Unsupported source "${body.source}". See GET /api/sources for available ids.`, {
+        details: { source: body.source },
       });
-
-      await Promise.all(searchPromises);
-
-      const summary: FinalSummary = {
-        done: true,
-        totalSources: scrapers.length,
-        completedSources: completedCount,
-        failedSources: failedCount,
-      };
-      controller.enqueue(encoder.encode(JSON.stringify(summary) + "\n"));
-      controller.close();
-    },
-  });
-
-  return new Response(stream, {
-    headers: {
-      "Content-Type": "application/x-ndjson",
-      "Transfer-Encoding": "chunked",
-      "Cache-Control": "no-cache",
-      "Connection": "keep-alive",
-    },
-  });
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    const { query, source } = await request.json();
-
-    if (!query || !query.trim()) {
-      return NextResponse.json(
-        { error: "Search query is required" },
-        { status: 400 },
-      );
     }
-
-    if (!source || source === "all") {
-      return handleAllSourcesSearch(query.trim());
-    }
-
-    const scraper = getScraperByName(source);
-    if (!scraper) {
-      const availableSources = getAllScrapers().map((s) => s.getId());
-      return NextResponse.json(
-        {
-          error: `Unsupported source. Available sources: ${availableSources.join(", ")}`,
-        },
-        { status: 400 },
-      );
-    }
-
-    const results = await scraper.search(query.trim());
-    return NextResponse.json({ results, source: scraper.getName() });
-  } catch (error: unknown) {
-    console.error("Search error:", error);
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Failed to search" },
-      { status: 500 },
+    const r = await searchProvider(provider, body.query, { forceRefresh: body.refresh });
+    return json(
+      {
+        results: r.results,
+        source: provider.name,
+        sourceId: provider.id,
+        meta: { cache: r.cache, age: r.age, durationMs: r.durationMs, total: r.results.length },
+      },
+      ctx,
     );
   }
-}
+
+  chargeExpensive(ctx);
+  const providers = body.sources ? resolveMany(body.sources) : getRegistry().operational();
+  const operational = providers.filter((p) => p.operational);
+  const unavailable = providers.filter((p) => !p.operational);
+
+  if (body.stream === false) {
+    const lines: StreamingSourceResult[] = [];
+    const summary = await searchAll(body.query, {
+      providers: operational,
+      forceRefresh: body.refresh,
+      signal: req.signal,
+      onResult: (l) => lines.push(l),
+    });
+    return json(
+      {
+        query: body.query,
+        sources: lines,
+        unavailable: unavailable.map((p) => ({ sourceId: p.id, source: p.name, status: p.descriptor.status })),
+        summary,
+      },
+      ctx,
+    );
+  }
+
+  const encoder = new TextEncoder();
+  const abort = new AbortController();
+  req.signal?.addEventListener("abort", () => abort.abort(), { once: true });
+  const stream = new ReadableStream<Uint8Array>({
+    async start(controller) {
+      const write = (obj: unknown) => {
+        try {
+          controller.enqueue(encoder.encode(JSON.stringify(obj) + "\n"));
+        } catch {
+          abort.abort(); // client went away
+        }
+      };
+      for (const p of unavailable) {
+        write({
+          source: p.name,
+          sourceId: p.id,
+          results: [],
+          error: `${p.name} is ${p.isDisabled ? "disabled" : p.descriptor.status} and was skipped`,
+          errorCode: "SOURCE_UNAVAILABLE",
+          done: false,
+          durationMs: 0,
+        });
+      }
+      try {
+        const summary = await searchAll(body.query, {
+          providers: operational,
+          forceRefresh: body.refresh,
+          signal: abort.signal,
+          onResult: write,
+        });
+        write({ ...summary, totalSources: summary.totalSources + unavailable.length, failedSources: summary.failedSources + unavailable.length, completedSources: summary.completedSources + unavailable.length });
+      } finally {
+        try {
+          controller.close();
+        } catch {
+          /* already closed */
+        }
+      }
+    },
+    cancel() {
+      abort.abort();
+    },
+  });
+
+  const headers = new Headers({
+    "Content-Type": "application/x-ndjson; charset=utf-8",
+    "Cache-Control": "no-cache, no-transform",
+    "X-Accel-Buffering": "no",
+  });
+  ctx.headers.forEach((v, k) => headers.set(k, v));
+  return new Response(stream, { headers });
+});
