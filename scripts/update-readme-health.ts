@@ -1,176 +1,84 @@
-import * as fs from "fs";
-import * as path from "path";
+/**
+ * Probe every source in-process (no hosted API involved) and write
+ * docs/SOURCE_STATUS.md plus docs/source-status.json.
+ *
+ *   npm run health:report            # all operational sources
+ *   npm run health:report -- mangadex comix
+ *
+ * Results reflect reachability from the machine running the script; sources
+ * behind anti-bot challenges often pass from residential IPs but fail from
+ * CI/datacenter networks.
+ */
+import { mkdirSync, writeFileSync } from "node:fs";
+import path from "node:path";
+import { getRegistry } from "../src/lib/providers/registry";
+import { probeAll, SourceStatus } from "../src/lib/services/health";
 
-const API_URL =
-  process.env.API_URL || "https://comick-source-api.notaspider.dev";
-
-interface SourceHealthResult {
-  status: "healthy" | "cloudflare" | "timeout" | "error";
-  message: string;
-  responseTime?: number;
-  lastChecked: string;
-}
-
-interface HealthResponse {
-  sources: {
-    [sourceId: string]: SourceHealthResult;
-  };
-  cached?: boolean;
-  cacheAge?: number;
-}
-
-async function fetchHealthFromAPI(): Promise<HealthResponse["sources"]> {
-  console.log(`Fetching health status from ${API_URL}/api/health...`);
-
-  const response = await fetch(`${API_URL}/api/health`, {
-    headers: {
-      "Cache-Control": "no-cache",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch health: HTTP ${response.status}`);
-  }
-
-  const data: HealthResponse = await response.json();
-  console.log(
-    `Received health data for ${Object.keys(data.sources).length} sources`,
-  );
-
-  if (data.cached) {
-    console.log(`  (cached response, age: ${data.cacheAge}s)`);
-  }
-
-  return data.sources;
-}
-
-interface TableRow {
-  sourceName: string;
-  sourceId: string;
-  baseUrl: string;
-  status: string;
-}
-
-function updateReadme(healthResults: HealthResponse["sources"]): boolean {
-  const readmePath = path.join(process.cwd(), "README.md");
-  let readme = fs.readFileSync(readmePath, "utf-8");
-  let hasChanges = false;
-
-  // Status mapping: healthy = Active, anything else = Unstable
-  const getStatusText = (status: string): string => {
-    return status === "healthy" ? "Active" : "Unstable";
-  };
-
-  // Table format: | Source | ID | Base URL | Status |
-  const tableRowRegex =
-    /^\|\s*([^|]+?)\s*\|\s*`([^`]+)`\s*\|\s*([^|]+?)\s*\|\s*(Active|Unstable|Shutdown)\s*\|$/gm;
-
-  const rows: TableRow[] = [];
-  let match;
-  while ((match = tableRowRegex.exec(readme)) !== null) {
-    const [, sourceName, sourceId, baseUrl, currentStatus] = match;
-    const health = healthResults[sourceId];
-    let newStatus = currentStatus.trim();
-
-    if (health && newStatus !== "Shutdown") {
-      const computedStatus = getStatusText(health.status);
-      if (currentStatus.trim() !== computedStatus) {
-        console.log(
-          `  Updating ${sourceId}: ${currentStatus.trim()} -> ${computedStatus} (${health.status}: ${health.message})`,
-        );
-        hasChanges = true;
-        newStatus = computedStatus;
-      }
-    } else {
-      console.log(`  No health data for ${sourceId}, keeping current status`);
-    }
-
-    rows.push({
-      sourceName: sourceName.trim(),
-      sourceId,
-      baseUrl: baseUrl.trim(),
-      status: newStatus,
-    });
-  }
-
-  const originalOrder = rows.map((r) => r.sourceName).join(",");
-  rows.sort((a, b) =>
-    a.sourceName.toLowerCase().localeCompare(b.sourceName.toLowerCase()),
-  );
-  const sortedOrder = rows.map((r) => r.sourceName).join(",");
-
-  if (originalOrder !== sortedOrder) {
-    console.log("  Reordering sources alphabetically");
-    hasChanges = true;
-  }
-
-  const colWidths = {
-    source: Math.max(12, ...rows.map((r) => r.sourceName.length)),
-    id: Math.max(14, ...rows.map((r) => r.sourceId.length + 2)),
-    url: Math.max(25, ...rows.map((r) => r.baseUrl.length)),
-    status: 8,
-  };
-
-  const header = `| ${"Source".padEnd(colWidths.source)} | ${"ID".padEnd(colWidths.id)} | ${"Base URL".padEnd(colWidths.url)} | ${"Status".padEnd(colWidths.status)} |`;
-  const separator = `| ${"-".repeat(colWidths.source)} | ${"-".repeat(colWidths.id)} | ${"-".repeat(colWidths.url)} | ${"-".repeat(colWidths.status)} |`;
-  const tableRows = rows.map((row) => {
-    const id = `\`${row.sourceId}\``;
-    return `| ${row.sourceName.padEnd(colWidths.source)} | ${id.padEnd(colWidths.id)} | ${row.baseUrl.padEnd(colWidths.url)} | ${row.status.padEnd(colWidths.status)} |`;
-  });
-
-  const newTable = [header, separator, ...tableRows].join("\n");
-
-  const fullTableRegex =
-    /\| Source\s*\| ID\s*\| Base URL\s*\| Status\s*\|[\s\S]*?(?=\n\n)/;
-  readme = readme.replace(fullTableRegex, newTable);
-
-  if (hasChanges) {
-    fs.writeFileSync(readmePath, readme);
-    console.log("\nREADME.md updated with new health statuses.");
-  } else {
-    console.log("\nNo changes needed in README.md.");
-  }
-
-  return hasChanges;
-}
+const LABEL: Record<string, string> = {
+  [SourceStatus.HEALTHY]: "Healthy",
+  [SourceStatus.CLOUDFLARE]: "Blocked (anti-bot)",
+  [SourceStatus.TIMEOUT]: "Timeout",
+  [SourceStatus.ERROR]: "Error",
+};
 
 async function main() {
-  console.log("=== Source Health Check ===\n");
+  const registry = getRegistry();
+  const only = process.argv.slice(2).map((s) => s.toLowerCase());
+  const providers = registry
+    .operational()
+    .filter((p) => only.length === 0 || only.includes(p.id));
+  const shutdown = registry.all().filter((p) => p.descriptor.status === "shutdown");
 
-  const healthResults = await fetchHealthFromAPI();
+  console.error(`Probing ${providers.length} sources...`);
+  const started = Date.now();
+  const results = await probeAll(providers);
+  const elapsed = Date.now() - started;
+  const generatedAt = new Date().toISOString();
 
-  console.log("\n=== Current Health Status ===\n");
-  for (const [sourceId, health] of Object.entries(healthResults)) {
-    const icon = health.status === "healthy" ? "✓" : "✗";
-    console.log(`  ${icon} ${sourceId}: ${health.status} - ${health.message}`);
-  }
+  const counts: Record<string, number> = {};
+  for (const r of Object.values(results)) counts[r.status] = (counts[r.status] ?? 0) + 1;
 
-  console.log("\n=== Updating README ===\n");
+  const rows = providers
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((p) => {
+      const r = results[p.id];
+      const msg = (r?.message ?? "").replace(/\|/g, "\\|").slice(0, 120);
+      return `| ${p.name} | \`${p.id}\` | ${p.descriptor.status} | ${LABEL[r?.status] ?? "Unknown"} | ${r?.responseTime ?? ""} | ${msg} |`;
+    });
 
-  const hasChanges = updateReadme(healthResults);
+  const md = [
+    "# Source status",
+    "",
+    `Generated ${generatedAt} by \`npm run health:report\` in ${(elapsed / 1000).toFixed(1)}s.`,
+    "",
+    "\"Declared\" is the maintained status in `src/lib/providers/status.ts`; \"Probe\" is the live result of a small search from the machine that ran the report. Anti-bot blocks frequently depend on the network the probe runs from.",
+    "",
+    `Summary: ${Object.entries(counts).map(([k, v]) => `${LABEL[k] ?? k}: ${v}`).join(", ")}; shut down (not probed): ${shutdown.length}.`,
+    "",
+    "| Source | ID | Declared | Probe | ms | Detail |",
+    "| --- | --- | --- | --- | ---: | --- |",
+    ...rows,
+    "",
+    "## Shut down",
+    "",
+    ...shutdown.map((p) => `- ${p.name} (\`${p.id}\`)${p.descriptor.statusNote ? ` - ${p.descriptor.statusNote}` : ""}`),
+    "",
+  ].join("\n");
 
-  console.log("\n=== Summary ===");
-  const healthy = Object.values(healthResults).filter(
-    (r) => r.status === "healthy",
-  ).length;
-  const unhealthy = Object.values(healthResults).length - healthy;
-
-  console.log(`  Healthy: ${healthy}`);
-  console.log(`  Unhealthy: ${unhealthy}`);
-
-  if (process.env.GITHUB_OUTPUT) {
-    fs.appendFileSync(process.env.GITHUB_OUTPUT, `has_changes=${hasChanges}\n`);
-    fs.appendFileSync(process.env.GITHUB_OUTPUT, `healthy_count=${healthy}\n`);
-    fs.appendFileSync(
-      process.env.GITHUB_OUTPUT,
-      `unhealthy_count=${unhealthy}\n`,
-    );
-  }
-
-  process.exit(0);
+  const docs = path.join(process.cwd(), "docs");
+  mkdirSync(docs, { recursive: true });
+  writeFileSync(path.join(docs, "SOURCE_STATUS.md"), md);
+  writeFileSync(
+    path.join(docs, "source-status.json"),
+    JSON.stringify({ generatedAt, elapsedMs: elapsed, counts, sources: results }, null, 2) + "\n",
+  );
+  console.error(`Done: ${JSON.stringify(counts)}`);
 }
 
-main().catch((error) => {
-  console.error("Error running health check:", error);
-  process.exit(1);
-});
+main()
+  .then(() => process.exit(0))
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
