@@ -20,7 +20,14 @@ export interface FrontpageFetchOptions {
   days?: number; // For time-filtered sections like trending
 }
 
+import { upstreamFetch } from "@/lib/core/http";
+
 export abstract class BaseFrontpage {
+  /** Shared Dawghwa HTTP client (timeouts, retries, rate limits, dedup). */
+  protected http(input: string | URL | Request, init?: RequestInit): Promise<Response> {
+    return upstreamFetch(input, init);
+  }
+
   abstract getSourceId(): string;
   abstract getSourceName(): string;
   abstract getAvailableSections(): FrontpageSectionConfig[];

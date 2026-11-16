@@ -156,7 +156,7 @@ export class ComixFrontpage extends BaseFrontpage {
 
   private async fetchTopItems(url: string): Promise<FrontpageManga[]> {
     try {
-      const response = await fetch(url, {
+      const response = await this.http(url, {
         headers: {
           "User-Agent":
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
@@ -182,7 +182,7 @@ export class ComixFrontpage extends BaseFrontpage {
 
   private async fetchMangaList(url: string): Promise<FrontpageManga[]> {
     try {
-      const response = await fetch(url, {
+      const response = await this.http(url, {
         headers: {
           "User-Agent":
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",

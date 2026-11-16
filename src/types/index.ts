@@ -87,3 +87,11 @@ export interface FrontpageInfo {
     availableTimeFilters?: number[];
   }[];
 }
+
+/** One page (image) of a chapter, as provided by a documented provider API. */
+export interface ChapterPage {
+  index: number;
+  url: string;
+  width?: number;
+  height?: number;
+}
