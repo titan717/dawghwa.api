@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BaseScraper } from "./base";
-import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { ChapterPage, ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { DawghwaError } from "@/lib/core/errors";
 
 interface MangaDexRelationship {
   id: string;
@@ -80,7 +81,7 @@ export class MangaDexScraper extends BaseScraper {
 
   private async getJson<T>(path: string): Promise<T> {
     for (let attempt = 0; attempt < 3; attempt++) {
-      const response = await fetch(`${this.API_URL}${path}`, {
+      const response = await this.http(`${this.API_URL}${path}`, {
         headers: {
           "User-Agent": this.USER_AGENT,
           Accept: "application/json",
@@ -92,6 +93,9 @@ export class MangaDexScraper extends BaseScraper {
         continue;
       }
 
+      if (response.status === 404) {
+        throw new DawghwaError("NOT_FOUND", "MangaDex resource not found");
+      }
       if (!response.ok) {
         throw new Error(`API request failed: ${response.status}`);
       }
@@ -197,18 +201,23 @@ export class MangaDexScraper extends BaseScraper {
         throw new Error("Could not extract manga id from URL");
       }
 
+      // The first page reports the total, so the remaining pages are fetched
+      // in parallel (bounded by the MangaDex provider rate limit) instead of
+      // one after another.
       const limit = 500;
-      const chapters: MangaDexChapter[] = [];
-      let total = 0;
-
-      do {
-        const page = await this.getJson<MangaDexList<MangaDexChapter>>(
-          `/manga/${id}/feed?translatedLanguage[]=en&order[chapter]=asc&limit=${limit}&offset=${chapters.length}&includes[]=scanlation_group&${this.RATINGS}`,
-        );
-        total = page.total || 0;
-        if (!page.data || page.data.length === 0) break;
-        chapters.push(...page.data);
-      } while (chapters.length < total);
+      const feedPath = (offset: number) =>
+        `/manga/${id}/feed?translatedLanguage[]=en&order[chapter]=asc&limit=${limit}&offset=${offset}&includes[]=scanlation_group&${this.RATINGS}`;
+      const first = await this.getJson<MangaDexList<MangaDexChapter>>(feedPath(0));
+      const total = first.total || 0;
+      const offsets: number[] = [];
+      for (let offset = limit; offset < total; offset += limit) offsets.push(offset);
+      const rest = await Promise.all(
+        offsets.map((offset) => this.getJson<MangaDexList<MangaDexChapter>>(feedPath(offset))),
+      );
+      const chapters: MangaDexChapter[] = [
+        ...(first.data || []),
+        ...rest.flatMap((page) => page.data || []),
+      ];
 
       const byNumber = new Map<
         number,
@@ -264,5 +273,37 @@ export class MangaDexScraper extends BaseScraper {
       console.error("[MangaDex] chapter list error:", error);
       throw error;
     }
+  }
+
+  /**
+   * Chapter pages via the official MangaDex@Home API
+   * (https://api.mangadex.org/docs/04-chapter/retrieving-chapter/).
+   * Returned URLs point at MangaDex@Home servers and expire after ~15 minutes;
+   * Dawghwa never proxies or re-hosts the images.
+   */
+  async getChapterPages(
+    chapter: { chapterId?: string; url?: string },
+    options: { dataSaver?: boolean } = {},
+  ): Promise<ChapterPage[]> {
+    const id =
+      chapter.chapterId ||
+      (chapter.url ? chapter.url.match(/\/chapter\/([0-9a-f-]{36})/i)?.[1] : undefined);
+    if (!id || !/^[0-9a-f-]{36}$/i.test(id)) {
+      throw new DawghwaError("VALIDATION_ERROR", "A MangaDex chapter UUID (or /chapter/<uuid> URL) is required");
+    }
+    const data = await this.getJson<{
+      result: string;
+      baseUrl: string;
+      chapter: { hash: string; data: string[]; dataSaver: string[] };
+    }>(`/at-home/server/${id}`);
+    if (!data.baseUrl || !data.chapter?.hash) {
+      throw new DawghwaError("UPSTREAM_ERROR", "MangaDex returned no page data for this chapter");
+    }
+    const quality = options.dataSaver ? "data-saver" : "data";
+    const files = options.dataSaver ? data.chapter.dataSaver : data.chapter.data;
+    return (files || []).map((file, index) => ({
+      index,
+      url: `${data.baseUrl}/${quality}/${data.chapter.hash}/${file}`,
+    }));
   }
 }

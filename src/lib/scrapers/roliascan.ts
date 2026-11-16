@@ -43,7 +43,7 @@ export class RoliaScanScraper extends BaseScraper {
   }
 
   private async getJson<T>(path: string, init?: RequestInit): Promise<T> {
-    const response = await fetch(`${this.BASE_URL}${path}`, {
+    const response = await this.http(`${this.BASE_URL}${path}`, {
       ...init,
       headers: {
         "User-Agent": this.config.userAgent,

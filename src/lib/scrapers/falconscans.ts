@@ -31,7 +31,7 @@ export class FalconscansScraper extends BaseScraper {
     const slug = urlMatch[1];
 
     try {
-      const response = await fetch(`${this.apiBase}/manga/${slug}?chapterPage=1&chapterLimit=1`);
+      const response = await this.http(`${this.apiBase}/manga/${slug}?chapterPage=1&chapterLimit=1`);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
@@ -62,7 +62,7 @@ export class FalconscansScraper extends BaseScraper {
     const slug = urlMatch[1];
 
     try {
-      const response = await fetch(`${this.apiBase}/manga/${slug}?chapterPage=1&chapterLimit=1000`);
+      const response = await this.http(`${this.apiBase}/manga/${slug}?chapterPage=1&chapterLimit=1000`);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -111,7 +111,7 @@ export class FalconscansScraper extends BaseScraper {
     const results: SearchResult[] = [];
 
     try {
-      const response = await fetch(searchUrl);
+      const response = await this.http(searchUrl);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -126,7 +126,7 @@ export class FalconscansScraper extends BaseScraper {
           let lastUpdated = '';
 
           try {
-            const chaptersResponse = await fetch(`${this.apiBase}/manga/${manga.slug}?chapterPage=1&chapterLimit=1`);
+            const chaptersResponse = await this.http(`${this.apiBase}/manga/${manga.slug}?chapterPage=1&chapterLimit=1`);
             if (chaptersResponse.ok) {
               const chaptersData = await chaptersResponse.json();
               if (chaptersData.chapters && Array.isArray(chaptersData.chapters) && chaptersData.chapters.length > 0) {

@@ -31,7 +31,7 @@ export class ComixScraper extends BaseScraper {
     const hashId = urlMatch[1].split('-')[0];
 
     try {
-      const response = await fetch(`${this.apiBase}/manga/${hashId}`);
+      const response = await this.http(`${this.apiBase}/manga/${hashId}`);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
@@ -62,7 +62,7 @@ export class ComixScraper extends BaseScraper {
     const hashId = urlMatch[1].split('-')[0];
 
     try {
-      const mangaResponse = await fetch(`${this.apiBase}/manga/${hashId}`);
+      const mangaResponse = await this.http(`${this.apiBase}/manga/${hashId}`);
       if (!mangaResponse.ok) {
         throw new Error(`HTTP ${mangaResponse.status}: ${mangaResponse.statusText}`);
       }
@@ -74,7 +74,7 @@ export class ComixScraper extends BaseScraper {
       let hasMorePages = true;
 
       while (hasMorePages) {
-        const response = await fetch(
+        const response = await this.http(
           `${this.apiBase}/manga/${hashId}/chapters?order[number]=desc&limit=100&page=${currentPage}`
         );
 
@@ -139,7 +139,7 @@ export class ComixScraper extends BaseScraper {
     const results: SearchResult[] = [];
 
     try {
-      const response = await fetch(searchUrl);
+      const response = await this.http(searchUrl);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);

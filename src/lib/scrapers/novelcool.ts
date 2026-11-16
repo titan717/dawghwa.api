@@ -34,7 +34,7 @@ export class NovelCoolScraper extends BaseScraper {
   private async fetchPage(url: string): Promise<string> {
     for (let i = 0; i <= this.config.retryAttempts; i++) {
       try {
-        const response = await fetch(url, {
+        const response = await this.http(url, {
           headers: {
             "User-Agent": "curl/8.4.0",
             Accept: "text/html,*/*;q=0.8",

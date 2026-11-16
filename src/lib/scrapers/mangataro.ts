@@ -52,7 +52,7 @@ export class MangataroScraper extends BaseScraper {
 
       const apiUrl = `${this.BASE_URL}/auth/manga-chapters?manga_id=${mangaId}&offset=0&limit=500&order=DESC&_t=${token}&_ts=${timestamp}`;
 
-      const response = await fetch(apiUrl, {
+      const response = await this.http(apiUrl, {
         headers: {
           "User-Agent": this.config.userAgent,
           Referer: mangaUrl,
@@ -357,7 +357,7 @@ export class MangataroScraper extends BaseScraper {
 
           const apiUrl = `${this.BASE_URL}/auth/manga-chapters?manga_id=${mangaId}&offset=0&limit=1&order=DESC&_t=${token}&_ts=${timestamp}`;
 
-          const response = await fetch(apiUrl, {
+          const response = await this.http(apiUrl, {
             headers: {
               "User-Agent": this.config.userAgent,
               Referer: result.url,

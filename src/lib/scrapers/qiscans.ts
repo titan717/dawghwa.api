@@ -77,7 +77,7 @@ export class QiScansScraper extends BaseScraper {
   }
 
   private async getJson<T>(path: string): Promise<T> {
-    const response = await fetch(`${this.API_URL}${path}`, {
+    const response = await this.http(`${this.API_URL}${path}`, {
       headers: {
         "User-Agent": this.config.userAgent,
         Accept: "application/json, text/plain, */*",

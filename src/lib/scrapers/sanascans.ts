@@ -43,7 +43,7 @@ export class SanaScansScraper extends BaseScraper {
   }
 
   private async fetchJson<T>(url: string): Promise<T> {
-    const response = await fetch(url, {
+    const response = await this.http(url, {
       headers: {
         "User-Agent": this.config.userAgent,
         Accept: "application/json",

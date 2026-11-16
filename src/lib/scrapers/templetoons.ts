@@ -144,7 +144,7 @@ export class TempleToonsScraper extends BaseScraper {
 
   async search(query: string): Promise<SearchResult[]> {
     try {
-      const response = await fetch(this.API_URL);
+      const response = await this.http(this.API_URL);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }

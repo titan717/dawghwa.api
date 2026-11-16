@@ -1,4 +1,8 @@
-import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { ChapterPage, ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { currentContext } from "@/lib/core/context";
+import { upstreamFetch, upstreamText } from "@/lib/core/http";
+import { sleep } from "@/lib/core/retry";
+import { getConfig } from "@/lib/core/config";
 
 interface ScraperConfig {
   retryAttempts: number;
@@ -11,10 +15,11 @@ export abstract class BaseScraper {
 
   constructor(config?: Partial<ScraperConfig>) {
     this.config = {
-      retryAttempts: 3,
-      downloadDelay: 1000,
-      userAgent:
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+      // Retries are centralised in the shared HTTP layer; adapter-level retry
+      // loops run once by default to avoid multiplicative retry storms.
+      retryAttempts: 0,
+      downloadDelay: 500,
+      userAgent: getConfig().http.userAgent,
       ...config,
     };
   }
@@ -28,42 +33,29 @@ export abstract class BaseScraper {
   abstract getChapterList(mangaUrl: string): Promise<ScrapedChapter[]>;
   abstract search(query: string): Promise<SearchResult[]>;
 
-  protected async fetchWithRetry(
-    url: string,
-    retries = this.config.retryAttempts,
-  ): Promise<string> {
-    for (let i = 0; i <= retries; i++) {
-      try {
-        const response = await fetch(url, {
-          headers: {
-            "User-Agent": this.config.userAgent,
-            Accept:
-              "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-            "Accept-Language": "en-US,en;q=0.5",
-            "Accept-Encoding": "gzip, deflate",
-            DNT: "1",
-            Connection: "keep-alive",
-            "Upgrade-Insecure-Requests": "1",
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-
-        return await response.text();
-      } catch (error) {
-        if (i === retries) {
-          throw error;
-        }
-        await this.delay(this.config.downloadDelay * (i + 1));
-      }
-    }
-    throw new Error("Failed to fetch after retries");
+  /**
+   * fetch()-compatible client for adapters. Routed through the shared Dawghwa
+   * HTTP layer (timeouts, cancellation, retries with backoff + jitter,
+   * per-source rate limits, request deduplication, ETag revalidation and
+   * anti-bot detection). Adapters must use this instead of global fetch.
+   */
+  protected http(input: string | URL | Request, init?: RequestInit): Promise<Response> {
+    return upstreamFetch(input, init);
   }
 
+  /**
+   * Fetch a page as text. Kept for upstream compatibility; the `retries`
+   * argument is ignored because retry policy is now centralised (and no longer
+   * retries non-retryable responses such as 403/404).
+   */
+  protected async fetchWithRetry(url: string, _retries?: number): Promise<string> {
+    void _retries;
+    return upstreamText(url);
+  }
+
+  /** Cancellable delay (aborts with the current operation). */
   protected async delay(ms: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+    return sleep(ms, currentContext()?.signal);
   }
 
   protected extractChapterNumber(chapterUrl: string): number {
@@ -89,5 +81,15 @@ export abstract class BaseScraper {
 
   getType(): SourceType {
     return "aggregator";
+  }
+
+  /**
+   * Chapter page (image) retrieval. Only implemented by adapters whose provider
+   * offers a documented, permitted API for it (see docs/API.md#chapter-pages).
+   */
+  getChapterPages?(chapter: { chapterId?: string; url?: string }, options?: { dataSaver?: boolean }): Promise<ChapterPage[]>;
+
+  supportsChapterPages(): boolean {
+    return typeof this.getChapterPages === "function";
   }
 }

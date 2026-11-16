@@ -25,7 +25,7 @@ export class WeebdexScraper extends BaseScraper {
 
   private async fetchApi(url: string, retries = 3): Promise<any> {
     for (let i = 0; i <= retries; i++) {
-      const response = await fetch(url);
+      const response = await this.http(url);
 
       if (response.status === 429) {
         const waitTime = Math.min(2000 * Math.pow(2, i), 10000);

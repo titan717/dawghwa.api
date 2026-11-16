@@ -90,7 +90,7 @@ export class DemonicscansScraper extends BaseScraper {
     try {
       const searchUrl = `${this.BASE_URL}/search.php?manga=${encodeURIComponent(query)}`;
 
-      const response = await fetch(searchUrl, {
+      const response = await this.http(searchUrl, {
         headers: {
           accept: "*/*",
           "accept-language": "en-US,en;q=0.9",

@@ -54,7 +54,7 @@ export class AtsuMoeScraper extends BaseScraper {
 
     const id = mangaId;
     const chaptersUrl = `${this.BASE_URL}/api/manga/chapters?id=${id}&filter=all&sort=desc&page=0`;
-    const response = await fetch(chaptersUrl, {
+    const response = await this.http(chaptersUrl, {
       headers: {
         "User-Agent": this.config.userAgent,
         Accept: "application/json",
@@ -78,7 +78,7 @@ export class AtsuMoeScraper extends BaseScraper {
     while (currentPage < totalPages) {
       const chaptersUrl = `${this.BASE_URL}/api/manga/chapters?id=${id}&filter=all&sort=desc&page=${currentPage}`;
 
-      const response = await fetch(chaptersUrl, {
+      const response = await this.http(chaptersUrl, {
         headers: {
           "User-Agent": this.config.userAgent,
           Accept: "application/json",
@@ -116,7 +116,7 @@ export class AtsuMoeScraper extends BaseScraper {
   async search(query: string): Promise<SearchResult[]> {
     const searchUrl = `${this.BASE_URL}/collections/manga/documents/search?q=${encodeURIComponent(query)}&limit=12&query_by=title%2CenglishTitle%2CotherNames&query_by_weights=3%2C2%2C1&include_fields=id%2Ctitle%2CenglishTitle%2Cposter&num_typos=4%2C3%2C2`;
 
-    const response = await fetch(searchUrl, {
+    const response = await this.http(searchUrl, {
       headers: {
         "User-Agent": this.config.userAgent,
         Accept: "application/json",
@@ -141,7 +141,7 @@ export class AtsuMoeScraper extends BaseScraper {
       let lastUpdated = "";
       try {
         const chaptersUrl = `${this.BASE_URL}/api/manga/chapters?id=${doc.id}&filter=all&sort=desc&page=0`;
-        const chaptersResponse = await fetch(chaptersUrl, {
+        const chaptersResponse = await this.http(chaptersUrl, {
           headers: {
             "User-Agent": this.config.userAgent,
             Accept: "application/json",

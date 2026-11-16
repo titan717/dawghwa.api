@@ -44,7 +44,7 @@ export class MKissaScraper extends BaseScraper {
   ): Promise<T> {
     for (let attempt = 0; attempt <= this.config.retryAttempts; attempt++) {
       try {
-        const response = await fetch(this.API_URL, {
+        const response = await this.http(this.API_URL, {
           method: "POST",
           headers: {
             "User-Agent": this.config.userAgent,

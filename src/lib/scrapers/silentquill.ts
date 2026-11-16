@@ -83,7 +83,7 @@ export class SilentQuillScraper extends BaseScraper {
 
   async search(query: string): Promise<SearchResult[]> {
     try {
-      const response = await fetch(
+      const response = await this.http(
         `${this.BASE_URL}/api/suggest/?q=${encodeURIComponent(query)}`,
         {
           headers: {

@@ -84,7 +84,7 @@ export class LuaComicScraper extends BaseScraper {
 
     try {
       const searchUrl = `${this.API_URL}/query?page=1&perPage=5&series_type=Comic&query_string=${encodeURIComponent(seriesSlug)}&orderBy=created_at&adult=true&status=All&tags_ids=%5B%5D`;
-      const response = await fetch(searchUrl, {
+      const response = await this.http(searchUrl, {
         headers: {
           Accept: "application/json, text/plain, */*",
           "User-Agent": this.config.userAgent,
@@ -131,7 +131,7 @@ export class LuaComicScraper extends BaseScraper {
       const seriesSlug = urlMatch[1];
 
       const searchUrl = `${this.API_URL}/query?page=1&perPage=5&series_type=Comic&query_string=${encodeURIComponent(seriesSlug)}&orderBy=created_at&adult=true&status=All&tags_ids=%5B%5D`;
-      const searchResponse = await fetch(searchUrl, {
+      const searchResponse = await this.http(searchUrl, {
         headers: {
           Accept: "application/json, text/plain, */*",
           "User-Agent": this.config.userAgent,
@@ -159,7 +159,7 @@ export class LuaComicScraper extends BaseScraper {
 
       while (hasMorePages) {
         const chaptersUrl = `${this.API_URL}/chapter/query?page=${currentPage}&perPage=${perPage}&query=&order=desc&series_id=${seriesId}`;
-        const chaptersResponse = await fetch(chaptersUrl, {
+        const chaptersResponse = await this.http(chaptersUrl, {
           headers: {
             Accept: "application/json, text/plain, */*",
             "User-Agent": this.config.userAgent,
@@ -220,7 +220,7 @@ export class LuaComicScraper extends BaseScraper {
   async search(query: string): Promise<SearchResult[]> {
     try {
       const searchUrl = `${this.API_URL}/query?page=1&perPage=20&series_type=Comic&query_string=${encodeURIComponent(query)}&orderBy=created_at&adult=true&status=All&tags_ids=%5B%5D`;
-      const response = await fetch(searchUrl, {
+      const response = await this.http(searchUrl, {
         headers: {
           Accept: "application/json, text/plain, */*",
           "User-Agent": this.config.userAgent,

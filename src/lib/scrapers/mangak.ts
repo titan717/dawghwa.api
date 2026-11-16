@@ -77,7 +77,7 @@ export class MangaKScraper extends BaseScraper {
       const mangaId = props.initialManga?.id;
       if (!mangaId) return [];
 
-      const response = await fetch(
+      const response = await this.http(
         `https://api.mangak.io/titles/${mangaId}/chapters`,
         {
           headers: {

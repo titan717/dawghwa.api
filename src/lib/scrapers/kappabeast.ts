@@ -66,7 +66,7 @@ export class KappaBeastScraper extends BaseScraper {
 
     for (let attempt = 0; attempt < 2; attempt++) {
       const key = await this.resolveApiKey(attempt > 0);
-      const response = await fetch(url, {
+      const response = await this.http(url, {
         headers: {
           "User-Agent": this.config.userAgent,
           Accept: "application/json",

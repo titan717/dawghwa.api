@@ -56,7 +56,7 @@ export class SwarmScraper extends BaseScraper {
   }
 
   private async fetchSearch(query: string): Promise<SwarmComic[]> {
-    const response = await fetch(
+    const response = await this.http(
       `${this.getBaseUrl()}/api/comic/search?title=${encodeURIComponent(query)}&limit=20`,
       {
         headers: {

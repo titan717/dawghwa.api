@@ -25,7 +25,7 @@ export class MangaCloudScraper extends BaseScraper {
 
   async search(query: string): Promise<SearchResult[]> {
     try {
-      const response = await fetch(`${this.API_URL}/comic/browse`, {
+      const response = await this.http(`${this.API_URL}/comic/browse`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -128,7 +128,7 @@ export class MangaCloudScraper extends BaseScraper {
     const comicId = urlMatch[1];
 
     try {
-      const response = await fetch(`${this.API_URL}/comic/${comicId}`, {
+      const response = await this.http(`${this.API_URL}/comic/${comicId}`, {
         headers: {
           "Accept": "*/*",
           "Origin": this.BASE_URL,

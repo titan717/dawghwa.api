@@ -50,7 +50,7 @@ export class KaliScanScraper extends BaseScraper {
 
       const apiUrl = `${this.BASE_URL}/service/backend/chaplist/?manga_id=${mangaId}&manga_name=${encodeURIComponent(mangaSlug)}`;
 
-      const response = await fetch(apiUrl, {
+      const response = await this.http(apiUrl, {
         headers: {
           "User-Agent": this.config.userAgent,
           Referer: mangaUrl,
@@ -170,7 +170,7 @@ export class KaliScanScraper extends BaseScraper {
 
           const apiUrl = `${this.BASE_URL}/service/backend/chaplist/?manga_id=${mangaId}&manga_name=${encodeURIComponent(mangaSlug)}`;
 
-          const response = await fetch(apiUrl, {
+          const response = await this.http(apiUrl, {
             headers: {
               "User-Agent": this.config.userAgent,
               Referer: result.url,

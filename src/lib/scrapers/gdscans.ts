@@ -50,7 +50,7 @@ export class GDScansScraper extends BaseScraper {
 
       let html: string;
       try {
-        const response = await fetch(ajaxUrl, {
+        const response = await this.http(ajaxUrl, {
           method: "POST",
           headers: {
             "User-Agent": this.config.userAgent,
@@ -206,7 +206,7 @@ export class GDScansScraper extends BaseScraper {
 
         let chaptersHtml: string;
         try {
-          const response = await fetch(ajaxUrl, {
+          const response = await this.http(ajaxUrl, {
             method: "POST",
             headers: {
               "User-Agent": this.config.userAgent,

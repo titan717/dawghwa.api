@@ -36,7 +36,7 @@ export class WebtoonClubScraper extends BaseScraper {
   }
 
   private async getJson<T>(path: string): Promise<T> {
-    const response = await fetch(`${this.BASE_URL}${path}`, {
+    const response = await this.http(`${this.BASE_URL}${path}`, {
       headers: {
         "User-Agent": this.config.userAgent,
         Accept: "application/json, text/plain, */*",

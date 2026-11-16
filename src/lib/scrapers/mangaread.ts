@@ -38,7 +38,7 @@ export class MangaReadScraper extends BaseScraper {
     const ajaxUrl = `${mangaUrl.replace(/\/$/, "")}/ajax/chapters/`;
 
     try {
-      const response = await fetch(ajaxUrl, {
+      const response = await this.http(ajaxUrl, {
         method: "POST",
         headers: {
           "User-Agent": this.config.userAgent,

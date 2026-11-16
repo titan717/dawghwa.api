@@ -141,7 +141,7 @@ export class ValirScansScraper extends BaseScraper {
   }
 
   async search(query: string): Promise<SearchResult[]> {
-    const response = await fetch(
+    const response = await this.http(
       `${this.BASE_URL}/api/search?q=${encodeURIComponent(query)}`,
       {
         headers: {

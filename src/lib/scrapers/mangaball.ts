@@ -43,7 +43,7 @@ export class MangaballScraper extends BaseScraper {
   }
 
   private async fetchJson<T>(path: string): Promise<T> {
-    const response = await fetch(`${this.getBaseUrl()}/api/v1${path}`, {
+    const response = await this.http(`${this.getBaseUrl()}/api/v1${path}`, {
       headers: {
         "User-Agent": this.config.userAgent,
         Accept: "application/json",
@@ -95,10 +95,11 @@ export class MangaballScraper extends BaseScraper {
       const raw = [...(first.data || [])];
       const totalPages = first.pagination?.total_pages || 1;
 
-      for (let page = 2; page <= totalPages; page++) {
-        const next = await this.fetchChapters(id, page, limit);
-        raw.push(...(next.data || []));
-      }
+      // Remaining pages are independent: fetch them in parallel (the shared
+      // HTTP layer enforces the per-source concurrency / rate limit).
+      const pages = Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => i + 2);
+      const rest = await Promise.all(pages.map((page) => this.fetchChapters(id, page, limit)));
+      for (const next of rest) raw.push(...(next.data || []));
 
       const byNumber = new Map<number, BallChapter>();
       for (const chapter of raw) {

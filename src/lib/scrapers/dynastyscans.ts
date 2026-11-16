@@ -61,7 +61,7 @@ export class DynastyScansScraper extends BaseScraper {
   }
 
   private async getSeriesJson(slug: string): Promise<DynastySeries> {
-    const response = await fetch(`${this.BASE_URL}/series/${slug}.json`, {
+    const response = await this.http(`${this.BASE_URL}/series/${slug}.json`, {
       headers: {
         "User-Agent": this.config.userAgent,
         Accept: "application/json, text/plain, */*",

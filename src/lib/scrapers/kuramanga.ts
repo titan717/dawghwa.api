@@ -78,7 +78,7 @@ export class KuramangaScraper extends BaseScraper {
     const searchUrl = `${this.BASE_URL}/search?name=${encodeURIComponent(query)}&offset=0&ajax=1`;
 
     try {
-      const response = await fetch(searchUrl, {
+      const response = await this.http(searchUrl, {
         headers: {
           "User-Agent": this.config.userAgent,
           Accept: "application/json, text/plain, */*",

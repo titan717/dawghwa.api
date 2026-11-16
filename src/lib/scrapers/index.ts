@@ -1,4 +1,5 @@
 import { BaseScraper } from "./base";
+import { ADAPTER_DOMAINS } from "@/lib/providers/manifest.generated";
 import { MangaParkScraper } from "./mangapark";
 import { AtsuMoeScraper } from "./atsumoe";
 import { LikeMangaScraper } from "./likemanga";
@@ -196,8 +197,22 @@ const scrapers: BaseScraper[] = [
   new SirenScansScraper(),
 ];
 
+/**
+ * Resolve a scraper from a URL by exact domain (or subdomain) match. Upstream
+ * used substring matching, which also matched e.g. `https://evil.example/?mangadex.org`.
+ */
 export function getScraper(url: string): BaseScraper | null {
-  return scrapers.find((scraper) => scraper.canHandle(url)) || null;
+  let host: string;
+  try {
+    host = new URL(url).hostname.toLowerCase().replace(/\.$/, "");
+  } catch {
+    return null;
+  }
+  return (
+    scrapers.find((scraper) =>
+      (ADAPTER_DOMAINS[scraper.getName()] ?? []).some((d) => host === d || host.endsWith(`.${d}`)),
+    ) || null
+  );
 }
 
 export function getScraperByName(name: string): BaseScraper | null {

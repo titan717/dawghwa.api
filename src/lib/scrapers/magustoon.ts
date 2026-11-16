@@ -124,7 +124,7 @@ export class MagusToonScraper extends BaseScraper {
     try {
       const apiUrl = `${this.API_URL}/api/query?page=1&perPage=24&searchTerm=${encodeURIComponent(query)}&seriesType=&seriesStatus=`;
 
-      const response = await fetch(apiUrl, {
+      const response = await this.http(apiUrl, {
         headers: {
           Accept: "*/*",
           Origin: this.BASE_URL,

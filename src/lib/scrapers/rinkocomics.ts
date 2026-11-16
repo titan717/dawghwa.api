@@ -74,7 +74,7 @@ export class RinkoComicsScraper extends BaseScraper {
     nonce: string,
     offset: number
   ): Promise<ScrapedChapter[]> {
-    const response = await fetch(`${this.BASE_URL}/wp-admin/admin-ajax.php`, {
+    const response = await this.http(`${this.BASE_URL}/wp-admin/admin-ajax.php`, {
       method: "POST",
       headers: {
         "User-Agent": this.config.userAgent,

@@ -112,7 +112,7 @@ export class KenscansScraper extends BaseScraper {
     try {
       const searchUrl = `${this.API_URL}/api/query?page=1&perPage=24&searchTerm=${encodeURIComponent(query)}&seriesType=&seriesStatus=`;
 
-      const response = await fetch(searchUrl, {
+      const response = await this.http(searchUrl, {
         headers: {
           accept: "*/*",
           "accept-language": "en-US,en;q=0.9",

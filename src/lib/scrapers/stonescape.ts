@@ -25,7 +25,7 @@ export class StonescapeScraper extends BaseScraper {
 
     for (let i = 0; i <= this.config.retryAttempts; i++) {
       try {
-        const response = await fetch(url, {
+        const response = await this.http(url, {
           headers: {
             'User-Agent': this.config.userAgent,
             Accept: 'application/json',

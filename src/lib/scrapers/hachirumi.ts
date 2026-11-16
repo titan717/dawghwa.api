@@ -44,7 +44,7 @@ export class HachirumiScraper extends BaseScraper {
   }
 
   private async fetchJson<T>(path: string): Promise<T> {
-    const response = await fetch(`${this.BASE_URL}${path}`, {
+    const response = await this.http(`${this.BASE_URL}${path}`, {
       headers: {
         "User-Agent": this.config.userAgent,
         Accept: "application/json",

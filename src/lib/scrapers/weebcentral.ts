@@ -6,7 +6,7 @@ import { ScrapedChapter, SearchResult } from "@/types";
 export class WeebCentralScraper extends BaseScraper {
   protected override async fetchWithRetry(url: string): Promise<string> {
     // Direct fetch with proper headers (works in edge runtime)
-    const response = await fetch(url, {
+    const response = await this.http(url, {
       method: "GET",
       headers: {
         "User-Agent":
