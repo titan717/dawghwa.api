@@ -21,6 +21,8 @@ export const GET = route(
           "POST /api/chapters",
           "POST /api/manga",
           "POST /api/pages",
+          "GET  /api/browse",
+          "POST /api/browse",
           "GET  /api/health",
           "POST /api/health",
           "GET  /api/frontpage",

@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 const querySchema = z.object({
   status: z.enum(["active", "unstable", "shutdown", "disabled", "operational"]).optional(),
-  capability: z.enum(["search", "chapters", "mangaInfo", "frontpage", "chapterPages", "clientOnly"]).optional(),
+  capability: z.enum(["search", "chapters", "mangaInfo", "frontpage", "chapterPages", "browse", "clientOnly"]).optional(),
   type: z.enum(["scanlator", "aggregator"]).optional(),
   verbose: z.enum(["true", "false", "1", "0"]).optional(),
 });

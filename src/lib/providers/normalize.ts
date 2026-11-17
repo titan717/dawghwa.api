@@ -1,4 +1,4 @@
-import type { ChapterPage, ScrapedChapter, SearchResult } from "@/types";
+import type { ChapterPage, MangaKind, MangaMetadata, ScrapedChapter, SearchResult } from "@/types";
 
 /**
  * Normalised schemas. Adapters are heterogeneous; these functions guarantee
@@ -64,6 +64,8 @@ export function normalizeSearchResults(
     if (raw.followers !== undefined && raw.followers !== null && String(raw.followers)) {
       r.followers = String(raw.followers);
     }
+    const metadata = normalizeMetadata(raw.metadata, baseUrl);
+    if (metadata) r.metadata = metadata;
     results.push(r);
   }
   return { results, dropped };
@@ -116,4 +118,59 @@ export function normalizePages(items: unknown): ChapterPage[] {
       ...(finite(p?.height) ? { height: finite(p?.height) } : {}),
     }))
     .filter((p) => p.url && !p.url.startsWith("https://invalid.local"));
+}
+
+const KINDS: readonly MangaKind[] = ["manga", "manhwa", "manhua", "comic"];
+
+function textList(v: unknown, max = 50, maxLen = 300): string[] | undefined {
+  if (!Array.isArray(v)) return undefined;
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const item of v) {
+    const t = text(item);
+    if (!t || t.length > maxLen) continue;
+    const key = t.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(t);
+    if (out.length >= max) break;
+  }
+  return out.length ? out : undefined;
+}
+
+/**
+ * Sanitise optional descriptive metadata. Unknown keys are dropped, lists are
+ * de-duplicated and bounded, numbers must be finite, and the description is
+ * kept as plain text (bounded to 4000 characters).
+ */
+export function normalizeMetadata(raw: unknown, baseUrl: string): MangaMetadata | undefined {
+  if (!raw || typeof raw !== "object") return undefined;
+  const m = raw as Record<string, unknown>;
+  const out: MangaMetadata = {};
+  const lists = ["altTitles", "tags", "genres", "themes", "formats", "authors", "artists", "availableLanguages"] as const;
+  for (const key of lists) {
+    const v = textList(m[key], key === "altTitles" ? 30 : 60);
+    if (v) out[key] = v;
+  }
+  if (typeof m.description === "string") {
+    const d = m.description.replace(/\r\n/g, "\n").replace(/[ \t]+/g, " ").replace(/\n{3,}/g, "\n\n").trim();
+    if (d) out.description = d.slice(0, 4000);
+  }
+  for (const key of ["originalLanguage", "demographic", "status", "contentRating", "createdAt", "updatedAt"] as const) {
+    const v = text(m[key]);
+    if (v && v.length <= 64) out[key] = v;
+  }
+  if (typeof m.kind === "string" && (KINDS as readonly string[]).includes(m.kind)) out.kind = m.kind as MangaKind;
+  if (typeof m.longStrip === "boolean") out.longStrip = m.longStrip;
+  const year = finite(m.year);
+  if (year !== undefined && year >= 1900 && year <= 2100) out.year = Math.round(year);
+  const rating = finite(m.rating);
+  if (rating !== undefined && rating >= 0 && rating <= 10) out.rating = Math.round(rating * 100) / 100;
+  const follows = finite(m.follows);
+  if (follows !== undefined && follows >= 0) out.follows = Math.round(follows);
+  const last = finite(m.lastChapter);
+  if (last !== undefined && last >= 0) out.lastChapter = last;
+  const cover = absolute(m.coverImageLarge, baseUrl);
+  if (cover) out.coverImageLarge = cover;
+  return Object.keys(out).length ? out : undefined;
 }

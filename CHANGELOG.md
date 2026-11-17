@@ -2,6 +2,14 @@
 
 All notable changes to Dawghwa API. The project follows [Semantic Versioning](https://semver.org/). Breaking changes to request/response shapes only happen in a major version.
 
+
+## Unreleased
+
+- `POST /api/browse` and `GET /api/browse`: filtered and ordered catalogue listing (tags, kinds, status, demographic, year, recency) through MangaDex's documented API, with rating and follows from its statistics API. Unknown tags are rejected rather than ignored.
+- Optional `metadata` on search, browse and manga results (genres, themes, formats, authors, artists, status, year, demographic, kind, long strip, rating, follows, description, alternative titles). Sanitised by `normalizeMetadata`.
+- `POST /api/manga` for MangaDex now also returns `coverImage` and `metadata`.
+- New `browse` capability in `/api/sources`.
+
 ## [1.0.0] - 2026-11-16
 
 First Dawghwa release. It is forked from [GooglyBlox/comick-source-api](https://github.com/GooglyBlox/comick-source-api) at `086d006` (tag `upstream-baseline`), with the full upstream history kept.

@@ -11,6 +11,8 @@ Every response carries `X-Request-Id` (echoed if you send a valid one) and `X-Da
 - [POST /api/chapters](#post-apichapters)
 - [POST /api/manga](#post-apimanga)
 - [POST /api/pages](#post-apipages)
+- [GET / POST /api/browse](#get--post-apibrowse)
+- [Metadata](#metadata)
 - [GET / POST /api/health](#get--post-apihealth)
 - [GET / POST /api/frontpage](#get--post-apifrontpage)
 - [GET /api/proxy/html](#get-apiproxyhtml)
@@ -31,7 +33,7 @@ Every response carries `X-Request-Id` (echoed if you send a valid one) and `X-Da
 
 Lists every source, ordered by priority and then name.
 
-Query: `status=active|unstable|shutdown|disabled|operational`, `capability=search|chapters|mangaInfo|frontpage|chapterPages|clientOnly`, `type=scanlator|aggregator`, `verbose=true` (adds aliases, allowed domains, rate limit, circuit and metrics).
+Query: `status=active|unstable|shutdown|disabled|operational`, `capability=search|chapters|mangaInfo|frontpage|chapterPages|browse|clientOnly`, `type=scanlator|aggregator`, `verbose=true` (adds aliases, allowed domains, rate limit, circuit and metrics).
 
 ```json
 {
@@ -45,7 +47,7 @@ Query: `status=active|unstable|shutdown|disabled|operational`, `capability=searc
       "type": "aggregator",
       "status": "active",
       "priority": 100,
-      "capabilities": { "search": true, "chapters": true, "mangaInfo": true, "frontpage": false, "chapterPages": true, "clientOnly": false },
+      "capabilities": { "search": true, "chapters": true, "mangaInfo": true, "frontpage": false, "chapterPages": true, "browse": true, "clientOnly": false },
       "circuit": "closed"
     }
   ],
@@ -149,7 +151,7 @@ URLs that are not `http(s)`, contain credentials, use non-default ports, or are 
   "source": "MangaDex", "sourceId": "mangadex", "meta": { "cache": "miss", "age": 0 } }
 ```
 
-This wraps the adapter's `extractMangaInfo()`. Fields beyond `title` and `id` depend on the adapter.
+This wraps the adapter's `extractMangaInfo()`. Fields beyond `title` and `id` depend on the adapter. MangaDex also returns `coverImage` and a [`metadata`](#metadata) object (with `rating` and `follows` from its statistics API).
 
 ## POST /api/pages
 
@@ -178,6 +180,59 @@ Notes:
 - MangaDex@Home base URLs are temporary (about 15 minutes), so page lists are cached for only 5 minutes and never served stale. Load the images directly from the returned URLs; Dawghwa does not proxy image bytes.
 - MangaDex asks clients to [report image load success/failure](https://api.mangadex.org/docs/04-chapter/retrieving-chapter/) for its network. That is the client's job, because Dawghwa does not load the images.
 - Chapters hosted externally (`externalUrl`) are not part of MangaDex chapter lists, so they have no pages here.
+
+## GET / POST /api/browse
+
+Filtered catalogue listing, only for sources whose provider documents a listing API: currently **MangaDex** (`GET /manga` and `GET /statistics/manga`). Check `capabilities.browse` in `/api/sources`.
+
+`GET /api/browse` lists the sources that support it: `{ "sources": [{ "id": "mangadex", "name": "MangaDex" }] }`.
+
+`GET /api/browse?source=mangadex` returns the vocabulary: `tags` (`{ name, group }`, groups `genre`, `theme`, `format`, `content`), `kinds`, `status`, `demographic`, `orders`, `maxOffset` (10000) and `maxLimit` (100).
+
+```json
+{ "includedTags": ["Fantasy", "Reincarnation"], "kinds": ["manhwa"], "status": ["completed"], "order": "rating", "offset": 0, "limit": 24 }
+```
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `source` | string | default: the first browse-capable source |
+| `query` | string, 1-200 | optional title filter |
+| `includedTags`, `excludedTags` | string[] (≤ 20) | tag names from the vocabulary, case-insensitive. **Unknown names give `400 VALIDATION_ERROR` with `details.unknownTags`**, never unfiltered results |
+| `includedTagsMode` | `and` (default) \| `or` | |
+| `kinds` | (`manga` \| `manhwa` \| `manhua` \| `comic`)[] | mapped to the original language (ja / ko / zh, zh-hk / en) |
+| `status` | (`ongoing` \| `completed` \| `hiatus` \| `cancelled`)[] | |
+| `demographic` | (`shounen` \| `shoujo` \| `seinen` \| `josei` \| `none`)[] | |
+| `year` | integer | |
+| `createdWithinDays` | integer | only titles added to the source in the last N days |
+| `order` | `popular` (follows) \| `rating` \| `latest` (latest uploaded chapter) \| `new` (added) \| `relevance` \| `year` | default `popular` (`relevance` with a `query`) |
+| `offset`, `limit` | integers | `limit` ≤ 100, `offset + limit` ≤ 10000 |
+| `withStats` | boolean | default `true`: adds rating and follows (one batched request) |
+
+Only titles with available English chapters and a `safe` or `suggestive` content rating are listed. The response has the search result shape plus `metadata`:
+
+```json
+{ "items": [ { "id": "...", "title": "Solo Leveling", "url": "https://mangadex.org/title/...", "coverImage": "...256.jpg", "latestChapter": 200,
+    "lastUpdated": "10mo ago", "rating": 9.32, "followers": "320991", "metadata": { "kind": "manhwa", "longStrip": true, "genres": ["Action"], "...": "..." } } ],
+  "total": 4683, "pagination": { "offset": 0, "limit": 24, "returned": 24, "total": 4683, "hasMore": true },
+  "source": "MangaDex", "sourceId": "mangadex", "meta": { "cache": "miss", "age": 0 } }
+```
+
+Cached with the frontpage policy (5 min fresh, 30 min stale). Identical filters in a different order share one cache entry.
+
+## Metadata
+
+`metadata` is optional and appears on MangaDex search, browse and manga results. Every field is omitted when the provider does not supply it; nothing is guessed.
+
+| Field | Notes |
+| --- | --- |
+| `altTitles`, `description` | description is plain text (≤ 4000 chars) |
+| `tags`, `genres`, `themes`, `formats` | tag names as the provider publishes them |
+| `kind`, `originalLanguage` | `kind` is derived from the original language only |
+| `longStrip` | provider marks the title as a vertical long strip |
+| `demographic`, `status`, `year`, `contentRating` | |
+| `authors`, `artists` | |
+| `rating`, `follows` | 0-10 bayesian rating and follow count (browse and manga; search omits them) |
+| `coverImageLarge`, `availableLanguages`, `lastChapter`, `createdAt`, `updatedAt` | |
 
 ## GET / POST /api/health
 
