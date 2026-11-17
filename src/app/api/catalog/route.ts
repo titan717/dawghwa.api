@@ -1,0 +1,72 @@
+import { z } from "zod";
+import { booleanish, json, parseWith, route } from "@/lib/api/handler";
+import { browseCatalog, CATALOG_SORTS, getMetadataProvider, TITLE_FORMATS, TITLE_STATUSES } from "@/lib/metadata";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+const list = z
+  .array(z.string().trim().max(64))
+  .max(20)
+  .transform((v) => v.flatMap((s) => s.split(",")).map((s) => s.trim()).filter(Boolean))
+  .optional();
+
+const querySchema = z.object({
+  provider: z.string().trim().max(32).optional(),
+  q: z.string().trim().max(200).optional(),
+  genres: list,
+  excludeGenres: list,
+  tags: list,
+  status: z.enum(TITLE_STATUSES as [string, ...string[]]).optional(),
+  format: z.enum(TITLE_FORMATS as [string, ...string[]]).optional(),
+  year: z.coerce.number().int().min(1900).max(2100).optional(),
+  sort: z.enum(CATALOG_SORTS as [string, ...string[]]).optional(),
+  nsfw: booleanish.optional(),
+  page: z.coerce.number().int().min(1).max(10_000).default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(20),
+  refresh: booleanish.optional(),
+});
+
+/**
+ * GET /api/catalog?provider=anilist&q=&genre=Action&genre=Fantasy&excludeGenre=&tag=&status=ongoing
+ *   &format=manhwa&year=2018&sort=popularity&nsfw=false&page=1&limit=20
+ *
+ * Browse/search series metadata from AniList, MangaDex or MangaUpdates. Use
+ * GET /api/titles/:ref/sources on a result to find which sources carry it.
+ */
+export const GET = route(async (req, ctx) => {
+  const sp = req.nextUrl.searchParams;
+  const all = (...keys: string[]) => {
+    const v = keys.flatMap((k) => sp.getAll(k));
+    return v.length ? v : undefined;
+  };
+  const params = parseWith(querySchema, {
+    provider: sp.get("provider") ?? undefined,
+    q: sp.get("q") ?? undefined,
+    genres: all("genre", "genres"),
+    excludeGenres: all("excludeGenre", "excludeGenres"),
+    tags: all("tag", "tags"),
+    status: sp.get("status") ?? undefined,
+    format: sp.get("format") ?? undefined,
+    year: sp.get("year") ?? undefined,
+    sort: sp.get("sort") ?? undefined,
+    nsfw: sp.get("nsfw") ?? undefined,
+    page: sp.get("page") ?? undefined,
+    limit: sp.get("limit") ?? undefined,
+    refresh: sp.get("refresh") ?? undefined,
+  });
+  const provider = getMetadataProvider(params.provider);
+  const { refresh, ...rest } = params;
+  delete rest.provider;
+  const r = await browseCatalog(provider, rest as Parameters<typeof browseCatalog>[1], { forceRefresh: refresh });
+  return json(
+    {
+      provider: provider.id,
+      items: r.result.items,
+      pageInfo: r.result.pageInfo,
+      attribution: provider.attribution,
+      meta: { cache: r.cache, age: r.age },
+    },
+    ctx,
+  );
+});

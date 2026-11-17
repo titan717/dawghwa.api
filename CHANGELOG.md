@@ -2,13 +2,34 @@
 
 All notable changes to Dawghwa API. The project follows [Semantic Versioning](https://semver.org/). Breaking changes to request/response shapes only happen in a major version.
 
+## [Unreleased]
 
-## Unreleased
-
+### Added
 - `POST /api/browse` and `GET /api/browse`: filtered and ordered catalogue listing (tags, kinds, status, demographic, year, recency) through MangaDex's documented API, with rating and follows from its statistics API. Unknown tags are rejected rather than ignored.
 - Optional `metadata` on search, browse and manga results (genres, themes, formats, authors, artists, status, year, demographic, kind, long strip, rating, follows, description, alternative titles). Sanitised by `normalizeMetadata`.
 - `POST /api/manga` for MangaDex now also returns `coverImage` and `metadata`.
 - New `browse` capability in `/api/sources`.
+- MangaDex catalogue items include optional `description`, `tagNames` and `demographic`. This is additive; other providers omit them.
+
+## [1.1.0] - 2026-11-17
+
+### Added
+- Catalogue and metadata from AniList, MangaDex and MangaUpdates.
+  - `GET /api/catalog` filters by genre, excluded genre, tag, status, format, year, sort and nsfw, with pagination.
+  - Also `GET /api/catalog/filters`, `GET /api/catalog/providers` and `GET /api/titles/{ref}`.
+  - Title refs look like `anilist:`, `mangadex:` or `mangaupdates:`, with short forms `al:`, `md:` and `mu:`. MangaUpdates URL slugs are accepted.
+  - `?enrich=true` adds exact cross-database ids via MangaDex links.
+  - Every response carries attribution. Providers have their own rate limits (AniList 30/min, MangaDex shared 4 req/s, MangaUpdates 2 req/s) and circuit breakers, and results are cached (`catalog` policy, 15 min / 1 h SWR).
+- Comick-style source choice.
+  - `GET /api/titles/{ref}/sources` searches every working source in parallel, matches results against all known titles, and ranks the sources that carry the series. Each match has a confidence of exact, high or possible, plus candidates. JSON and NDJSON streaming are both supported.
+  - `GET /api/titles/{ref}/chapters?source=` loads the chapter list from the source the user picked.
+  - `POST /api/availability` runs the same lookup for free-text titles.
+  - Sources recently seen blocked by anti-bot protection or failing are skipped and reported, and retried after 30 minutes or with `includeUnavailable=true`. Novel editions are not matched for comic series. Sources with no confident match are reported as unavailable, never guessed.
+- Config: `METADATA_PROVIDERS`, `METADATA_DEFAULT_PROVIDER`, `METADATA_TIMEOUT_MS`, `ANILIST_REQUESTS_PER_MINUTE`, `AVAILABILITY_MIN_SCORE`, `AVAILABILITY_MAX_ALT_QUERIES`, `CACHE_CATALOG_TTL`, `CACHE_CATALOG_SWR`.
+- 41 new offline tests covering matching, refs, provider normalizers, unsupported filters, availability (alt-title fallback, skipping, ranking, editions) and routes. 558 offline tests in total.
+
+### Fixed
+- Multi-source searches no longer trigger Node's `MaxListenersExceededWarning` on the shared abort signal.
 
 ## [1.0.0] - 2026-11-16
 

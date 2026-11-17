@@ -49,6 +49,28 @@ Each request uses a search query or manga that neither server has seen. Requests
 
 Not measured: memory under sustained load, and behaviour with Redis enabled.
 
+## 1.1.0: catalogue and source availability
+
+Measured on 2026-11-17 in the same sandbox against a freshly started production build (`next start`, memory cache) and the live AniList, MangaDex, MangaUpdates and source sites. Upstream has no equivalent endpoints, so these are absolute numbers, not a comparison.
+
+| Request | Cold | Warm (cached) |
+| --- | ---: | ---: |
+| `GET /api/catalog?genre=Action&format=manhwa&sort=popularity&limit=10` (AniList) | 262 ms | 9 ms |
+| `GET /api/titles/al:151025` (AniList) | 154 ms | 5 ms |
+| `GET /api/titles/al:105398/sources` (82 sources, JSON), run 1 / 2 / 3 | 15,342 ms | 42 / 26 ms |
+| `GET /api/titles/al:105398/sources?stream=1`, first source line | n/a | 20 ms |
+| `GET /api/titles/al:105398/chapters?source=asurascan` (201 chapters) | 217 ms | n/a |
+
+The run-1 summary for Solo Leveling:
+- 17 sources available (AsuraScan, MangaDex, MangaKatana and others) and 41 with no match.
+- 24 failed: 22 of them served an anti-bot challenge, 1 returned an HTTP error and 1 timed out at the 12 s per-source limit.
+
+On runs 2 and 3 those 24 sources were skipped from passive evidence, and the other sources' search results came from the search cache. That is why the warm lookups take 42 ms and 26 ms.
+
+The cold lookup is bounded by the slowest source that still answers. Clients that want results as they arrive should use `stream=1`.
+
+In an earlier run, before recently failed sources were skipped, the second lookup still took 12,014 ms. A single source (greed-scans) timing out at 12 s held up the JSON response, which is why `failing` sources are now skipped by default for 30 minutes.
+
 ## Reproduce
 
 ```bash

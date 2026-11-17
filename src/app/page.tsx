@@ -43,6 +43,51 @@ interface EndpointProps {
 const endpoints: EndpointProps[] = [
   {
     method: "GET",
+    path: "/api/catalog",
+    description:
+      "Browse series metadata from AniList (default), MangaDex or MangaUpdates. Filters: q, genre, excludeGenre, tag, status, format, year, sort, nsfw, page, limit",
+    request: `GET /api/catalog?genre=Action&format=manhwa&status=ongoing&sort=popularity&limit=20`,
+    response: `{
+  "provider": "anilist",
+  "items": [
+    { "ref": "anilist:105398", "title": "Solo Leveling", "format": "manhwa",
+      "status": "completed", "genres": ["Action", "Adventure", "Fantasy"], "score": 84 }
+  ],
+  "pageInfo": { "page": 1, "limit": 20, "hasNextPage": true },
+  "attribution": { "name": "AniList", "url": "https://anilist.co" }
+}`,
+  },
+  {
+    method: "GET",
+    path: "/api/titles/{ref}/sources",
+    description:
+      "Which working sources carry a series, ranked best first with match confidence. Add stream=1 for NDJSON. Blocked or failing sources are skipped and listed.",
+    request: `GET /api/titles/anilist:105398/sources?sources=asurascan,mangadex`,
+    response: `{
+  "sources": [
+    { "sourceId": "asurascan", "available": true, "state": "working",
+      "best": { "title": "Solo Leveling", "url": "https://asurascans.com/comics/...",
+                "latestChapter": 200, "confidence": "exact" },
+      "candidates": [{ "title": "Solo Leveling: Ragnarok", "confidence": "possible" }] }
+  ],
+  "skipped": [],
+  "summary": { "availableSources": 2, "ranking": ["mangadex", "asurascan"] }
+}`,
+  },
+  {
+    method: "GET",
+    path: "/api/titles/{ref}/chapters",
+    description: "Chapter list for a series from the source the user picked (404 with candidates if the source has no confident match)",
+    request: `GET /api/titles/anilist:105398/chapters?source=asurascan&order=desc`,
+    response: `{
+  "sourceId": "asurascan",
+  "match": { "title": "Solo Leveling", "confidence": "exact" },
+  "chapters": [{ "number": 200, "title": "Chapter 200", "url": "https://..." }],
+  "totalChapters": 201
+}`,
+  },
+  {
+    method: "GET",
     path: "/api/sources",
     description: "Retrieve list of available sources",
     response: `{

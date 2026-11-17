@@ -89,7 +89,22 @@ export interface DawghwaConfig {
       frontpage: CachePolicy;
       health: CachePolicy;
       pages: CachePolicy;
+      catalog: CachePolicy;
     };
+  };
+  metadata: {
+    /** Metadata/catalogue providers that may be used (METADATA_PROVIDERS). */
+    providers: string[];
+    defaultProvider: string;
+    timeoutMs: number;
+    /** AniList documents 90 req/min (currently degraded to 30). */
+    anilistPerMinute: number;
+  };
+  availability: {
+    /** Minimum title similarity (0-1) for a source result to count as the same title. */
+    minScore: number;
+    /** Alternative titles tried for sources that had no match for the main title. */
+    maxAltQueries: number;
   };
   api: {
     maxBodyBytes: number;
@@ -113,7 +128,7 @@ export function resetConfig(): void {
 export function getConfig(): DawghwaConfig {
   if (cached) return cached;
   cached = {
-    version: process.env.DAWGHWA_VERSION || "1.0.0",
+    version: process.env.DAWGHWA_VERSION || "1.1.0",
     http: {
       userAgent:
         process.env.UPSTREAM_USER_AGENT ||
@@ -161,7 +176,20 @@ export function getConfig(): DawghwaConfig {
         health: { ttl: num("CACHE_HEALTH_TTL", 300), swr: num("CACHE_HEALTH_SWR", 1_800) },
         // MangaDex@Home base URLs are only valid for a limited time, so no SWR.
         pages: { ttl: num("CACHE_PAGES_TTL", 300), swr: 0 },
+        catalog: { ttl: num("CACHE_CATALOG_TTL", 900), swr: num("CACHE_CATALOG_SWR", 3_600) },
       },
+    },
+    metadata: {
+      providers: list("METADATA_PROVIDERS").length
+        ? list("METADATA_PROVIDERS").map((s) => s.toLowerCase())
+        : ["anilist", "mangadex", "mangaupdates"],
+      defaultProvider: (process.env.METADATA_DEFAULT_PROVIDER || "anilist").toLowerCase(),
+      timeoutMs: num("METADATA_TIMEOUT_MS", 10_000, 1_000, 60_000),
+      anilistPerMinute: num("ANILIST_REQUESTS_PER_MINUTE", 30, 1, 90),
+    },
+    availability: {
+      minScore: num("AVAILABILITY_MIN_SCORE", 0.82, 0.5, 1),
+      maxAltQueries: num("AVAILABILITY_MAX_ALT_QUERIES", 1, 0, 3),
     },
     api: {
       maxBodyBytes: num("API_MAX_BODY_BYTES", 16 * 1024, 256, 1024 * 1024),
