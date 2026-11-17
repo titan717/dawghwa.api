@@ -5,6 +5,7 @@ import { resetHttpState } from "@/lib/core/http";
 import { setResolver } from "@/lib/core/net-guard";
 import { resetRegistry } from "@/lib/providers/registry";
 import { resetApiRateLimits } from "@/lib/api/handler";
+import { resetMetadataClient } from "@/lib/metadata/client";
 
 /**
  * Offline-by-default test environment. Unless LIVE_TESTS=1, every test runs
@@ -19,6 +20,7 @@ export function resetAll(): void {
   resetHttpState();
   resetRegistry();
   resetApiRateLimits();
+  resetMetadataClient();
 }
 
 beforeEach(() => {

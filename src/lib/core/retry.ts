@@ -1,3 +1,4 @@
+import { setMaxListeners } from "node:events";
 /**
  * Exponential backoff with "full jitter" (AWS architecture blog), bounded by an
  * optional deadline and cancellable through an AbortSignal.
@@ -66,6 +67,9 @@ export function combineSignals(
   timeoutMs?: number,
 ): { signal: AbortSignal; cleanup: () => void } {
   const controller = new AbortController();
+  // A combined signal fans out to every source in a multi-source search
+  // (80+ listeners is expected, not a leak); listeners are removed on cleanup.
+  setMaxListeners(500, controller.signal);
   const listeners: [AbortSignal, () => void][] = [];
   let timer: ReturnType<typeof setTimeout> | undefined;
 
