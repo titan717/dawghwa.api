@@ -14,6 +14,9 @@ src/
                             anti-bot detection, async operation context
   lib/scrapers/             96 source adapters (from upstream) + BaseScraper
   lib/frontpages/           frontpage adapters (Comix)
+  lib/metadata/             catalogue/metadata providers (AniList, MangaDex, MangaUpdates), shared
+                            client (rate limits, breaker, error mapping), title matching
+  lib/services/availability.ts  "which sources carry this title" (fan-out search + matching)
 ```
 
 ## Request flow
@@ -46,6 +49,28 @@ The cross-cutting concerns that were duplicated (fetching, retries, timeouts, er
 - `lib/shutdown-sources.ts` (from upstream) and `lib/providers/status.ts` hold the declared status (`active`, `unstable`, `shutdown`), notes, aliases, priorities and special rate limits.
 - `lib/providers/manifest.generated.ts` comes from `scripts/generate-source-manifest.mjs`. It lists each adapter's allowed domains (taken from its `canHandle()` and base URL) and is used for exact host matching. CI fails if it is out of date.
 - Capabilities are detected from the adapter: `frontpage` when a frontpage adapter is registered, `chapterPages` when the adapter implements `getChapterPages`, and `clientOnly` from `isClientOnly()`.
+
+## Metadata and source availability
+
+The metadata layer (`lib/metadata/`) is separate from the source adapters.
+
+- Each provider (`anilist.ts`, `mangadex.ts`, `mangaupdates.ts`) implements `MetadataProvider`: `parseId`, `getTitle`, `browse` and `filterOptions`. It maps the provider's own vocabulary to one shared model (`TitleSummary` / `TitleMetadata`, plus format, status and sort enums).
+- Each provider declares `capabilities.filters`. `clampCatalogQuery` rejects a filter the provider cannot apply with a 400, instead of silently ignoring it.
+- `client.ts` sends every request through the shared HTTP client (SSRF guard, retries, size limits), adds a per-provider rate limit and circuit breaker, and maps 404/400/429 to `NOT_FOUND`/`VALIDATION_ERROR`/`UPSTREAM_RATE_LIMITED`. Requests identify themselves as `dawghwa-api/<version>`, not as a browser (MangaDex rejects spoofed browser user agents). MangaDex metadata shares the MangaDex adapter's rate-limit key, so both stay within one budget.
+- Results go through the tiered cache (policies `metadata`, `catalog`).
+- Cross-database ids (`?enrich=true`) come only from MangaDex's `links` table. MangaUpdates slugs are base36 series ids and are decoded exactly.
+
+`lib/metadata/match.ts` scores titles:
+- It normalizes the title (NFKD, removes diacritics and punctuation, case) and strips bracketed notes.
+- It takes the larger of character-bigram Dice similarity and token overlap, then penalizes length differences, so "Solo Leveling" against "Solo Leveling: Ragnarok" scores 0.71.
+- `searchableTitles` keeps Latin-script titles as queries; native-script titles are used only for matching.
+
+`lib/services/availability.ts` works in three steps:
+- Filter: it decides each source's `state` from the most recent evidence, either passive metrics from real traffic or the last cached health report. Blocked or failing sources are skipped, and that evidence expires after 30 minutes.
+- Search: `searchAll` runs with the primary title. Sources with no match get one more query with an alternative title, within the remaining time budget.
+- Rank: confidence, then latest chapter, then priority. Each source line is emitted as soon as it is final, which drives the NDJSON stream.
+
+Because it reuses `searchAll`, availability inherits per-source isolation. One broken source becomes one `error` line, and source search results share the search cache with `/api/search`.
 
 ## Adding chapter-page support to another source
 

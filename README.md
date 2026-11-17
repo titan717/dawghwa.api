@@ -52,12 +52,32 @@ All endpoints are under `/api`. Full reference with request/response examples an
 | GET | `/api/frontpage` | Sources with frontpage sections |
 | POST | `/api/frontpage` | One frontpage section (trending, latest, ...) |
 | GET | `/api/proxy/html` | HTML fetch for client-only sources, restricted to an exact host allowlist |
+| GET | `/api/catalog` | Browse/search series metadata (AniList, MangaDex or MangaUpdates) by genre, tag, status, format, year, sort |
+| GET | `/api/catalog/filters` | Genres, tags and sorts a metadata provider supports |
+| GET | `/api/catalog/providers` | Enabled metadata providers, capabilities and attribution |
+| GET | `/api/titles/{ref}` | Full metadata for one series (`anilist:105398`, `md:<uuid>`, `mu:6z1uqw7`) |
+| GET | `/api/titles/{ref}/sources` | Which working sources carry this series, ranked, with match confidence (JSON or NDJSON) |
+| GET | `/api/titles/{ref}/chapters?source=` | Chapter list for the series from the source the user picked |
+| POST | `/api/availability` | Same source lookup for a free-text title |
 
 The upstream request bodies and response fields still work. Dawghwa adds fields (`sourceId`, `meta`, `pagination`, `status`, `capabilities`) and never removes existing ones. Errors always look like:
 
 ```json
 { "error": "Unknown source \"nope\"", "code": "SOURCE_NOT_FOUND", "requestId": "1b4e..." }
 ```
+
+### Choosing a source (Comick-style)
+
+```bash
+# 1. find a series in the catalogue
+curl -s 'localhost:3000/api/catalog?q=solo%20leveling&limit=1' | jq '.items[0].ref'      # "anilist:105398"
+# 2. which sources have it right now, best first
+curl -s 'localhost:3000/api/titles/anilist:105398/sources' | jq '.summary.ranking'
+# 3. read from the one the user picked
+curl -s 'localhost:3000/api/titles/anilist:105398/chapters?source=asurascan' | jq '.totalChapters'
+```
+
+Sources are matched by title similarity against every known title of the series. Sources with no confident match are reported as unavailable, never guessed. Sources that are currently blocked or failing are skipped and listed separately. See [Source availability](docs/API.md#source-availability).
 
 ## Sources
 
@@ -135,6 +155,8 @@ CI (`.github/workflows/ci.yml`) runs the manifest check, lint, typecheck, tests 
 ## Attribution and license
 
 Dawghwa API is derived from [comick-source-api](https://github.com/GooglyBlox/comick-source-api) by GooglyBlox, used under the MIT License. The original copyright notice is kept in [LICENSE](LICENSE), and [NOTICE](NOTICE) describes what was derived. The complete upstream history is kept in this repository's git history, and the unmodified import is tagged `upstream-baseline`.
+
+Series metadata comes from [AniList](https://anilist.co), [MangaDex](https://mangadex.org) and [MangaUpdates](https://www.mangaupdates.com). Each response carries an `attribution` object; please credit the provider in your client and follow its terms ([AniList](https://docs.anilist.co/guide/terms-of-use), [MangaDex](https://api.mangadex.org/docs/), [MangaUpdates](https://api.mangaupdates.com/)). Dawghwa caches their answers and stays under their rate limits. It does not mirror their databases.
 
 Dawghwa is an index/metadata API. It does not host content, respects provider protections (it never solves or bypasses anti-bot challenges), and only returns page URLs where the provider offers a documented API. Please follow each source's terms of service.
 

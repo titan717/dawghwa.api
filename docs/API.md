@@ -1,4 +1,4 @@
-# Dawghwa API reference (v1.0.0)
+# Dawghwa API reference (v1.1.0)
 
 Base path: `/api`. Request bodies are JSON (`Content-Type: application/json`; `text/plain` is also accepted so userscripts can skip a CORS preflight). The maximum body size is 16 KB.
 
@@ -14,6 +14,8 @@ Every response carries `X-Request-Id` (echoed if you send a valid one) and `X-Da
 - [GET / POST /api/health](#get--post-apihealth)
 - [GET / POST /api/frontpage](#get--post-apifrontpage)
 - [GET /api/proxy/html](#get-apiproxyhtml)
+- [Catalogue and metadata](#catalogue-and-metadata): `GET /api/catalog`, `/api/catalog/filters`, `/api/catalog/providers`, `/api/titles/{ref}`
+- [Source availability](#source-availability): `GET /api/titles/{ref}/sources`, `/api/titles/{ref}/chapters`, `POST /api/availability`
 - [Error codes](#error-codes)
 - [Caching](#caching)
 - [Rate limits](#rate-limits)
@@ -229,6 +231,162 @@ It returns `{ source, sourceName, section: { id, title, type, items: [...] }, fe
 
 Rejections return `403 PROXY_FORBIDDEN`.
 
+## Catalogue and metadata
+
+Series metadata (titles, alternative titles, covers, genres, tags, status, format, score, authors, cross-database ids) comes from three public databases. Dawghwa does not host this data. It forwards your query, normalizes the answer and caches it.
+
+| Provider | id | Ref format | Notes |
+| --- | --- | --- | --- |
+| [AniList](https://anilist.co) | `anilist` (default) | `anilist:105398` or `al:105398` | GraphQL API. AniList documents 90 requests/min but currently enforces 30/min, so Dawghwa limits itself to `ANILIST_REQUESTS_PER_MINUTE` (default 30). Use is subject to the [AniList terms](https://docs.anilist.co/guide/terms-of-use): free use, no mass collection of data. |
+| [MangaDex](https://mangadex.org) | `mangadex` | `mangadex:<uuid>` or `md:<uuid>` | Shares the MangaDex source adapter's 4 req/s budget. Credit MangaDex and the scanlation groups ([API docs](https://api.mangadex.org/docs/)). Pornographic entries are excluded unless `nsfw=true`. Browsing stops at 10,000 results. |
+| [MangaUpdates](https://www.mangaupdates.com) | `mangaupdates` | `mangaupdates:15180124327`, `mu:15180124327` or the URL slug `mu:6z1uqw7` | Public read API at 2 req/s. Credit MangaUpdates. Has no status filter, and adult genres are excluded unless `nsfw=true`. |
+
+Responses include `attribution` (`name`, `url`, `terms`). Show it in your client.
+
+### GET /api/catalog
+
+Browse or search the catalogue.
+
+| Query | Meaning |
+| --- | --- |
+| `provider` | `anilist` (default), `mangadex`, `mangaupdates` |
+| `q` | Title search |
+| `genre` / `genres` | Repeatable or comma-separated. All of them must match. |
+| `excludeGenre` | Repeatable or comma-separated |
+| `tag` | Repeatable or comma-separated. AniList tags, MangaDex tags or MangaUpdates categories. |
+| `status` | `ongoing`, `completed`, `hiatus`, `cancelled`, `upcoming` |
+| `format` | `manga`, `manhwa`, `manhua`, `one_shot`, `novel`, `doujinshi`, `oel` |
+| `year` | Start year |
+| `sort` | `relevance` (needs `q`), `popularity`, `score`, `trending`, `updated`, `newest`, `title` |
+| `nsfw` | Include adult entries (default `false`) |
+| `page`, `limit` | Default 1 and 20. The maximum `limit` depends on the provider. |
+
+A filter the provider cannot apply returns `400 VALIDATION_ERROR` with `details.supported`. It is never silently ignored. Example:
+
+```bash
+curl 'localhost:3000/api/catalog?genre=Action&format=manhwa&status=ongoing&sort=popularity&limit=10'
+```
+
+```json
+{
+  "provider": "anilist",
+  "items": [
+    {
+      "ref": "anilist:105398", "provider": "anilist", "providerId": "105398",
+      "title": "Solo Leveling", "altTitles": ["Na Honjaman Level Up", "나 혼자만 레벨업", "..."],
+      "url": "https://anilist.co/manga/105398", "coverImage": "https://s4.anilist.co/...jpg",
+      "format": "manhwa", "status": "completed", "year": 2018,
+      "genres": ["Action", "Adventure", "Fantasy"], "score": 84, "adult": false, "latestChapter": 201
+    }
+  ],
+  "pageInfo": { "page": 1, "limit": 10, "total": 5000, "hasNextPage": true },
+  "attribution": { "name": "AniList", "url": "https://anilist.co", "terms": "https://docs.anilist.co/guide/terms-of-use" },
+  "meta": { "cache": "miss", "age": 0 }
+}
+```
+
+### GET /api/catalog/filters?provider=
+
+Returns the genres, tags, sorts, formats and statuses the provider supports. Use it to build filter UIs. It is cached for 24 hours.
+
+### GET /api/catalog/providers
+
+Lists the enabled providers with their capabilities, attribution and circuit state.
+
+### GET /api/titles/{ref}
+
+Full metadata for one series:
+- `titles` (`english`, `romaji`, `native`) and `altTitles`
+- `description` (plain text)
+- `coverImage`, `bannerImage`
+- `genres`, `tags` (with rank and spoiler flag)
+- `authors`, `artists`
+- `chapters`, `volumes`, `score`, `popularity`
+- `countryOfOrigin`, `externalIds`, `links`
+
+`?enrich=true` adds exact cross-database ids and links through MangaDex's own link table, for example AniList to MangaDex, MyAnimeList and MangaUpdates. These links are maintained by MangaDex. Dawghwa never guesses them from titles.
+
+## Source availability
+
+Comick let the reader choose which group or site to read a series from. Dawghwa does the same across the sources that work right now.
+
+1. All known titles of the series are collected (English, romanized, synonyms; native-script titles are used for matching only).
+2. Every working source is searched in parallel, using the same per-source isolation, rate limits, timeouts and cache as `/api/search`.
+3. Each result is compared against every known title. Bracketed notes such as `(Manhwa)` are ignored, so sequels and spin-offs score lower. Novel editions are demoted unless the series is a novel.
+4. Sources that returned no match are searched once more with an alternative title (`AVAILABILITY_MAX_ALT_QUERIES`).
+5. Sources are ranked: exact matches first, then the furthest latest chapter, then source priority.
+
+Match confidence:
+
+| `confidence` | Score | Meaning |
+| --- | --- | --- |
+| `exact` | ≥ 0.95 | Same title after normalization |
+| `high` | ≥ `minScore` (default 0.82) | Counted as available |
+| `possible` | ≥ 0.6 | Listed in `candidates` only. Often a sequel, spin-off or other edition. |
+
+Sources whose most recent observation was an anti-bot block or a failure are skipped and listed in `skipped` with a reason. The observation comes from live traffic or the last health check. After 30 minutes without new evidence they are tried again; `includeUnavailable=true` tries them right away. Shut-down and disabled sources are never searched. A source with no confident match is reported as `available: false`; Dawghwa never pretends a series is there.
+
+### GET /api/titles/{ref}/sources
+
+| Query | Meaning |
+| --- | --- |
+| `sources` | Comma-separated source ids (default: all working sources) |
+| `stream` | `1` for NDJSON events, so a client can show sources as they answer |
+| `minScore` | 0.6 to 1 (default `AVAILABILITY_MIN_SCORE`) |
+| `includeUnavailable` | Also try sources that were recently blocked or failing |
+| `refresh` | Skip the cache |
+
+```json
+{
+  "title": { "ref": "anilist:105398", "title": "Solo Leveling", "altTitles": ["..."], "coverImage": "..." },
+  "sources": [
+    {
+      "sourceId": "asurascan", "source": "AsuraScan", "type": "scanlator", "status": "active",
+      "state": "working", "clientOnly": true, "chapterPages": false, "available": true,
+      "best": {
+        "id": "solo-leveling-7ba78ec7", "title": "Solo Leveling",
+        "url": "https://asurascans.com/comics/solo-leveling-7ba78ec7",
+        "latestChapter": 200, "lastUpdated": "...", "score": 1, "confidence": "exact",
+        "matchedAgainst": "Solo Leveling"
+      },
+      "candidates": [{ "title": "Solo Leveling: Ragnarok", "score": 0.71, "confidence": "possible", "...": "..." }],
+      "queries": ["Solo Leveling"], "cached": false, "durationMs": 1921
+    }
+  ],
+  "skipped": [{ "sourceId": "weebcentral", "state": "blocked", "reason": "Source is behind anti-bot protection from this server; ..." }],
+  "summary": {
+    "done": true, "title": "Solo Leveling", "queries": ["Solo Leveling", "Na Honjaman Level Up"],
+    "totalSources": 82, "availableSources": 17, "noMatchSources": 41, "failedSources": 0, "skippedSources": 24,
+    "ranking": ["webtoonclub", "baetoon", "...", "asurascan"], "durationMs": 15097
+  }
+}
+```
+
+`sources` is sorted by `summary.ranking`, with sources that have no match after it. With `stream=1`, each line has an `event` field: `title`, then one `source` or `skipped` per source as it finishes, then `summary`, or `error` if the lookup fails. Pass `best.url` to `POST /api/chapters` with `source: sourceId`, or use the endpoint below.
+
+All sources count as an expensive request (12/min by default). Lists of up to 3 sources do not.
+
+### GET /api/titles/{ref}/chapters?source=
+
+Finds the series on one chosen source and returns that source's chapter list:
+
+```bash
+curl 'localhost:3000/api/titles/al:105398/chapters?source=asurascan&order=desc'
+```
+
+The response has `title`, `source`, `sourceId`, `match` (the matched entry and its score), `chapters`, `totalChapters` and `meta.cache`. If the source has no confident match, the response is `404 NOT_FOUND` with `details.candidates`, so the client can let the user pick a candidate and call `POST /api/chapters` with its URL. `order` is `source`, `asc` or `desc`. `minScore` and `refresh` are the same as above.
+
+### POST /api/availability
+
+Runs the same lookup for a free-text title, without a metadata lookup:
+
+```json
+{ "title": "The Beginning After the End", "altTitles": ["TBATE"], "sources": ["mangadex", "mangakatana"],
+  "format": "manhwa", "stream": false, "minScore": 0.82, "includeUnavailable": false, "refresh": false }
+```
+
+The response has the same shape as `GET /api/titles/{ref}/sources`.
+
 ## Error codes
 
 Every error body has this shape: `{ "error": string, "code": string, "requestId": string, "details"?: object }`. `error` is a human-readable string, as in upstream. Internal exception messages and upstream response bodies are never included unless `EXPOSE_ERROR_DETAILS=true`.
@@ -240,7 +398,7 @@ Every error body has this shape: `{ "error": string, "code": string, "requestId"
 | 400 | `BAD_REQUEST` | Other malformed request |
 | 403 | `PROXY_FORBIDDEN` | Destination not allowed (proxy allowlist, private network, scheme, port, credentials) |
 | 404 | `SOURCE_NOT_FOUND` | Unknown source id |
-| 404 | `NOT_FOUND` | The source says the requested item does not exist |
+| 404 | `NOT_FOUND` | The source or metadata provider says the item does not exist, or the chosen source has no confident match (`details.candidates`) |
 | 413 | `PAYLOAD_TOO_LARGE` | Body larger than `API_MAX_BODY_BYTES` |
 | 415 | `UNSUPPORTED_MEDIA_TYPE` | Body is not JSON / text |
 | 429 | `RATE_LIMITED` | Client exceeded its rate limit (`Retry-After` set) |
@@ -266,6 +424,9 @@ Every error body has this shape: `{ "error": string, "code": string, "requestId"
 | Frontpage sections | 5 min | 30 min | `CACHE_FRONTPAGE_*` |
 | Source health | 5 min | 30 min | `CACHE_HEALTH_*` |
 | Chapter pages | 5 min | none | `CACHE_PAGES_TTL` |
+| Catalogue pages | 15 min | 1 h | `CACHE_CATALOG_TTL`, `CACHE_CATALOG_SWR` |
+| Title metadata (AniList/MangaDex/MangaUpdates) | 1 h | 24 h | `CACHE_METADATA_*` |
+| Catalogue filter options | 24 h | 7 days | none |
 
 - A **stale** value is returned immediately while one background refresh runs. If that refresh fails, the stale value stays in place.
 - Concurrent requests for the same uncached key share one upstream fetch (request coalescing). Identical in-flight upstream HTTP requests are also merged.
@@ -281,11 +442,11 @@ Inbound limits are per client, keyed by IP: `X-Forwarded-For` / `X-Real-IP` when
 | Bucket | Default | Applies to |
 | --- | --- | --- |
 | standard | 120 / minute | every endpoint except `GET /api` |
-| expensive | 12 / minute | multi-source search and `POST /api/health`, charged on top of standard |
+| expensive | 12 / minute | multi-source search, availability lookups over more than 3 sources, and `POST /api/health`; charged on top of standard |
 
 The limiter is in-memory, so on serverless platforms each instance enforces it separately. Use your platform's firewall for a global limit.
 
-Outbound limits apply per source, so Dawghwa stays polite to providers. Each source has a token bucket (default 5 req/s, burst 10) and a concurrency cap (6), with a bounded, cancellable queue. MangaDex is limited to 4 req/s with a concurrency of 4, staying under its documented global limit of about 5 req/s. Upstream `429` responses honour `Retry-After` up to `UPSTREAM_RETRY_MAX_MS`.
+Outbound limits apply per source, so Dawghwa stays polite to providers. Each source has a token bucket (default 5 req/s, burst 10) and a concurrency cap (6), with a bounded, cancellable queue. MangaDex is limited to 4 req/s with a concurrency of 4, staying under its documented global limit of about 5 req/s. Metadata providers have their own budgets: AniList 30 req/min (`ANILIST_REQUESTS_PER_MINUTE`), MangaDex shares the source budget, and MangaUpdates is limited to 2 req/s. Upstream `429` responses honour `Retry-After` up to `UPSTREAM_RETRY_MAX_MS`.
 
 ## Compatibility with upstream
 
