@@ -1,10 +1,10 @@
 import { cacheKey, getCache, CacheStatus } from "@/lib/core/cache";
 import { getConfig } from "@/lib/core/config";
 import { DawghwaError } from "@/lib/core/errors";
-import { normalizeChapters, normalizePages } from "@/lib/providers/normalize";
+import { normalizeChapters, normalizeMetadata, normalizePages, normalizeSearchResults } from "@/lib/providers/normalize";
 import type { Provider } from "@/lib/providers/provider";
 import { getRegistry } from "@/lib/providers/registry";
-import type { ChapterPage, FrontpageSection, ScrapedChapter } from "@/types";
+import type { BrowseQuery, BrowseResult, BrowseVocabulary, ChapterPage, FrontpageSection, MangaMetadata, ScrapedChapter } from "@/types";
 
 export interface CacheMeta {
   cache: CacheStatus;
@@ -81,7 +81,7 @@ export async function getMangaInfo(
   provider: Provider,
   url: string,
   opts: { forceRefresh?: boolean } = {},
-): Promise<{ info: { title: string; id: string } } & CacheMeta> {
+): Promise<{ info: { title: string; id: string; coverImage?: string; metadata?: MangaMetadata } } & CacheMeta> {
   provider.assertOperational();
   const out = await getCache().wrap(
     cacheKey("manga", provider.id, url),
@@ -91,7 +91,18 @@ export async function getMangaInfo(
       const title = typeof value?.title === "string" ? value.title.trim() : "";
       const id = value?.id !== undefined ? String(value.id) : "";
       if (!title) throw new DawghwaError("UPSTREAM_ERROR", "Source returned no title for this URL");
-      return { title, id };
+      const base = provider.descriptor.baseUrl;
+      const metadata = normalizeMetadata(value?.metadata, base);
+      let coverImage: string | undefined;
+      if (typeof value?.coverImage === "string") {
+        try {
+          const u = new URL(value.coverImage, base);
+          if (u.protocol === "https:" || u.protocol === "http:") coverImage = u.toString();
+        } catch {
+          coverImage = undefined;
+        }
+      }
+      return { title, id, ...(coverImage ? { coverImage } : {}), ...(metadata ? { metadata } : {}) };
     },
     { forceRefresh: opts.forceRefresh },
   );
@@ -146,4 +157,66 @@ export async function getChapterPages(
     { forceRefresh: opts.forceRefresh },
   );
   return { pages: out.value, cache: out.cache, age: out.age };
+}
+
+function stableQueryKey(q: BrowseQuery): string {
+  const norm = {
+    query: q.query?.trim().toLowerCase() || undefined,
+    includedTags: q.includedTags?.map((t) => t.toLowerCase()).sort(),
+    excludedTags: q.excludedTags?.map((t) => t.toLowerCase()).sort(),
+    includedTagsMode: q.includedTagsMode,
+    kinds: q.kinds ? [...q.kinds].sort() : undefined,
+    status: q.status ? [...q.status].sort() : undefined,
+    demographic: q.demographic ? [...q.demographic].sort() : undefined,
+    year: q.year,
+    createdWithinDays: q.createdWithinDays,
+    order: q.order,
+    offset: q.offset ?? 0,
+    limit: q.limit ?? 24,
+    withStats: q.withStats !== false,
+  };
+  return JSON.stringify(norm);
+}
+
+function assertBrowse(provider: Provider) {
+  provider.assertOperational();
+  if (!provider.scraper.browse) {
+    throw new DawghwaError("UNSUPPORTED_CAPABILITY", `${provider.name} does not offer a documented catalogue listing API`, {
+      details: { source: provider.id, capability: "browse" },
+    });
+  }
+}
+
+export async function browseCatalog(
+  provider: Provider,
+  query: BrowseQuery,
+  opts: { forceRefresh?: boolean } = {},
+): Promise<BrowseResult & CacheMeta> {
+  assertBrowse(provider);
+  const browse = provider.scraper.browse!.bind(provider.scraper);
+  const out = await getCache().wrap(
+    cacheKey("browse", provider.id, stableQueryKey(query)),
+    getConfig().cache.policies.frontpage,
+    async () => {
+      const { value } = await provider.run("browse", () => browse(query));
+      const { results } = normalizeSearchResults(value?.items, provider.descriptor.baseUrl);
+      return { ...value, items: results } as BrowseResult;
+    },
+    { forceRefresh: opts.forceRefresh },
+  );
+  return { ...out.value, cache: out.cache, age: out.age };
+}
+
+export async function getBrowseVocabulary(provider: Provider): Promise<{ vocabulary: BrowseVocabulary } & CacheMeta> {
+  assertBrowse(provider);
+  if (!provider.scraper.browseVocabulary) {
+    throw new DawghwaError("UNSUPPORTED_CAPABILITY", `${provider.name} does not publish a browse vocabulary`);
+  }
+  const vocab = provider.scraper.browseVocabulary.bind(provider.scraper);
+  const out = await getCache().wrap(
+    cacheKey("browse-vocabulary", provider.id),
+    getConfig().cache.policies.metadata,
+    async () => (await provider.run("browse", () => vocab())).value,
+  );
+  return { vocabulary: out.value, cache: out.cache, age: out.age };
 }

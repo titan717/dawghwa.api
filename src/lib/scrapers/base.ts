@@ -1,4 +1,4 @@
-import { ChapterPage, ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { BrowseQuery, BrowseResult, BrowseVocabulary, ChapterPage, MangaMetadata, ScrapedChapter, SearchResult, SourceType } from "@/types";
 import { currentContext } from "@/lib/core/context";
 import { upstreamFetch, upstreamText } from "@/lib/core/http";
 import { sleep } from "@/lib/core/retry";
@@ -29,7 +29,7 @@ export abstract class BaseScraper {
   abstract canHandle(url: string): boolean;
   abstract extractMangaInfo(
     url: string,
-  ): Promise<{ title: string; id: string }>;
+  ): Promise<{ title: string; id: string; coverImage?: string; metadata?: MangaMetadata }>;
   abstract getChapterList(mangaUrl: string): Promise<ScrapedChapter[]>;
   abstract search(query: string): Promise<SearchResult[]>;
 
@@ -91,5 +91,18 @@ export abstract class BaseScraper {
 
   supportsChapterPages(): boolean {
     return typeof this.getChapterPages === "function";
+  }
+
+  /**
+   * Catalogue browsing with filters and ordering. Only implemented by adapters
+   * whose provider offers a documented listing API (see docs/API.md#post-apibrowse).
+   */
+  browse?(query: BrowseQuery): Promise<BrowseResult>;
+  /** Canonical manga URL for a source-specific id, when the id format is documented and stable. */
+  urlForId?(id: string): string | undefined;
+  browseVocabulary?(): Promise<BrowseVocabulary>;
+
+  supportsBrowse(): boolean {
+    return typeof this.browse === "function";
   }
 }

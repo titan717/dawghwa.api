@@ -47,6 +47,8 @@ All endpoints are under `/api`. Full reference with request/response examples an
 | POST | `/api/chapters` | Chapter list for a manga URL, with optional `offset`/`limit`/`order` |
 | POST | `/api/manga` | Basic metadata (title, id) for a manga URL |
 | POST | `/api/pages` | Chapter page image URLs, only where the provider documents an API for it (MangaDex) |
+| GET | `/api/browse` | Browse-capable sources, or `?source=id` for its tag/filter vocabulary |
+| POST | `/api/browse` | Filtered, ordered catalogue listing with metadata (MangaDex) |
 | GET | `/api/health` | Cached health of all sources, or `?source=id` |
 | POST | `/api/health` | Force a fresh health check (rate limited) |
 | GET | `/api/frontpage` | Sources with frontpage sections |

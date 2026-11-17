@@ -24,6 +24,8 @@ export interface SearchResult {
   lastUpdatedTimestamp?: number;
   rating?: number;
   followers?: string;
+  /** Descriptive metadata, when the provider's documented API supplies it. */
+  metadata?: MangaMetadata;
 }
 
 export type SourceType = "scanlator" | "aggregator";
@@ -94,4 +96,82 @@ export interface ChapterPage {
   url: string;
   width?: number;
   height?: number;
+}
+
+/** Publication format derived from the original language (MangaDex `originalLanguage`). */
+export type MangaKind = "manga" | "manhwa" | "manhua" | "comic";
+
+/**
+ * Optional descriptive metadata. Only filled by adapters whose provider returns
+ * it from a documented API (currently MangaDex). Fields are omitted, never
+ * guessed, when the provider does not supply them.
+ */
+export interface MangaMetadata {
+  altTitles?: string[];
+  description?: string;
+  /** All tag names (genres + themes + formats). */
+  tags?: string[];
+  genres?: string[];
+  themes?: string[];
+  formats?: string[];
+  kind?: MangaKind;
+  /** True when the provider marks the title as a vertical long strip (webtoon style). */
+  longStrip?: boolean;
+  originalLanguage?: string;
+  demographic?: string;
+  status?: string;
+  year?: number;
+  contentRating?: string;
+  authors?: string[];
+  artists?: string[];
+  /** Provider rating on a 0-10 scale (MangaDex bayesian rating). */
+  rating?: number;
+  follows?: number;
+  coverImageLarge?: string;
+  /** Languages with available translated chapters. */
+  availableLanguages?: string[];
+  lastChapter?: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export type BrowseOrder = "popular" | "rating" | "latest" | "new" | "relevance" | "year";
+
+export interface BrowseQuery {
+  query?: string;
+  includedTags?: string[];
+  excludedTags?: string[];
+  /** "and" (default): every included tag must match; "or": any of them. */
+  includedTagsMode?: "and" | "or";
+  kinds?: MangaKind[];
+  status?: string[];
+  demographic?: string[];
+  year?: number;
+  createdWithinDays?: number;
+  order?: BrowseOrder;
+  offset?: number;
+  limit?: number;
+  withStats?: boolean;
+}
+
+export interface BrowseItem extends SearchResult {
+  metadata?: MangaMetadata;
+}
+
+export interface BrowseResult {
+  items: BrowseItem[];
+  total: number;
+  offset: number;
+  limit: number;
+  hasMore: boolean;
+}
+
+export interface BrowseVocabulary {
+  tags: { name: string; group: string }[];
+  kinds: MangaKind[];
+  status: string[];
+  demographic: string[];
+  orders: BrowseOrder[];
+  maxOffset: number;
+  maxLimit: number;
 }

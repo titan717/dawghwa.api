@@ -10,7 +10,7 @@ import { abortError, combineSignals } from "@/lib/core/retry";
 import type { SourceType } from "@/types";
 import type { ProviderStatus } from "./status";
 
-export type ProviderOperation = "search" | "chapters" | "mangaInfo" | "frontpage" | "chapterPages" | "health";
+export type ProviderOperation = "search" | "chapters" | "mangaInfo" | "frontpage" | "chapterPages" | "browse" | "health";
 
 export interface ProviderCapabilities {
   search: boolean;
@@ -18,6 +18,8 @@ export interface ProviderCapabilities {
   mangaInfo: boolean;
   frontpage: boolean;
   chapterPages: boolean;
+  /** Filtered catalogue listing (POST /api/browse). */
+  browse: boolean;
   /** Upstream marks these as needing the client to fetch HTML (anti-bot); the API still serves them where it can. */
   clientOnly: boolean;
 }
@@ -98,6 +100,7 @@ export class Provider {
       mangaInfo: true,
       frontpage: Boolean(this.frontpage),
       chapterPages: this.scraper.supportsChapterPages(),
+      browse: this.scraper.supportsBrowse(),
       clientOnly: this.scraper.isClientOnly(),
     };
   }
