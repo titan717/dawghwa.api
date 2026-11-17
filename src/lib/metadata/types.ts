@@ -47,6 +47,12 @@ export interface TitleSummary {
   score?: number;
   adult: boolean;
   latestChapter?: number;
+  /** Optional list-level extras; only providers that return them in browse results set them (MangaDex). */
+  description?: string;
+  /** Plain tag names, all groups including genres. */
+  tagNames?: string[];
+  /** e.g. shounen, seinen, shoujo, josei. */
+  demographic?: string;
 }
 
 export interface TitleTag {

@@ -164,6 +164,52 @@ describe("MangaDex catalogue", () => {
     });
   });
 
+  it("passes synopsis, tag names and demographic through on list items", async () => {
+    mockFetch((url) => {
+      const u = new URL(url);
+      if (u.pathname === "/manga") {
+        return jsonResponse({
+          result: "ok",
+          total: 1,
+          limit: 1,
+          offset: 0,
+          data: [
+            {
+              id: "32d76d19-8a05-4db0-9fc2-e0b0648fe9d0",
+              type: "manga",
+              attributes: {
+                title: { en: "Solo Leveling" },
+                altTitles: [],
+                description: { en: " A hunter levels up. " },
+                links: null,
+                originalLanguage: "ko",
+                lastVolume: null,
+                lastChapter: "200",
+                status: "completed",
+                year: 2018,
+                contentRating: "safe",
+                publicationDemographic: "shounen",
+                tags: [
+                  { id: "a", attributes: { name: { en: "Action" }, group: "genre" } },
+                  { id: "b", attributes: { name: { en: "Monsters" }, group: "theme" } },
+                ],
+                updatedAt: "2025-01-01T00:00:00+00:00",
+              },
+              relationships: [],
+            },
+          ],
+        });
+      }
+      throw new Error(`unexpected ${url}`);
+    });
+    const page = await browseCatalog(getMetadataProvider("mangadex"), { page: 1, limit: 1 }, { forceRefresh: true });
+    const item = page.result.items[0]!;
+    expect(item.description).toBe("A hunter levels up.");
+    expect(item.tagNames).toEqual(["Action", "Monsters"]);
+    expect(item.genres).toEqual(["Action"]);
+    expect(item.demographic).toBe("shounen");
+  });
+
   it("refuses to page past the provider's depth limit", async () => {
     await expect(browseCatalog(getMetadataProvider("mangadex"), { page: 200, limit: 100 })).rejects.toMatchObject({
       code: "VALIDATION_ERROR",

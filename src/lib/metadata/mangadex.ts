@@ -42,6 +42,7 @@ interface MdManga {
     status: string | null;
     year: number | null;
     contentRating: string;
+    publicationDemographic?: string | null;
     tags: { id: string; attributes: { name: Record<string, string>; group: string } }[];
     updatedAt: string;
   };
@@ -121,6 +122,11 @@ function toSummary(m: MdManga): TitleSummary {
     genres: a.tags.filter((t) => t.attributes.group === "genre").map((t) => t.attributes.name.en).filter(Boolean),
     adult: a.contentRating === "erotica" || a.contentRating === "pornographic",
     latestChapter: Number.isFinite(chapter) && chapter > 0 ? chapter : undefined,
+    // MangaDex returns these in the list response anyway; passing them on lets
+    // clients rank and filter a page without one detail request per title.
+    description: pick(a.description, ["en"])?.trim() || undefined,
+    tagNames: tagNames.filter(Boolean),
+    demographic: a.publicationDemographic ?? undefined,
   };
 }
 
