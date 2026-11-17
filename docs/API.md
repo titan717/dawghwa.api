@@ -285,6 +285,8 @@ curl 'localhost:3000/api/catalog?genre=Action&format=manhwa&status=ongoing&sort=
 }
 ```
 
+MangaDex list items also carry `description`, `tagNames` (every tag, genres included) and `demographic`, because MangaDex returns them in its list response. Other providers leave these fields out; use `/api/titles/{ref}` for full metadata.
+
 ### GET /api/catalog/filters?provider=
 
 Returns the genres, tags, sorts, formats and statuses the provider supports. Use it to build filter UIs. It is cached for 24 hours.

@@ -2,6 +2,11 @@
 
 All notable changes to Dawghwa API. The project follows [Semantic Versioning](https://semver.org/). Breaking changes to request/response shapes only happen in a major version.
 
+## [Unreleased]
+
+### Added
+- MangaDex catalogue items include optional `description`, `tagNames` and `demographic`. This is additive; other providers omit them.
+
 ## [1.1.0] - 2026-11-17
 
 ### Added
