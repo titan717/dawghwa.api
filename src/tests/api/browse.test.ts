@@ -201,4 +201,14 @@ describe("POST /api/manga metadata", () => {
     });
     expect(body.manga.metadata).toMatchObject({ kind: "manhwa", rating: 9.32, follows: 1234, longStrip: true });
   });
+
+  it("resolves { source, id } for sources that can build a URL from an id", async () => {
+    mangadexApi();
+    const ok = await mangaPOST(post("/api/manga", { source: "mangadex", id: ID }));
+    expect(ok.status).toBe(200);
+    expect((await ok.json()).manga.url).toBe(`https://mangadex.org/title/${ID}`);
+    expect((await mangaPOST(post("/api/manga", { source: "mangadex", id: "nope" }))).status).toBe(400);
+    expect((await mangaPOST(post("/api/manga", { source: "asurascan", id: "x" }))).status).toBe(501);
+    expect((await mangaPOST(post("/api/manga", { id: ID }))).status).toBe(400);
+  });
 });

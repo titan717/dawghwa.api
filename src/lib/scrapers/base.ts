@@ -98,6 +98,8 @@ export abstract class BaseScraper {
    * whose provider offers a documented listing API (see docs/API.md#post-apibrowse).
    */
   browse?(query: BrowseQuery): Promise<BrowseResult>;
+  /** Canonical manga URL for a source-specific id, when the id format is documented and stable. */
+  urlForId?(id: string): string | undefined;
   browseVocabulary?(): Promise<BrowseVocabulary>;
 
   supportsBrowse(): boolean {

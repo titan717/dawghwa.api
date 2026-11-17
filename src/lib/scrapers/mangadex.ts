@@ -305,6 +305,10 @@ export class MangaDexScraper extends BaseScraper {
     return this.tagCache.tags;
   }
 
+  urlForId(id: string): string | undefined {
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id) ? `${this.BASE_URL}/title/${id.toLowerCase()}` : undefined;
+  }
+
   async browseVocabulary(): Promise<BrowseVocabulary> {
     const tags = await this.tags();
     return {

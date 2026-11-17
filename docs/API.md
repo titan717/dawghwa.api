@@ -151,6 +151,8 @@ URLs that are not `http(s)`, contain credentials, use non-default ports, or are 
   "source": "MangaDex", "sourceId": "mangadex", "meta": { "cache": "miss", "age": 0 } }
 ```
 
+Sources that have a documented, stable id format (MangaDex) also accept `{ "source": "mangadex", "id": "<uuid>" }` instead of `url`; other sources answer `501 UNSUPPORTED_CAPABILITY` for an id.
+
 This wraps the adapter's `extractMangaInfo()`. Fields beyond `title` and `id` depend on the adapter. MangaDex also returns `coverImage` and a [`metadata`](#metadata) object (with `rating` and `follows` from its statistics API).
 
 ## POST /api/pages
