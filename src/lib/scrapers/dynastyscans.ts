@@ -1,6 +1,6 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
-import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { ChapterPage, ScrapedChapter, SearchResult, SourceType } from "@/types";
 
 interface DynastyTag {
   type: string;
@@ -190,6 +190,77 @@ export class DynastyScansScraper extends BaseScraper {
     const series = await this.getSeriesJson(slug);
 
     return { title: series.name, id: slug };
+  }
+
+  /**
+   * Extract public page URLs from Dynasty Reader's chapter page data.
+   * This uses the same public page list rendered by the site's reader; it does
+   * not execute scripts, defeat challenges, or access restricted content.
+   */
+  async getChapterPages(chapter: { chapterId?: string; url?: string }): Promise<ChapterPage[]> {
+    if (!chapter.url) throw new Error("Dynasty Reader chapter URL is required");
+    const chapterUrl = new URL(chapter.url);
+    if (chapterUrl.hostname !== "dynasty-scans.com" || !chapterUrl.pathname.startsWith("/chapters/")) {
+      throw new Error("Invalid Dynasty Reader chapter URL");
+    }
+
+    const html = await this.fetchWithRetry(chapterUrl.toString());
+    const $ = cheerio.load(html);
+    let rawPages: { name?: string; image?: string }[] = [];
+
+    // The reader exposes a JSON page manifest in its inline script. Parse JSON
+    // only; never eval or execute provider-supplied JavaScript.
+    $("script").each((_, element) => {
+      if (rawPages.length) return;
+      const script = $(element).html() || "";
+      const match = script.match(/(?:window\.)?pages\s*=\s*(\[[\s\S]*?\])\s*;/);
+      if (!match?.[1]) return;
+      try {
+        const parsed: unknown = JSON.parse(match[1]);
+        if (Array.isArray(parsed)) {
+          rawPages = parsed.filter((item): item is { name?: string; image?: string } =>
+            Boolean(item && typeof item === "object" && typeof (item as { image?: unknown }).image === "string"),
+          );
+        }
+      } catch {
+        // Some deployments emit a non-JSON JS literal; the safe DOM fallback below handles the first page.
+      }
+    });
+
+    if (rawPages.length === 0) {
+      const first = $("#image > img").first();
+      const firstUrl = first.attr("src");
+      const pageName = first.attr("alt")?.trim();
+      const pageLinks = $("#image > .pages-list > .page");
+      if (firstUrl && pageName && pageLinks.length > 0) {
+        const marker = firstUrl.lastIndexOf(pageName, firstUrl.lastIndexOf("."));
+        if (marker >= 0) {
+          const prefix = firstUrl.slice(0, marker);
+          const suffix = firstUrl.slice(marker + pageName.length);
+          pageLinks.each((_, element) => {
+            const name = $(element).text().trim();
+            if (name) rawPages.push({ name, image: prefix + encodeURIComponent(name) + suffix });
+          });
+        }
+      }
+      if (rawPages.length === 0 && firstUrl) rawPages.push({ name: pageName, image: firstUrl });
+    }
+
+    const pages: ChapterPage[] = [];
+    for (const item of rawPages) {
+      if (!item.image) continue;
+      const url = new URL(item.image, chapterUrl);
+      if (
+        url.protocol !== "https:" ||
+        !(url.hostname === "dynasty-scans.com" || url.hostname.endsWith(".dynasty-scans.com")) ||
+        !/\.(?:jpe?g|png|webp|gif)$/i.test(url.pathname)
+      ) continue;
+      if (pages.some((page) => page.url === url.toString())) continue;
+      pages.push({ index: pages.length, url: url.toString() });
+    }
+
+    if (pages.length === 0) throw new Error("Dynasty Reader returned no publicly readable chapter pages");
+    return pages;
   }
 
   async getChapterList(mangaUrl: string): Promise<ScrapedChapter[]> {
