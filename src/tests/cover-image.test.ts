@@ -41,6 +41,7 @@ describe("parseMangaDexPageUrl", () => {
       `https://uploads.mangadex.org/data/${hash}/${file}`,
       `https://s1.mangadex.network/data-saver/${hash}/${file}`,
       `https://s2.mangadex.org/data/${hash}/${file}`,
+      `https://abcdef.xyz123.mangadex.network/some-temporary-token/data/${hash}/${file}`,
     ]) {
       expect(parseMangaDexPageUrl(url)?.toString()).toBe(url);
     }
