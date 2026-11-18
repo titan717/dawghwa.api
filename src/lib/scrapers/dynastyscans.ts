@@ -221,7 +221,7 @@ export class DynastyScansScraper extends BaseScraper {
     $("script").each((_, element) => {
       if (rawPages.length) return;
       const script = $(element).html() || "";
-      const match = script.match(/(?:window\.)?pages\s*=\s*(\[[\s\S]*?\])\s*;/);
+      const match = script.match(/(?:window\.)?pages\s*=\s*(\[[\s\S]*?\])\s*;?/);
       if (!match?.[1]) return;
       try {
         const parsed: unknown = JSON.parse(match[1]);
