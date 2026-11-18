@@ -42,6 +42,13 @@ describe("Dynasty Reader chapter page adapter", () => {
     );
   });
 
+  it("does not pretend a single visible image is a complete chapter", async () => {
+    const scraper = new FixtureDynastyScraper('<div id="image"><img src="https://dynasty-scans.com/system/images/page-001.jpg" alt="001"></div>');
+    await expect(scraper.getChapterPages({ url: chapterUrl })).rejects.toThrow(
+      "Dynasty Reader returned no publicly readable chapter pages",
+    );
+  });
+
   it("rejects non-chapter URLs", async () => {
     const scraper = new FixtureDynastyScraper("<div></div>");
     await expect(scraper.getChapterPages({ url: "https://dynasty-scans.com/series/example" })).rejects.toThrow(
