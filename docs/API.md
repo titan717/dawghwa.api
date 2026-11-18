@@ -181,7 +181,7 @@ or `{ "url": "https://mangadex.org/chapter/<uuid>" }`.
 ```
 
 Notes:
-- MangaDex@Home base URLs are temporary (about 15 minutes), so page lists are cached for only 5 minutes and never served stale. Validated MangaDex data/data-saver page URLs and public WEBTOON panel URLs are rewritten to Dawghwa’s restricted /api/image relay. Other providers’ page URLs remain direct unless a provider-specific permitted relay is implemented.
+- MangaDex@Home base URLs are temporary (about 15 minutes), so page lists are cached for only 5 minutes and never served stale. Validated MangaDex data/data-saver page URLs, public WEBTOON panel URLs, and public Dynasty Reader page URLs are rewritten to Dawghwa’s restricted /api/image relay. Other providers’ page URLs remain direct unless a provider-specific permitted relay is implemented.
 - MangaDex asks clients to [report image load success/failure](https://api.mangadex.org/docs/04-chapter/retrieving-chapter/) for its network. For accepted *.mangadex.network node URLs, the server-side relay reports success/failure, bytes, duration and cache-hit status to MangaDex@Home asynchronously. uploads.mangadex.org URLs are not @Home nodes and are not reported.
 - Chapters hosted externally (`externalUrl`) are not part of MangaDex chapter lists, so they have no pages here.
 
@@ -290,14 +290,15 @@ Rejections return `403 PROXY_FORBIDDEN`.
 
 ## GET /api/image
 
-GET /api/image?url=... relays validated MangaDex cover/chapter images and public WEBTOON panel images.
+GET /api/image?url=... relays validated MangaDex cover/chapter images, public WEBTOON panel images, and public Dynasty Reader pages.
 
 - Covers accept only https://uploads.mangadex.org/covers/{uuid}/{file}, including .256.jpg and .512.jpg thumbnails.
 - MangaDex chapter pages accept only /data/{hash}/{file} and /data-saver/{hash}/{file} paths on the exact MangaDex image hosts accepted by parseMangaDexPageUrl.
 - WEBTOON panels accept only HTTPS image paths on webtoon-phinf.pstatic.net and swebtoon-phinf.pstatic.net, with the optional type=qNN quality parameter.
+- Dynasty Reader pages accept only HTTPS image files hosted on dynasty-scans.com or its subdomains.
 - Arbitrary hosts, URL credentials, non-default ports, query/hash modifiers, unexpected paths, and redirects are rejected. No client headers or cookies are forwarded.
 - Cover responses are limited to 5 MB; chapter pages are limited to 20 MB. Only image/* responses are passed through, with timeouts and CDN/browser caching.
-- This is not a general-purpose proxy. Other providers need explicit provider-specific host/path allowlists before their image bytes can be relayed. WEBTOON extraction reads only public viewer HTML; locked/app-only episodes return unavailable.
+- This is not a general-purpose proxy. Other providers need explicit provider-specific host/path allowlists before their image bytes can be relayed. WEBTOON extraction reads only public viewer HTML; locked/app-only episodes return unavailable. Dynasty Reader extraction parses its public page manifest as JSON without executing provider JavaScript.
 
 
 ## Catalogue and metadata
