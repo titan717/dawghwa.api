@@ -5,6 +5,7 @@ import {
   PAGE_MAX_BYTES,
   parseCoverUrl,
   parseMangaDexPageUrl,
+  reportMangaDexAtHome,
 } from "@/lib/services/cover-image";
 
 export const runtime = "nodejs";
@@ -29,6 +30,7 @@ export async function GET(req: NextRequest): Promise<Response> {
   if (!url) return fail(400, "url must be an allowed MangaDex cover or chapter image URL", "VALIDATION_ERROR");
 
   const maxBytes = coverUrl ? COVER_MAX_BYTES : PAGE_MAX_BYTES;
+  const started = Date.now();
   let upstream: Response;
   try {
     upstream = await fetch(url, {
@@ -37,19 +39,30 @@ export async function GET(req: NextRequest): Promise<Response> {
       signal: AbortSignal.timeout(12_000),
     });
   } catch {
+    if (pageUrl) reportMangaDexAtHome(url, { success: false, bytes: 0, duration: Date.now() - started, cached: false });
     return fail(504, "Image request timed out", "UPSTREAM_TIMEOUT");
   }
   const type = upstream.headers.get("content-type") ?? "";
+  const cached = (upstream.headers.get("x-cache") ?? "").toUpperCase().startsWith("HIT");
   if (upstream.status !== 200 || !type.toLowerCase().startsWith("image/")) {
     await upstream.body?.cancel().catch(() => {});
+    if (pageUrl) reportMangaDexAtHome(url, { success: false, bytes: 0, duration: Date.now() - started, cached });
     return fail(upstream.status === 404 ? 404 : 502, "Image unavailable", "UPSTREAM_ERROR");
   }
   const declared = Number(upstream.headers.get("content-length"));
   if (Number.isFinite(declared) && declared > maxBytes) {
     await upstream.body?.cancel().catch(() => {});
+    if (pageUrl) reportMangaDexAtHome(url, { success: true, bytes: declared, duration: Date.now() - started, cached });
     return fail(502, "Image too large", "UPSTREAM_TOO_LARGE");
   }
-  const body = await upstream.arrayBuffer();
+  let body: ArrayBuffer;
+  try {
+    body = await upstream.arrayBuffer();
+  } catch {
+    if (pageUrl) reportMangaDexAtHome(url, { success: false, bytes: 0, duration: Date.now() - started, cached });
+    return fail(502, "Image unavailable", "UPSTREAM_ERROR");
+  }
+  if (pageUrl) reportMangaDexAtHome(url, { success: true, bytes: body.byteLength, duration: Date.now() - started, cached });
   if (body.byteLength > maxBytes) return fail(502, "Image too large", "UPSTREAM_TOO_LARGE");
 
   return new Response(body, {
