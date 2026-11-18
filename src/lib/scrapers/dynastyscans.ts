@@ -251,7 +251,6 @@ export class DynastyScansScraper extends BaseScraper {
           });
         }
       }
-      if (rawPages.length === 0 && firstUrl) rawPages.push({ name: pageName, image: firstUrl });
     }
 
     const pages: ChapterPage[] = [];
