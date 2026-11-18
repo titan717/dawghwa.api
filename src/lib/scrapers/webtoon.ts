@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
-import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { ChapterPage, ScrapedChapter, SearchResult, SourceType } from "@/types";
 
 export class WebtoonScraper extends BaseScraper {
   private readonly BASE_URL = "https://www.webtoons.com";
@@ -36,6 +36,54 @@ export class WebtoonScraper extends BaseScraper {
     const id = titleNoMatch ? titleNoMatch[1] : Date.now().toString();
 
     return { title, id };
+  }
+
+  /**
+   * Extract publicly available episode panels from WEBTOON's normal viewer HTML.
+   * Locked/app-only episodes return no panels and are treated as unavailable;
+   * this adapter does not attempt to bypass those restrictions.
+   */
+  async getChapterPages(chapter: { chapterId?: string; url?: string }): Promise<ChapterPage[]> {
+    if (!chapter.url) throw new Error("WEBTOON chapter URL is required");
+    const chapterUrl = new URL(chapter.url);
+    if (chapterUrl.hostname !== "www.webtoons.com" || !chapterUrl.pathname.endsWith("/viewer")) {
+      throw new Error("Invalid WEBTOON viewer URL");
+    }
+
+    const response = await this.http(chapterUrl, {
+      headers: {
+        "User-Agent": this.config.userAgent,
+        Accept: "text/html,application/xhtml+xml",
+        Referer: this.BASE_URL + "/",
+      },
+    });
+    if (!response.ok) throw new Error(`WEBTOON viewer request failed: HTTP ${response.status}`);
+    const html = await response.text();
+    const $ = cheerio.load(html);
+    const pages: ChapterPage[] = [];
+
+    $("#_imageList img").each((index, element) => {
+      const image = $(element);
+      const raw = image.attr("data-url") || image.attr("data-src") || image.attr("src");
+      if (!raw || /transparency\\.png/i.test(raw)) return;
+      const url = new URL(raw, chapterUrl);
+      if (
+        url.protocol !== "https:" ||
+        !["webtoon-phinf.pstatic.net", "swebtoon-phinf.pstatic.net"].includes(url.hostname.toLowerCase())
+      ) return;
+
+      const width = Number(image.attr("width"));
+      const height = Number(image.attr("height"));
+      pages.push({
+        index: pages.length,
+        url: url.toString(),
+        ...(Number.isFinite(width) && width > 0 ? { width } : {}),
+        ...(Number.isFinite(height) && height > 0 ? { height } : {}),
+      });
+    });
+
+    if (pages.length === 0) throw new Error("WEBTOON returned no publicly readable episode panels");
+    return pages;
   }
 
   private getAppLockedCount($: cheerio.CheerioAPI): number {
