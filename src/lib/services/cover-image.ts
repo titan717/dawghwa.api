@@ -43,7 +43,7 @@ export const PAGE_MAX_BYTES = 20 * 1024 * 1024;
 
 /** Returns a normalized MangaDex chapter image URL, or null for any other host/path. */
 export function parseMangaDexPageUrl(raw: string | null): URL | null {
-  if (!raw || raw.length > 1024) return null;
+  if (!raw || raw.length > 1024 || /\/(?:\.\.|%2e%2e)(?:\/|[?#]|$)/i.test(raw)) return null;
   let url: URL;
   try {
     url = new URL(raw);
@@ -79,7 +79,7 @@ const WEBTOON_PAGE_PATH = /^\/(?:[a-z0-9_.-]+\/)*[a-z0-9_.-]+\.(?:jpe?g|png|webp
 
 /** Returns a normalized public WEBTOON panel URL, or null for any other URL. */
 export function parseWebtoonPageUrl(raw: string | null): URL | null {
-  if (!raw || raw.length > 1024) return null;
+  if (!raw || raw.length > 1024 || /\/(?:\.\.|%2e%2e)(?:\/|[?#]|$)/i.test(raw)) return null;
   let url: URL;
   try {
     url = new URL(raw);
@@ -97,7 +97,7 @@ export function parseWebtoonPageUrl(raw: string | null): URL | null {
 
 /** Returns a public Dynasty Reader image URL, or null for any other destination. */
 export function parseDynastyPageUrl(raw: string | null): URL | null {
-  if (!raw || raw.length > 1024) return null;
+  if (!raw || raw.length > 1024 || /\/(?:\.\.|%2e%2e)(?:\/|[?#]|$)/i.test(raw)) return null;
   let url: URL;
   try {
     url = new URL(raw);
