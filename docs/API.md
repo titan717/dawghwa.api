@@ -181,8 +181,8 @@ or `{ "url": "https://mangadex.org/chapter/<uuid>" }`.
 ```
 
 Notes:
-- MangaDex@Home base URLs are temporary (about 15 minutes), so page lists are cached for only 5 minutes and never served stale. Load the images directly from the returned URLs; Dawghwa does not proxy image bytes.
-- MangaDex asks clients to [report image load success/failure](https://api.mangadex.org/docs/04-chapter/retrieving-chapter/) for its network. That is the client's job, because Dawghwa does not load the images.
+- MangaDex@Home base URLs are temporary (about 15 minutes), so page lists are cached for only 5 minutes and never served stale. Validated MangaDex data and data-saver page URLs are rewritten to Dawghwa’s restricted /api/image relay. Other providers’ page URLs remain direct unless a provider-specific permitted relay is implemented.
+- MangaDex asks clients to [report image load success/failure](https://api.mangadex.org/docs/04-chapter/retrieving-chapter/) for its network. Dawghwa’s current server-side image relay does not yet report individual browser image outcomes to MangaDex.
 - Chapters hosted externally (`externalUrl`) are not part of MangaDex chapter lists, so they have no pages here.
 
 ## GET / POST /api/browse
@@ -290,11 +290,14 @@ Rejections return `403 PROXY_FORBIDDEN`.
 
 ## GET /api/image
 
-`GET /api/image?url=https://uploads.mangadex.org/covers/{mangaId}/{file}` relays a MangaDex cover image. MangaDex's cover host shows a bot challenge to browser requests, so `<img>` tags pointing straight at it fail in real browsers.
+GET /api/image?url=... relays validated MangaDex cover and chapter page images.
 
-- Only `https://uploads.mangadex.org/covers/{uuid}/{file}` URLs are accepted, including the `.256.jpg` and `.512.jpg` thumbnails. Anything else returns `400 VALIDATION_ERROR`.
-- No client headers or cookies are forwarded, redirects are not followed, and only `image/*` responses up to 5 MB are passed through. On failure it returns `502 UPSTREAM_ERROR`, `504 UPSTREAM_TIMEOUT` or `404`, none of which are cached.
-- Cover file names are content-addressed, so a successful response is `Cache-Control: public, max-age=604800, s-maxage=2592000, immutable`.
+- Covers accept only https://uploads.mangadex.org/covers/{uuid}/{file}, including .256.jpg and .512.jpg thumbnails.
+- Chapter pages accept only MangaDex@Home /data/{hash}/{file} and /data-saver/{hash}/{file} paths on the exact MangaDex image hosts accepted by parseMangaDexPageUrl.
+- Arbitrary hosts, URL credentials, non-default ports, query/hash modifiers, unexpected paths, and redirects are rejected. No client headers or cookies are forwarded.
+- Cover responses are limited to 5 MB; chapter pages are limited to 20 MB. Only image/* responses are passed through, with timeouts and CDN/browser caching.
+- This is not a general-purpose proxy. Other providers need explicit provider-specific host/path allowlists before their image bytes can be relayed.
+
 
 ## Catalogue and metadata
 
@@ -435,13 +438,17 @@ All sources count as an expensive request (12/min by default). Lists of up to 3 
 
 ### GET /api/titles/{ref}/chapters?source=
 
-Finds the series on one chosen source and returns that source's chapter list:
+Finds the series on one chosen source and returns that source's chapter list. The response has title, source, sourceId, match, chapters, totalChapters and meta.cache. If the source has no confident match, the response is 404 NOT_FOUND. order is source, asc or desc. minScore and refresh work as above.
 
-```bash
-curl 'localhost:3000/api/titles/al:105398/chapters?source=asurascan&order=desc'
-```
+### GET /api/titles/{ref}/chapters/all
 
-The response has `title`, `source`, `sourceId`, `match` (the matched entry and its score), `chapters`, `totalChapters` and `meta.cache`. If the source has no confident match, the response is `404 NOT_FOUND` with `details.candidates`, so the client can let the user pick a candidate and call `POST /api/chapters` with its URL. `order` is `source`, `asc` or `desc`. `minScore` and `refresh` are the same as above.
+Aggregates chapters from operational providers that explicitly support chapter-page retrieval and are not client-only. The route discovers matching source titles, retrieves chapter lists with bounded concurrency, and returns one chronological list with source-specific variants.
+
+Each chapter includes a stable key, number, optional title, and variants[] with sourceId, source, providerChapterId, source chapter URL and optional scanlation group. Same positive chapter number + normalized non-empty title are grouped as possible variants. Untitled/special rows remain source-specific.
+
+The current scraper contract does not expose a reliable per-chapter language field. Therefore language is null and languageVerified is false: a grouped entry is not a guarantee that translations or editions are identical. Clients must let readers choose a variant and must not silently change language.
+
+The response also includes per-source chapter retrieval status, skipped sources and summary counts. limit defaults to 32 and accepts 1–64; refresh bypasses cached title/chapter results. This is an expensive endpoint and consumes one token from the expensive rate-limit bucket.
 
 ### POST /api/availability
 
