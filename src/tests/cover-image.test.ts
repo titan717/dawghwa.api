@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseCoverUrl, parseMangaDexPageUrl, parseWebtoonPageUrl } from "@/lib/services/cover-image";
+import { parseCoverUrl, parseMangaDexPageUrl, parseWebtoonPageUrl, parseDynastyPageUrl } from "@/lib/services/cover-image";
 
 const ID = "32d76d19-8a05-4db0-9fc2-e0b0648fe9d0";
 const FILE = "e90bdc47-c8b9-4df7-b2c0-17641b645ee1.jpg";
@@ -92,6 +92,31 @@ describe("parseWebtoonPageUrl", () => {
       "https://webtoon-phinf.pstatic.net/panel.jpg?other=1",
     ]) {
       expect(parseWebtoonPageUrl(url)).toBeNull();
+    }
+  });
+});
+
+
+describe("parseDynastyPageUrl", () => {
+  it("accepts HTTPS image files hosted by Dynasty Reader", () => {
+    const url = "https://dynasty-scans.com/system/images/2026/11/page-001.webp";
+    expect(parseDynastyPageUrl(url)?.toString()).toBe(url);
+    expect(parseDynastyPageUrl("https://images.dynasty-scans.com/system/page-002.jpg")).not.toBeNull();
+  });
+
+  it("rejects unrelated hosts and unsafe URLs", () => {
+    for (const url of [
+      null,
+      "http://dynasty-scans.com/system/page.jpg",
+      "https://dynasty-scans.com.evil.example/system/page.jpg",
+      "https://evil.example/system/page.jpg",
+      "https://user:pw@dynasty-scans.com/system/page.jpg",
+      "https://dynasty-scans.com:8443/system/page.jpg",
+      "https://dynasty-scans.com/system/page.jpg?x=1",
+      "https://dynasty-scans.com/system/../page.jpg",
+      "https://dynasty-scans.com/system/page.html",
+    ]) {
+      expect(parseDynastyPageUrl(url)).toBeNull();
     }
   });
 });
