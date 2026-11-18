@@ -64,10 +64,13 @@ export async function GET(req: NextRequest): Promise<Response> {
   const declared = Number(upstream.headers.get("content-length"));
   if (Number.isFinite(declared) && declared > maxBytes) {
     await upstream.body?.cancel().catch(() => {});
-    if (pageUrl) reportMangaDexAtHome(url, { success: true, bytes: declared, duration: Date.now() - started, cached });
+    if (pageUrl) reportMangaDexAtHome(url, { success: false, bytes: declared, duration: Date.now() - started, cached });
     return fail(502, "Image too large", "UPSTREAM_TOO_LARGE");
   }
-  if (!upstream.body) return fail(502, "Image unavailable", "UPSTREAM_ERROR");
+  if (!upstream.body) {
+    if (pageUrl) reportMangaDexAtHome(url, { success: false, bytes: 0, duration: Date.now() - started, cached });
+    return fail(502, "Image unavailable", "UPSTREAM_ERROR");
+  }
   const reader = upstream.body.getReader();
   const chunks: Uint8Array[] = [];
   let total = 0;
