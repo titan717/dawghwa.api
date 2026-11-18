@@ -520,8 +520,9 @@ export class MangaDexScraper extends BaseScraper {
   /**
    * Chapter pages via the official MangaDex@Home API
    * (https://api.mangadex.org/docs/04-chapter/retrieving-chapter/).
-   * Returned URLs point at MangaDex@Home servers and expire after ~15 minutes;
-   * Dawghwa never proxies or re-hosts the images.
+   * Returned URLs point at MangaDex@Home servers and expire after ~15 minutes.
+   * forcePort443 keeps image hosts on standard HTTPS so the restricted relay can
+   * apply DNS/private-address checks without opening arbitrary ports.
    */
   async getChapterPages(
     chapter: { chapterId?: string; url?: string },
@@ -537,7 +538,7 @@ export class MangaDexScraper extends BaseScraper {
       result: string;
       baseUrl: string;
       chapter: { hash: string; data: string[]; dataSaver: string[] };
-    }>(`/at-home/server/${id}`);
+    }>(`/at-home/server/${id}?forcePort443=true`);
     if (!data.baseUrl || !data.chapter?.hash) {
       throw new DawghwaError("UPSTREAM_ERROR", "MangaDex returned no page data for this chapter");
     }
