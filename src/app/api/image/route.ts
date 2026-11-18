@@ -37,7 +37,11 @@ export async function GET(req: NextRequest): Promise<Response> {
   try {
     upstream = await fetch(url, {
       redirect: "manual",
-      headers: { "User-Agent": COVER_USER_AGENT, Accept: "image/avif,image/webp,image/*;q=0.8" },
+      headers: {
+        "User-Agent": COVER_USER_AGENT,
+        Accept: "image/avif,image/webp,image/*;q=0.8",
+        ...(webtoonUrl ? { Referer: "https://www.webtoons.com/", Origin: "https://www.webtoons.com" } : {}),
+      },
       signal: AbortSignal.timeout(12_000),
     });
   } catch {
