@@ -182,7 +182,7 @@ or `{ "url": "https://mangadex.org/chapter/<uuid>" }`.
 
 Notes:
 - MangaDex@Home base URLs are temporary (about 15 minutes), so page lists are cached for only 5 minutes and never served stale. Validated MangaDex data and data-saver page URLs are rewritten to Dawghwa’s restricted /api/image relay. Other providers’ page URLs remain direct unless a provider-specific permitted relay is implemented.
-- MangaDex asks clients to [report image load success/failure](https://api.mangadex.org/docs/04-chapter/retrieving-chapter/) for its network. Dawghwa’s current server-side image relay does not yet report individual browser image outcomes to MangaDex.
+- MangaDex asks clients to [report image load success/failure](https://api.mangadex.org/docs/04-chapter/retrieving-chapter/) for its network. For accepted *.mangadex.network node URLs, the server-side relay reports success/failure, bytes, duration and cache-hit status to MangaDex@Home asynchronously. uploads.mangadex.org URLs are not @Home nodes and are not reported.
 - Chapters hosted externally (`externalUrl`) are not part of MangaDex chapter lists, so they have no pages here.
 
 ## GET / POST /api/browse
