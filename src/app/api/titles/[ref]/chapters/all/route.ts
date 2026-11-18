@@ -156,9 +156,12 @@ export const GET = route(async (req, ctx) => {
   }
 
   const chapters = [...merged.values()].sort((a, b) => {
-    const an = Number.isFinite(a.number) ? a.number : Number.POSITIVE_INFINITY;
-    const bn = Number.isFinite(b.number) ? b.number : Number.POSITIVE_INFINITY;
-    return an - bn || (a.title ?? "").localeCompare(b.title ?? "") || a.key.localeCompare(b.key);
+    const aRegular = Number.isFinite(a.number) && a.number > 0;
+    const bRegular = Number.isFinite(b.number) && b.number > 0;
+    // Keep numbered chapters first; specials and unknown-number entries follow.
+    if (aRegular !== bRegular) return aRegular ? -1 : 1;
+    if (aRegular && bRegular && a.number !== b.number) return a.number - b.number;
+    return (a.title ?? "").localeCompare(b.title ?? "") || a.key.localeCompare(b.key);
   });
 
   return json({
