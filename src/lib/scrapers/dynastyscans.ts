@@ -204,7 +204,15 @@ export class DynastyScansScraper extends BaseScraper {
       throw new Error("Invalid Dynasty Reader chapter URL");
     }
 
-    const html = await this.fetchWithRetry(chapterUrl.toString());
+    const response = await this.http(chapterUrl, {
+      headers: {
+        "User-Agent": this.config.userAgent,
+        Accept: "text/html,application/xhtml+xml",
+        Referer: this.BASE_URL + "/",
+      },
+    });
+    if (!response.ok) throw new Error(`Dynasty Reader chapter request failed: HTTP ${response.status}`);
+    const html = await response.text();
     const $ = cheerio.load(html);
     let rawPages: { name?: string; image?: string }[] = [];
 
