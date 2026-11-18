@@ -4,7 +4,6 @@ import { loadTitle, titleRefFromPath, titlesFor } from "@/lib/api/titles";
 import { findAvailability, type SourceAvailability, type SkippedSource } from "@/lib/services/availability";
 import { getChapters } from "@/lib/services/catalog";
 import { getRegistry } from "@/lib/providers/registry";
-import type { Provider } from "@/lib/providers/provider";
 import type { ScrapedChapter } from "@/types";
 
 export const runtime = "nodejs";
