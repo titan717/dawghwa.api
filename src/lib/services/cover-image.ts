@@ -37,8 +37,8 @@ export function parseCoverUrl(raw: string | null): URL | null {
  * Restrict the relay to those paths and provider-owned CDN hosts; never accept
  * arbitrary URLs or forward caller cookies/headers.
  */
-const PAGE_HOST = /^(?:uploads\.mangadex\.org|s[0-9]+\.mangadex\.org|[a-z0-9-]+\.mangadex\.network)$/i;
-const PAGE_PATH = /^\/(?:data|data-saver)\/[a-z0-9_-]{16,128}\/[a-z0-9_.-]{1,128}\.(?:jpe?g|png|webp|gif)$/i;
+const PAGE_HOST = /^(?:uploads\.mangadex\.org|s[0-9]+\.mangadex\.org|(?:[a-z0-9-]+\.)+mangadex\.network)$/i;
+const PAGE_PATH = /^\/(?:[a-z0-9_-]+\/)*(?:data|data-saver)\/[a-z0-9_-]{16,128}\/[a-z0-9_.-]{1,128}\.(?:jpe?g|png|webp|gif)$/i;
 export const PAGE_MAX_BYTES = 20 * 1024 * 1024;
 
 /** Returns a normalized MangaDex chapter image URL, or null for any other host/path. */
