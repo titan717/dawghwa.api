@@ -5,6 +5,7 @@ import {
   PAGE_MAX_BYTES,
   parseCoverUrl,
   parseMangaDexPageUrl,
+  parseWebtoonPageUrl,
   reportMangaDexAtHome,
 } from "@/lib/services/cover-image";
 
@@ -26,8 +27,9 @@ export async function GET(req: NextRequest): Promise<Response> {
   const raw = req.nextUrl.searchParams.get("url");
   const coverUrl = parseCoverUrl(raw);
   const pageUrl = parseMangaDexPageUrl(raw);
-  const url = coverUrl ?? pageUrl;
-  if (!url) return fail(400, "url must be an allowed MangaDex cover or chapter image URL", "VALIDATION_ERROR");
+  const webtoonUrl = parseWebtoonPageUrl(raw);
+  const url = coverUrl ?? pageUrl ?? webtoonUrl;
+  if (!url) return fail(400, "url must be an allowed MangaDex or WEBTOON image URL", "VALIDATION_ERROR");
 
   const maxBytes = coverUrl ? COVER_MAX_BYTES : PAGE_MAX_BYTES;
   const started = Date.now();
