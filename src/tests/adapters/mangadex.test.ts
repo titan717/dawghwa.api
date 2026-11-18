@@ -84,18 +84,18 @@ describe("MangaDex adapter (fixtures)", () => {
       return jsonResponse({
         result: "ok",
         baseUrl: "https://uploads.mangadex.org",
-        chapter: { hash: "abc123", data: ["1.png", "2.png"], dataSaver: ["1.jpg", "2.jpg"] },
+        chapter: { hash: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", data: ["1.png", "2.png"], dataSaver: ["1.jpg", "2.jpg"] },
       });
     });
     const p = mangadex();
     expect(p.capabilities.chapterPages).toBe(true);
     const r = await getChapterPages(p, { url: `https://mangadex.org/chapter/${CHAPTER_ID}` });
     expect(r.pages).toEqual([
-      { index: 0, url: "https://uploads.mangadex.org/data/abc123/1.png" },
-      { index: 1, url: "https://uploads.mangadex.org/data/abc123/2.png" },
+      { index: 0, url: "https://uploads.mangadex.org/data/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1.png" },
+      { index: 1, url: "https://uploads.mangadex.org/data/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/2.png" },
     ]);
     const saver = await getChapterPages(p, { chapterId: CHAPTER_ID }, { dataSaver: true });
-    expect(saver.pages[0].url).toBe("https://uploads.mangadex.org/data-saver/abc123/1.jpg");
+    expect(saver.pages[0].url).toBe("https://uploads.mangadex.org/data-saver/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/1.jpg");
   });
 
   it("rejects invalid chapter ids without calling upstream", async () => {
