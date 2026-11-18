@@ -72,3 +72,24 @@ export function reportMangaDexAtHome(
     // Reporting must never delay or fail image delivery.
   });
 }
+
+
+const WEBTOON_PAGE_HOSTS = new Set(["webtoon-phinf.pstatic.net", "swebtoon-phinf.pstatic.net"]);
+const WEBTOON_PAGE_PATH = /^\/(?:[a-z0-9_.-]+\/)*[a-z0-9_.-]+\.(?:jpe?g|png|webp|gif)$/i;
+
+/** Returns a normalized public WEBTOON panel URL, or null for any other URL. */
+export function parseWebtoonPageUrl(raw: string | null): URL | null {
+  if (!raw || raw.length > 1024) return null;
+  let url: URL;
+  try {
+    url = new URL(raw);
+  } catch {
+    return null;
+  }
+  if (url.protocol !== "https:" || !WEBTOON_PAGE_HOSTS.has(url.hostname.toLowerCase())) return null;
+  if (url.username || url.password || (url.port && url.port !== "443") || url.hash) return null;
+  if (url.pathname.split("/").includes("..") || !WEBTOON_PAGE_PATH.test(url.pathname)) return null;
+  const entries = [...url.searchParams.entries()];
+  if (entries.some(([key, value]) => key !== "type" || !/^q[0-9]{2,3}$/.test(value))) return null;
+  return new URL(url.toString());
+}
