@@ -5,6 +5,7 @@ All notable changes to Dawghwa API. The project follows [Semantic Versioning](ht
 ## [Unreleased]
 
 ### Added
+- `GET /api/image`: CDN-cacheable relay for MangaDex cover images (`uploads.mangadex.org/covers/...` only), because that host now challenges browser requests.
 - `POST /api/browse` and `GET /api/browse`: filtered and ordered catalogue listing (tags, kinds, status, demographic, year, recency) through MangaDex's documented API, with rating and follows from its statistics API. Unknown tags are rejected rather than ignored.
 - Optional `metadata` on search, browse and manga results (genres, themes, formats, authors, artists, status, year, demographic, kind, long strip, rating, follows, description, alternative titles). Sanitised by `normalizeMetadata`.
 - `POST /api/manga` for MangaDex now also returns `coverImage` and `metadata`.

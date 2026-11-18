@@ -288,6 +288,14 @@ It returns `{ source, sourceName, section: { id, title, type, items: [...] }, fe
 
 Rejections return `403 PROXY_FORBIDDEN`.
 
+## GET /api/image
+
+`GET /api/image?url=https://uploads.mangadex.org/covers/{mangaId}/{file}` relays a MangaDex cover image. MangaDex's cover host shows a bot challenge to browser requests, so `<img>` tags pointing straight at it fail in real browsers.
+
+- Only `https://uploads.mangadex.org/covers/{uuid}/{file}` URLs are accepted, including the `.256.jpg` and `.512.jpg` thumbnails. Anything else returns `400 VALIDATION_ERROR`.
+- No client headers or cookies are forwarded, redirects are not followed, and only `image/*` responses up to 5 MB are passed through. On failure it returns `502 UPSTREAM_ERROR`, `504 UPSTREAM_TIMEOUT` or `404`, none of which are cached.
+- Cover file names are content-addressed, so a successful response is `Cache-Control: public, max-age=604800, s-maxage=2592000, immutable`.
+
 ## Catalogue and metadata
 
 Series metadata (titles, alternative titles, covers, genres, tags, status, format, score, authors, cross-database ids) comes from three public databases. Dawghwa does not host this data. It forwards your query, normalizes the answer and caches it.
