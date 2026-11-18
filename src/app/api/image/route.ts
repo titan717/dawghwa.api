@@ -67,21 +67,39 @@ export async function GET(req: NextRequest): Promise<Response> {
     if (pageUrl) reportMangaDexAtHome(url, { success: true, bytes: declared, duration: Date.now() - started, cached });
     return fail(502, "Image too large", "UPSTREAM_TOO_LARGE");
   }
-  let body: ArrayBuffer;
+  if (!upstream.body) return fail(502, "Image unavailable", "UPSTREAM_ERROR");
+  const reader = upstream.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
   try {
-    body = await upstream.arrayBuffer();
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      total += value.byteLength;
+      if (total > maxBytes) {
+        await reader.cancel().catch(() => {});
+        if (pageUrl) reportMangaDexAtHome(url, { success: false, bytes: total, duration: Date.now() - started, cached });
+        return fail(502, "Image too large", "UPSTREAM_TOO_LARGE");
+      }
+      chunks.push(value);
+    }
   } catch {
-    if (pageUrl) reportMangaDexAtHome(url, { success: false, bytes: 0, duration: Date.now() - started, cached });
+    if (pageUrl) reportMangaDexAtHome(url, { success: false, bytes: total, duration: Date.now() - started, cached });
     return fail(502, "Image unavailable", "UPSTREAM_ERROR");
   }
-  if (pageUrl) reportMangaDexAtHome(url, { success: true, bytes: body.byteLength, duration: Date.now() - started, cached });
-  if (body.byteLength > maxBytes) return fail(502, "Image too large", "UPSTREAM_TOO_LARGE");
+  const body = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    body.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  if (pageUrl) reportMangaDexAtHome(url, { success: true, bytes: total, duration: Date.now() - started, cached });
 
   return new Response(body, {
     status: 200,
     headers: {
       "Content-Type": type,
-      "Content-Length": String(body.byteLength),
+      "Content-Length": String(total),
       "Cache-Control": "public, max-age=604800, s-maxage=2592000, stale-while-revalidate=86400, immutable",
       "Cross-Origin-Resource-Policy": "cross-origin",
       "X-Content-Type-Options": "nosniff",
