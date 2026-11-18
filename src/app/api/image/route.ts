@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { assertPublicDestination } from "@/lib/core/net-guard";
 import {
   COVER_MAX_BYTES,
   COVER_USER_AGENT,
@@ -32,6 +33,11 @@ export async function GET(req: NextRequest): Promise<Response> {
   if (!url) return fail(400, "url must be an allowed MangaDex or WEBTOON image URL", "VALIDATION_ERROR");
 
   const maxBytes = coverUrl ? COVER_MAX_BYTES : PAGE_MAX_BYTES;
+  try {
+    await assertPublicDestination(url.toString());
+  } catch {
+    return fail(400, "Image destination is not a public address", "PROXY_FORBIDDEN");
+  }
   const started = Date.now();
   let upstream: Response;
   try {
