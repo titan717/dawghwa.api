@@ -80,7 +80,7 @@ describe("MangaDex adapter (fixtures)", () => {
 
   it("returns chapter pages from the MangaDex@Home API", async () => {
     mockFetch((url) => {
-      expect(url).toBe(`https://api.mangadex.org/at-home/server/${CHAPTER_ID}`);
+      expect(url).toBe(`https://api.mangadex.org/at-home/server/${CHAPTER_ID}?forcePort443=true`);
       return jsonResponse({
         result: "ok",
         baseUrl: "https://uploads.mangadex.org",
@@ -111,11 +111,11 @@ describe("MangaDex adapter (fixtures)", () => {
     await expect(getChapterPages(mangadex(), { chapterId: CHAPTER_ID })).rejects.toMatchObject({ code: "NOT_FOUND" });
   });
 
-  it("other adapters do not claim page support", () => {
+  it("only explicit page adapters claim reader support", () => {
     const withPages = getRegistry()
       .all()
       .filter((p) => p.capabilities.chapterPages)
       .map((p) => p.id);
-    expect(withPages).toEqual(["mangadex"]);
+    expect(withPages).toEqual(["mangadex", "webtoon", "dynasty-reader"]);
   });
 });
