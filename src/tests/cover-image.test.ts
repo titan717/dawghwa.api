@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseCoverUrl } from "@/lib/services/cover-image";
+import { parseCoverUrl, parseMangaDexPageUrl } from "@/lib/services/cover-image";
 
 const ID = "32d76d19-8a05-4db0-9fc2-e0b0648fe9d0";
 const FILE = "e90bdc47-c8b9-4df7-b2c0-17641b645ee1.jpg";
@@ -27,6 +27,42 @@ describe("parseCoverUrl", () => {
       `https://uploads.mangadex.org/covers/not-a-uuid/${FILE}`,
     ]) {
       expect(parseCoverUrl(s)).toBeNull();
+    }
+  });
+});
+
+
+describe("parseMangaDexPageUrl", () => {
+  const hash = "a".repeat(32);
+  const file = "1-8a6f8f5f1b8f4b8a.jpg";
+
+  it("accepts only supported MangaDex @Home image paths", () => {
+    for (const url of [
+      `https://uploads.mangadex.org/data/${hash}/${file}`,
+      `https://s1.mangadex.network/data-saver/${hash}/${file}`,
+      `https://s2.mangadex.org/data/${hash}/${file}`,
+    ]) {
+      expect(parseMangaDexPageUrl(url)?.toString()).toBe(url);
+    }
+  });
+
+  it("rejects untrusted hosts, paths, credentials and URL modifiers", () => {
+    for (const url of [
+      null,
+      "",
+      "not a url",
+      `http://uploads.mangadex.org/data/${hash}/${file}`,
+      `https://uploads.mangadex.org.evil.example/data/${hash}/${file}`,
+      `https://evil.example/data/${hash}/${file}`,
+      `https://user:pw@uploads.mangadex.org/data/${hash}/${file}`,
+      `https://uploads.mangadex.org:8443/data/${hash}/${file}`,
+      `https://uploads.mangadex.org/data/${hash}/${file}?token=x`,
+      `https://uploads.mangadex.org/data/${hash}/../${file}`,
+      `https://uploads.mangadex.org/covers/${hash}/${file}`,
+      `https://uploads.mangadex.org/data/not-a-hash/${file}`,
+      `https://uploads.mangadex.org/data/${hash}/image.html`,
+    ]) {
+      expect(parseMangaDexPageUrl(url)).toBeNull();
     }
   });
 });
