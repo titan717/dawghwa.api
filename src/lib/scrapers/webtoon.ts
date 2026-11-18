@@ -62,10 +62,10 @@ export class WebtoonScraper extends BaseScraper {
     const $ = cheerio.load(html);
     const pages: ChapterPage[] = [];
 
-    $("#_imageList img").each((index, element) => {
+    $("#_imageList img").each((_index, element) => {
       const image = $(element);
       const raw = image.attr("data-url") || image.attr("data-src") || image.attr("src");
-      if (!raw || /transparency\\.png/i.test(raw)) return;
+      if (!raw || /transparency\.png/i.test(raw)) return;
       const url = new URL(raw, chapterUrl);
       if (
         url.protocol !== "https:" ||
