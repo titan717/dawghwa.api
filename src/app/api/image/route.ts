@@ -7,6 +7,7 @@ import {
   parseCoverUrl,
   parseMangaDexPageUrl,
   parseWebtoonPageUrl,
+  parseDynastyPageUrl,
   reportMangaDexAtHome,
 } from "@/lib/services/cover-image";
 
@@ -29,7 +30,8 @@ export async function GET(req: NextRequest): Promise<Response> {
   const coverUrl = parseCoverUrl(raw);
   const pageUrl = parseMangaDexPageUrl(raw);
   const webtoonUrl = parseWebtoonPageUrl(raw);
-  const url = coverUrl ?? pageUrl ?? webtoonUrl;
+  const dynastyUrl = parseDynastyPageUrl(raw);
+  const url = coverUrl ?? pageUrl ?? webtoonUrl ?? dynastyUrl;
   if (!url) return fail(400, "url must be an allowed MangaDex or WEBTOON image URL", "VALIDATION_ERROR");
 
   const maxBytes = coverUrl ? COVER_MAX_BYTES : PAGE_MAX_BYTES;
@@ -47,6 +49,7 @@ export async function GET(req: NextRequest): Promise<Response> {
         "User-Agent": COVER_USER_AGENT,
         Accept: "image/avif,image/webp,image/*;q=0.8",
         ...(webtoonUrl ? { Referer: "https://www.webtoons.com/", Origin: "https://www.webtoons.com" } : {}),
+        ...(dynastyUrl ? { Referer: "https://dynasty-scans.com/" } : {}),
       },
       signal: AbortSignal.timeout(12_000),
     });
