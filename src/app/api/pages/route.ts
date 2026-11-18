@@ -3,7 +3,7 @@ import { booleanish, httpUrlSchema, json, readJson, route, sourceIdSchema } from
 import { DawghwaError } from "@/lib/core/errors";
 import { getRegistry } from "@/lib/providers/registry";
 import { getChapterPages, resolveSourceUrl } from "@/lib/services/catalog";
-import { parseMangaDexPageUrl } from "@/lib/services/cover-image";
+import { parseMangaDexPageUrl, parseWebtoonPageUrl } from "@/lib/services/cover-image";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -41,15 +41,17 @@ export const POST = route(async (req, ctx) => {
     ref = { chapterId: body.chapterId };
   }
   const r = await getChapterPages(provider, ref, { dataSaver: body.dataSaver, forceRefresh: body.refresh });
-  const pages = provider.id === "mangadex"
-    ? r.pages.map((page) => {
-        const allowed = parseMangaDexPageUrl(page.url);
-        if (!allowed) return page;
-        const image = new URL("/api/image", req.nextUrl.origin);
-        image.searchParams.set("url", allowed.toString());
-        return { ...page, url: image.toString() };
-      })
-    : r.pages;
+  const pages = r.pages.map((page) => {
+    const allowed = provider.id === "mangadex"
+      ? parseMangaDexPageUrl(page.url)
+      : provider.id === "webtoon"
+        ? parseWebtoonPageUrl(page.url)
+        : null;
+    if (!allowed) return page;
+    const image = new URL("/api/image", req.nextUrl.origin);
+    image.searchParams.set("url", allowed.toString());
+    return { ...page, url: image.toString() };
+  });
   return json(
     {
       pages,
