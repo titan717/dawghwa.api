@@ -55,3 +55,20 @@ export function parseMangaDexPageUrl(raw: string | null): URL | null {
   if (url.search || url.hash || url.pathname.split("/").includes("..") || !PAGE_PATH.test(url.pathname)) return null;
   return new URL(`https://${url.hostname.toLowerCase()}${url.pathname}`);
 }
+
+
+/** Fire-and-forget @Home network telemetry required by MangaDex for node-hosted pages. */
+export function reportMangaDexAtHome(
+  url: URL,
+  result: { success: boolean; bytes: number; duration: number; cached: boolean },
+): void {
+  if (!url.hostname.toLowerCase().endsWith(".mangadex.network")) return;
+  void fetch("https://api.mangadex.network/report", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ url: url.toString(), ...result }),
+    signal: AbortSignal.timeout(5_000),
+  }).catch(() => {
+    // Reporting must never delay or fail image delivery.
+  });
+}
