@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { chargeExpensive, json, parseWith, route } from "@/lib/api/handler";
+import { booleanish, chargeExpensive, json, parseWith, route } from "@/lib/api/handler";
 import { loadTitle, titleRefFromPath, titlesFor } from "@/lib/api/titles";
 import { findAvailability, type SourceAvailability, type SkippedSource } from "@/lib/services/availability";
 import { getChapters } from "@/lib/services/catalog";
@@ -13,7 +13,7 @@ export const maxDuration = 60;
 
 const querySchema = z.object({
   limit: z.coerce.number().int().min(1).max(64).default(32),
-  refresh: z.coerce.boolean().optional(),
+  refresh: booleanish.optional(),
 });
 
 type ChapterVariant = {
