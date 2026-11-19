@@ -50,6 +50,8 @@ interface MangaDexChapter {
   id: string;
   attributes: {
     chapter: string | null;
+    volume?: string | null;
+    translatedLanguage?: string;
     title: string | null;
     pages: number;
     publishAt: string;
@@ -435,6 +437,17 @@ export class MangaDexScraper extends BaseScraper {
     };
   }
 
+  async getIdentityHints(mangaUrl: string): Promise<{ title: string; altTitles: string[]; authors: string[]; status?: string; year?: number }> {
+    const info = await this.extractMangaInfo(mangaUrl);
+    return {
+      title: info.title,
+      altTitles: info.metadata?.altTitles ?? [],
+      authors: [...(info.metadata?.authors ?? []), ...(info.metadata?.artists ?? [])],
+      status: info.metadata?.status,
+      year: info.metadata?.year,
+    };
+  }
+
   async getChapterList(mangaUrl: string): Promise<ScrapedChapter[]> {
     try {
       const id = this.getMangaId(mangaUrl);
@@ -461,56 +474,54 @@ export class MangaDexScraper extends BaseScraper {
         ...rest.flatMap((page) => page.data || []),
       ];
 
-      const byNumber = new Map<
-        number,
-        { chapter: ScrapedChapter; published: number }
-      >();
+      // Keep every scanlation-group upload as its own variant: different
+      // groups are different translations, and the unified engine decides
+      // what is equivalent. Only exact re-uploads (same number label, same
+      // group, same language) are collapsed to the newest one.
+      const byVariant = new Map<string, { chapter: ScrapedChapter; published: number }>();
 
       for (const chapter of chapters) {
         const { externalUrl, pages, publishAt } = chapter.attributes;
-        const number = parseFloat(chapter.attributes.chapter || "");
-
-        if (externalUrl || pages === 0 || isNaN(number)) {
-          continue;
-        }
-
+        // externalUrl chapters are hosted by an official publisher outside
+        // MangaDex and have no MangaDex@Home pages; they are not readable here.
+        if (externalUrl || pages === 0) continue;
+        const label = chapter.attributes.chapter?.trim() || null;
+        const parsed = parseFloat(label || "");
+        const number = Number.isFinite(parsed) ? parsed : 0;
         const published = new Date(publishAt).getTime() || 0;
-        const existing = byNumber.get(number);
-
-        if (existing && existing.published >= published) {
-          continue;
-        }
-
-        const groupRel = chapter.relationships?.find(
-          (r) => r.type === "scanlation_group",
-        );
+        const groupRel = chapter.relationships?.find((r) => r.type === "scanlation_group");
         const groupName = groupRel?.attributes?.name;
+        const language = chapter.attributes.translatedLanguage || "en";
+        const key = `${label ?? `id:${chapter.id}`}|${groupRel?.id ?? "-"}|${language}`;
+        const existing = byVariant.get(key);
+        if (existing && existing.published >= published) continue;
 
-        byNumber.set(number, {
+        byVariant.set(key, {
           published,
           chapter: {
             id: chapter.id,
             number,
+            chapterLabel: label,
+            numberSource: "provider",
             title: chapter.attributes.title || undefined,
             url: `${this.BASE_URL}/chapter/${chapter.id}`,
-            lastUpdated: published
-              ? this.formatRelativeTime(new Date(published))
-              : undefined,
+            lastUpdated: published ? this.formatRelativeTime(new Date(published)) : undefined,
+            publishedAt: published ? new Date(published).toISOString() : undefined,
+            volume: chapter.attributes.volume || undefined,
+            language,
+            pages,
             group:
               groupRel && groupName
-                ? {
-                    id: groupRel.id,
-                    name: groupName,
-                    url: `${this.BASE_URL}/group/${groupRel.id}`,
-                  }
+                ? { id: groupRel.id, name: groupName, url: `${this.BASE_URL}/group/${groupRel.id}` }
                 : undefined,
           },
         });
       }
 
-      return Array.from(byNumber.values())
+      return Array.from(byVariant.values())
         .map((entry) => entry.chapter)
-        .sort((a, b) => a.number - b.number);
+        .sort((a, b) => a.number - b.number || (a.publishedAt ?? "").localeCompare(b.publishedAt ?? ""))
+        .map((chapter, index) => ({ ...chapter, sequence: index + 1 }));
     } catch (error) {
       console.error("[MangaDex] chapter list error:", error);
       throw error;
@@ -520,8 +531,9 @@ export class MangaDexScraper extends BaseScraper {
   /**
    * Chapter pages via the official MangaDex@Home API
    * (https://api.mangadex.org/docs/04-chapter/retrieving-chapter/).
-   * Returned URLs point at MangaDex@Home servers and expire after ~15 minutes;
-   * Dawghwa never proxies or re-hosts the images.
+   * Returned URLs point at MangaDex@Home servers and expire after ~15 minutes.
+   * forcePort443 keeps image hosts on standard HTTPS so the restricted relay can
+   * apply DNS/private-address checks without opening arbitrary ports.
    */
   async getChapterPages(
     chapter: { chapterId?: string; url?: string },
@@ -537,7 +549,7 @@ export class MangaDexScraper extends BaseScraper {
       result: string;
       baseUrl: string;
       chapter: { hash: string; data: string[]; dataSaver: string[] };
-    }>(`/at-home/server/${id}`);
+    }>(`/at-home/server/${id}?forcePort443=true`);
     if (!data.baseUrl || !data.chapter?.hash) {
       throw new DawghwaError("UPSTREAM_ERROR", "MangaDex returned no page data for this chapter");
     }

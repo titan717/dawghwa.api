@@ -4,7 +4,7 @@ A self-hostable API that searches manga/manhwa sources, lists chapters, reads so
 
 Dawghwa API is a fork of [GooglyBlox/comick-source-api](https://github.com/GooglyBlox/comick-source-api) (MIT). It started from the upstream source code at commit [`086d006`](https://github.com/GooglyBlox/comick-source-api/commit/086d006) (tag `upstream-baseline` in this repository) and keeps all 96 upstream source adapters, their behaviour and the original endpoints, on top of a rebuilt runtime: shared HTTP client, per-source isolation, caching, validation and SSRF protection. Dawghwa does not call the upstream hosted API at runtime; the upstream repository is only a code reference.
 
-> Status: **1.0.0**. 517 offline tests pass, lint/typecheck/build are clean. Source reachability changes constantly: see [docs/SOURCE_STATUS.md](docs/SOURCE_STATUS.md) for the latest probe.
+> Status: **1.2.0**. 636 offline tests pass (plus opt-in live tests), lint/typecheck/build are clean. Source reachability changes constantly: see [docs/SOURCE_STATUS.md](docs/SOURCE_STATUS.md) for the latest probe.
 
 ## Contents
 
@@ -91,7 +91,7 @@ Sources are matched by title similarity against every known title of the series.
 
 Latest probe from a datacenter network (2026-11-16, [docs/SOURCE_STATUS.md](docs/SOURCE_STATUS.md)): 58 of 82 operational sources healthy, 22 blocked by anti-bot challenges, 1 HTTP 403, 1 timeout. Dawghwa reports challenges as `UPSTREAM_BLOCKED` and does not try to bypass them.
 
-Chapter page retrieval (`POST /api/pages`) is only implemented for **MangaDex**, through its documented [MangaDex@Home API](https://api.mangadex.org/docs/04-chapter/retrieving-chapter/). No other adapter claims page support. Image bytes are never proxied.
+In-app reading (`POST /api/pages` + the restricted `GET /api/image` relay) is implemented and live-verified for three providers: **MangaDex** (documented [MangaDex@Home API](https://api.mangadex.org/docs/04-chapter/retrieving-chapter/)), **WEBTOON** (public episodes only) and **Dynasty Reader** (public chapter manifest). `GET /api/titles/{ref}/chapters/all` merges their chapter lists into one canonical list. No other adapter claims page support; see `GET /api/sources/capabilities` and [docs/UNIFIED_CHAPTERS.md](docs/UNIFIED_CHAPTERS.md).
 
 ## How it works
 
@@ -146,6 +146,7 @@ CI (`.github/workflows/ci.yml`) runs the manifest check, lint, typecheck, tests 
 ## Documentation
 
 - [docs/API.md](docs/API.md): endpoint reference, examples, error codes, caching, rate limits
+- [docs/UNIFIED_CHAPTERS.md](docs/UNIFIED_CHAPTERS.md): canonical titles, chapter merge, capability matrix, image security, fallback
 - [docs/SOURCES.md](docs/SOURCES.md): supported source directory
 - [docs/SOURCE_STATUS.md](docs/SOURCE_STATUS.md): latest live probe
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): internals

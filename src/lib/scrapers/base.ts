@@ -102,6 +102,13 @@ export abstract class BaseScraper {
   urlForId?(id: string): string | undefined;
   browseVocabulary?(): Promise<BrowseVocabulary>;
 
+  /**
+   * Identity hints for cross-provider title linking (authors, aliases).
+   * Optional; providers without it are only linked by exact cross-references
+   * or left for review.
+   */
+  getIdentityHints?(mangaUrl: string): Promise<{ title: string; altTitles: string[]; authors: string[]; status?: string; year?: number }>;
+
   supportsBrowse(): boolean {
     return typeof this.browse === "function";
   }

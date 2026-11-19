@@ -1,6 +1,7 @@
+import { DawghwaError } from "@/lib/core/errors";
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
-import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { ChapterPage, ScrapedChapter, SearchResult, SourceType } from "@/types";
 
 interface DynastyTag {
   type: string;
@@ -81,53 +82,67 @@ export class DynastyScansScraper extends BaseScraper {
     return match ? match[1] : "";
   }
 
-  private parseNumber(title: string): number | null {
+  private parseNumber(title: string): { number: number; label: string } | null {
     const match = title.match(/^(?:chapter|ch\.?)\s*(\d+(?:\.\d+)?)/i);
-    return match ? parseFloat(match[1]) : null;
+    return match ? { number: parseFloat(match[1]), label: match[1] } : null;
   }
 
-  private parseChapters(
-    series: DynastySeries,
-  ): (ScrapedChapter & { duplicate: boolean; released: number })[] {
-    const entries = (series.taggings || []).filter(
-      (t) => !t.header && t.permalink && t.title,
-    );
-    const numbered = entries.some((t) => this.parseNumber(t.title!) !== null);
+  private parseChapters(series: DynastySeries): (ScrapedChapter & { duplicate: boolean; released: number })[] {
+    const all = series.taggings || [];
+    const numbered = all.some((t) => !t.header && t.title && this.parseNumber(t.title) !== null);
+    let volume: string | undefined;
+    let position = 0;
+    const out: (ScrapedChapter & { duplicate: boolean; released: number })[] = [];
 
-    return entries.flatMap((entry, index) => {
-      const parsed = this.parseNumber(entry.title!);
-      if (numbered && parsed === null) {
-        return [];
+    for (const entry of all) {
+      if (entry.header) {
+        const v = entry.header.match(/^volume\s+(\S+)/i);
+        volume = v ? v[1] : undefined;
+        continue;
       }
-
-      const number = numbered ? (parsed as number) : index + 1;
-      const released = entry.released_on
-        ? new Date(entry.released_on).getTime()
-        : 0;
+      if (!entry.permalink || !entry.title) continue;
+      position++;
+      const parsed = this.parseNumber(entry.title);
+      const released = entry.released_on ? new Date(entry.released_on).getTime() : 0;
       const scanlator = (entry.tags || []).find((t) => t.type === "Scanlator");
-      const subtitle = entry.title!.match(/^[^:]*:\s*(.+)$/);
+      const subtitle = entry.title.match(/^[^:]*:\s*(.+)$/);
+      // Unnumbered entries in a numbered series (extras, specials) are kept as
+      // unnumbered chapters instead of being dropped; series with no numbers
+      // at all get list positions, explicitly marked as such.
+      const number = parsed ? parsed.number : numbered ? 0 : position;
+      out.push({
+        id: entry.permalink,
+        number,
+        chapterLabel: parsed ? parsed.label : numbered ? null : String(position),
+        numberSource: parsed ? "label" : "position",
+        title: parsed ? subtitle?.[1] : entry.title,
+        url: `${this.BASE_URL}/chapters/${entry.permalink}`,
+        lastUpdated: released ? this.formatRelativeTime(new Date(released)) : undefined,
+        publishedAt: released ? new Date(released).toISOString() : undefined,
+        volume,
+        language: "en",
+        sequence: position,
+        group: scanlator
+          ? { id: scanlator.permalink, name: scanlator.name, url: `${this.BASE_URL}/scanlators/${scanlator.permalink}` }
+          : undefined,
+        duplicate: (entry.tags || []).some((t) => t.name === "Duplicate"),
+        released,
+      });
+    }
+    return out;
+  }
 
-      return [
-        {
-          id: entry.permalink!,
-          number,
-          title: numbered ? subtitle?.[1] : entry.title,
-          url: `${this.BASE_URL}/chapters/${entry.permalink}`,
-          lastUpdated: released
-            ? this.formatRelativeTime(new Date(released))
-            : undefined,
-          group: scanlator
-            ? {
-                id: scanlator.permalink,
-                name: scanlator.name,
-                url: `${this.BASE_URL}/scanlators/${scanlator.permalink}`,
-              }
-            : undefined,
-          duplicate: (entry.tags || []).some((t) => t.name === "Duplicate"),
-          released,
-        },
-      ];
-    });
+  /** Identity hints from the public series JSON: authors, aliases and status (no guessing). */
+  async getIdentityHints(mangaUrl: string): Promise<{ title: string; altTitles: string[]; authors: string[]; status?: string }> {
+    const slug = this.getSlug(mangaUrl);
+    if (!slug) throw new Error("Could not extract Dynasty series slug from URL");
+    const series = (await this.getSeriesJson(slug)) as DynastySeries & { tags?: DynastyTag[]; aliases?: string[] };
+    return {
+      title: series.name,
+      altTitles: (series.aliases || []).filter((a): a is string => typeof a === "string"),
+      authors: (series.tags || []).filter((t) => t.type === "Author").map((t) => t.name),
+      status: (series.tags || []).find((t) => t.type === "Status")?.name?.toLowerCase(),
+    };
   }
 
   async search(query: string): Promise<SearchResult[]> {
@@ -192,6 +207,89 @@ export class DynastyScansScraper extends BaseScraper {
     return { title: series.name, id: slug };
   }
 
+  /**
+   * Extract public page URLs from Dynasty Reader's chapter page data.
+   * This uses the same public page list rendered by the site's reader; it does
+   * not execute scripts, defeat challenges, or access restricted content.
+   */
+  async getChapterPages(chapter: { chapterId?: string; url?: string }): Promise<ChapterPage[]> {
+    let url = chapter.url;
+    // Dynasty chapter ids are the URL slugs ("aiura_ch01").
+    if (!url && chapter.chapterId && /^[a-z0-9_-]{1,160}$/i.test(chapter.chapterId)) {
+      url = `${this.BASE_URL}/chapters/${chapter.chapterId}`;
+    }
+    if (!url) throw new DawghwaError("VALIDATION_ERROR", "Dynasty Reader chapter URL or id is required");
+    const chapterUrl = new URL(url);
+    if (chapterUrl.hostname !== "dynasty-scans.com" || !chapterUrl.pathname.startsWith("/chapters/")) {
+      throw new DawghwaError("VALIDATION_ERROR", "Invalid Dynasty Reader chapter URL");
+    }
+
+    const response = await this.http(chapterUrl, {
+      headers: {
+        "User-Agent": this.config.userAgent,
+        Accept: "text/html,application/xhtml+xml",
+        Referer: this.BASE_URL + "/",
+      },
+    });
+    if (!response.ok) throw new Error(`Dynasty Reader chapter request failed: HTTP ${response.status}`);
+    const html = await response.text();
+    const $ = cheerio.load(html);
+    let rawPages: { name?: string; image?: string }[] = [];
+
+    // The reader exposes a JSON page manifest in its inline script. Parse JSON
+    // only; never eval or execute provider-supplied JavaScript.
+    $("script").each((_, element) => {
+      if (rawPages.length) return;
+      const script = $(element).html() || "";
+      const match = script.match(/(?:window\.)?pages\s*=\s*(\[[\s\S]*?\])\s*;?/);
+      if (!match?.[1]) return;
+      try {
+        const parsed: unknown = JSON.parse(match[1]);
+        if (Array.isArray(parsed)) {
+          rawPages = parsed.filter((item): item is { name?: string; image?: string } =>
+            Boolean(item && typeof item === "object" && typeof (item as { image?: unknown }).image === "string"),
+          );
+        }
+      } catch {
+        // Some deployments emit a non-JSON JS literal; the safe DOM fallback below handles the first page.
+      }
+    });
+
+    if (rawPages.length === 0) {
+      const first = $("#image > img").first();
+      const firstUrl = first.attr("src");
+      const pageName = first.attr("alt")?.trim();
+      const pageLinks = $("#image > .pages-list > .page");
+      if (firstUrl && pageName && pageLinks.length > 0) {
+        const marker = firstUrl.lastIndexOf(pageName, firstUrl.lastIndexOf("."));
+        if (marker >= 0) {
+          const prefix = firstUrl.slice(0, marker);
+          const suffix = firstUrl.slice(marker + pageName.length);
+          pageLinks.each((_, element) => {
+            const name = $(element).text().trim();
+            if (name) rawPages.push({ name, image: prefix + encodeURIComponent(name) + suffix });
+          });
+        }
+      }
+    }
+
+    const pages: ChapterPage[] = [];
+    for (const item of rawPages) {
+      if (!item.image) continue;
+      const url = new URL(item.image, chapterUrl);
+      if (
+        url.protocol !== "https:" ||
+        !(url.hostname === "dynasty-scans.com" || url.hostname.endsWith(".dynasty-scans.com")) ||
+        !/\.(?:jpe?g|png|webp|gif)$/i.test(url.pathname)
+      ) continue;
+      if (pages.some((page) => page.url === url.toString())) continue;
+      pages.push({ index: pages.length, url: url.toString() });
+    }
+
+    if (pages.length === 0) throw new Error("Dynasty Reader returned no publicly readable chapter pages");
+    return pages;
+  }
+
   async getChapterList(mangaUrl: string): Promise<ScrapedChapter[]> {
     try {
       const slug = this.getSlug(mangaUrl);
@@ -201,29 +299,14 @@ export class DynastyScansScraper extends BaseScraper {
       }
 
       const series = await this.getSeriesJson(slug);
-      const byNumber = new Map<
-        number,
-        ScrapedChapter & { duplicate: boolean; released: number }
-      >();
-
-      for (const chapter of this.parseChapters(series)) {
-        const existing = byNumber.get(chapter.number);
-        if (existing && !existing.duplicate && chapter.duplicate) {
-          continue;
-        }
-        byNumber.set(chapter.number, chapter);
-      }
-
-      return Array.from(byNumber.values())
-        .sort((a, b) => a.number - b.number)
-        .map((chapter) => ({
-          id: chapter.id,
-          number: chapter.number,
-          title: chapter.title,
-          url: chapter.url,
-          lastUpdated: chapter.lastUpdated,
-          group: chapter.group,
-        }));
+      // Duplicate-tagged entries are alternative scanlations of the same
+      // chapter; they are kept as separate variants (the group differs).
+      return this.parseChapters(series).map((chapter) => {
+        const out: ScrapedChapter & { duplicate?: boolean; released?: number } = { ...chapter };
+        delete out.duplicate;
+        delete out.released;
+        return out;
+      });
     } catch (error) {
       console.error("[Dynasty Reader] chapter list error:", error);
       throw error;

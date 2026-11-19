@@ -142,13 +142,13 @@ export async function getChapterPages(
   if (!scraper.getChapterPages) {
     throw new DawghwaError(
       "UNSUPPORTED_CAPABILITY",
-      `${provider.name} does not offer a documented chapter page API, so Dawghwa does not retrieve its pages`,
+      `${provider.name} does not offer an explicit supported chapter page reader, so Dawghwa does not retrieve its pages`,
       { details: { source: provider.id, capability: "chapterPages" } },
     );
   }
   const getPages = scraper.getChapterPages.bind(scraper);
   const out = await getCache().wrap(
-    cacheKey("pages", provider.id, ref.chapterId ?? ref.url, opts.dataSaver ? "ds" : "full"),
+    cacheKey("pages", provider.id, ref.url ?? ref.chapterId, opts.dataSaver ? "ds" : "full"),
     getConfig().cache.policies.pages,
     async () => {
       const { value } = await provider.run("chapterPages", () => getPages(ref, { dataSaver: opts.dataSaver }));

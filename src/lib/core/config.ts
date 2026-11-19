@@ -128,7 +128,7 @@ export function resetConfig(): void {
 export function getConfig(): DawghwaConfig {
   if (cached) return cached;
   cached = {
-    version: process.env.DAWGHWA_VERSION || "1.1.0",
+    version: process.env.DAWGHWA_VERSION || "1.2.0",
     http: {
       userAgent:
         process.env.UPSTREAM_USER_AGENT ||

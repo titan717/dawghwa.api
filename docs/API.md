@@ -181,8 +181,8 @@ or `{ "url": "https://mangadex.org/chapter/<uuid>" }`.
 ```
 
 Notes:
-- MangaDex@Home base URLs are temporary (about 15 minutes), so page lists are cached for only 5 minutes and never served stale. Load the images directly from the returned URLs; Dawghwa does not proxy image bytes.
-- MangaDex asks clients to [report image load success/failure](https://api.mangadex.org/docs/04-chapter/retrieving-chapter/) for its network. That is the client's job, because Dawghwa does not load the images.
+- MangaDex@Home base URLs are temporary (about 15 minutes), so page lists are cached for only 5 minutes and never served stale. Validated MangaDex data/data-saver page URLs, public WEBTOON panel URLs, and public Dynasty Reader page URLs are rewritten to Dawghwa’s restricted /api/image relay. Other providers’ page URLs remain direct unless a provider-specific permitted relay is implemented.
+- MangaDex asks clients to [report image load success/failure](https://api.mangadex.org/docs/04-chapter/retrieving-chapter/) for its network. For accepted *.mangadex.network node URLs, the server-side relay reports success/failure, bytes, duration and cache-hit status to MangaDex@Home asynchronously. uploads.mangadex.org URLs are not @Home nodes and are not reported.
 - Chapters hosted externally (`externalUrl`) are not part of MangaDex chapter lists, so they have no pages here.
 
 ## GET / POST /api/browse
@@ -290,11 +290,16 @@ Rejections return `403 PROXY_FORBIDDEN`.
 
 ## GET /api/image
 
-`GET /api/image?url=https://uploads.mangadex.org/covers/{mangaId}/{file}` relays a MangaDex cover image. MangaDex's cover host shows a bot challenge to browser requests, so `<img>` tags pointing straight at it fail in real browsers.
+GET /api/image?url=... relays validated MangaDex cover/chapter images, public WEBTOON panel images, and public Dynasty Reader pages.
 
-- Only `https://uploads.mangadex.org/covers/{uuid}/{file}` URLs are accepted, including the `.256.jpg` and `.512.jpg` thumbnails. Anything else returns `400 VALIDATION_ERROR`.
-- No client headers or cookies are forwarded, redirects are not followed, and only `image/*` responses up to 5 MB are passed through. On failure it returns `502 UPSTREAM_ERROR`, `504 UPSTREAM_TIMEOUT` or `404`, none of which are cached.
-- Cover file names are content-addressed, so a successful response is `Cache-Control: public, max-age=604800, s-maxage=2592000, immutable`.
+- Covers accept only https://uploads.mangadex.org/covers/{uuid}/{file}, including .256.jpg and .512.jpg thumbnails.
+- MangaDex chapter pages accept only /data/{hash}/{file} and /data-saver/{hash}/{file} paths on the exact MangaDex image hosts accepted by parseMangaDexPageUrl.
+- WEBTOON panels accept only HTTPS image paths on webtoon-phinf.pstatic.net and swebtoon-phinf.pstatic.net, with the optional type=qNN quality parameter.
+- Dynasty Reader pages accept only HTTPS image files hosted on dynasty-scans.com or its subdomains.
+- Arbitrary hosts, URL credentials, non-default ports, query/hash modifiers, unexpected paths, and redirects are rejected. No client headers or cookies are forwarded.
+- Cover responses are limited to 5 MB; chapter pages are limited to 20 MB. Only image/* responses are passed through, with timeouts and CDN/browser caching.
+- This is not a general-purpose proxy. Other providers need explicit provider-specific host/path allowlists before their image bytes can be relayed. WEBTOON extraction reads only public viewer HTML; locked/app-only episodes return unavailable. Dynasty Reader extraction parses its public page manifest as JSON without executing provider JavaScript.
+
 
 ## Catalogue and metadata
 
@@ -435,13 +440,28 @@ All sources count as an expensive request (12/min by default). Lists of up to 3 
 
 ### GET /api/titles/{ref}/chapters?source=
 
-Finds the series on one chosen source and returns that source's chapter list:
+Finds the series on one chosen source and returns that source's chapter list. The response has title, source, sourceId, match, chapters, totalChapters and meta.cache. If the source has no confident match, the response is 404 NOT_FOUND. order is source, asc or desc. minScore and refresh work as above.
 
-```bash
-curl 'localhost:3000/api/titles/al:105398/chapters?source=asurascan&order=desc'
-```
+### GET /api/titles/{ref}/chapters/all
 
-The response has `title`, `source`, `sourceId`, `match` (the matched entry and its score), `chapters`, `totalChapters` and `meta.cache`. If the source has no confident match, the response is `404 NOT_FOUND` with `details.candidates`, so the client can let the user pick a candidate and call `POST /api/chapters` with its URL. `order` is `source`, `asc` or `desc`. `minScore` and `refresh` are the same as above.
+One canonical, deduplicated chapter list for a title, merged across every reader-capable provider (MangaDex, WEBTOON,
+Dynasty Reader). Rows have a stable canonical `key`, exact `number` string, `kind`, `language`, and `variants[]` (one per
+provider upload, with edition, group and match quality). Supports `stream=1` (NDJSON progressive events), `order`,
+`offset`/`limit`, `language` and `refresh`. Partial results are returned when a provider fails or times out.
+Full contract, merge rules and identity evidence: [UNIFIED_CHAPTERS.md](UNIFIED_CHAPTERS.md).
+
+### GET /api/titles/{ref}/identity
+
+Canonical title plus, per reader provider, the linked record and the evidence (exact cross-reference or title + author
+corroboration), and every candidate left for review or rejected.
+
+### GET /api/sources/capabilities
+
+Capability matrix: declared vs live-verified capabilities, live availability and limitations per provider.
+
+### POST /api/reports
+
+Reader-reported failures of a chapter variant and fallback outcomes (202). Never affects routing or circuit state.
 
 ### POST /api/availability
 
