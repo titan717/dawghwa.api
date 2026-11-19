@@ -103,6 +103,17 @@ export function normalizeChapters(
         ...(absolute(raw.group.url, baseUrl) ? { url: absolute(raw.group.url, baseUrl) } : {}),
       };
     }
+    if (raw.chapterLabel === null) c.chapterLabel = null;
+    else if (typeof raw.chapterLabel === "string" && raw.chapterLabel.trim() && raw.chapterLabel.length <= 32) c.chapterLabel = raw.chapterLabel.trim();
+    if (raw.numberSource === "provider" || raw.numberSource === "label" || raw.numberSource === "position") c.numberSource = raw.numberSource;
+    const volume = text(raw.volume);
+    if (volume && volume.length <= 32) c.volume = volume;
+    if (typeof raw.language === "string" && /^[a-z]{2,3}(?:-[a-z0-9]{2,8})?$/i.test(raw.language.trim())) c.language = raw.language.trim().toLowerCase();
+    if (typeof raw.publishedAt === "string" && Number.isFinite(Date.parse(raw.publishedAt))) c.publishedAt = new Date(raw.publishedAt).toISOString();
+    const pages = finite(raw.pages);
+    if (pages !== undefined && pages >= 0) c.pages = Math.round(pages);
+    const sequence = finite(raw.sequence);
+    if (sequence !== undefined && sequence > 0) c.sequence = Math.round(sequence);
     chapters.push(c);
   }
   return { chapters, dropped };

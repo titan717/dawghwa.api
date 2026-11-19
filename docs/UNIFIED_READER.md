@@ -1,5 +1,7 @@
 # Unified multi-source reader
 
+> Superseded in detail by [UNIFIED_CHAPTERS.md](UNIFIED_CHAPTERS.md) (canonical identity, merge rules, capability matrix, fallback). The chapter-matching notes below describe the earlier draft and are kept for history.
+
 This document is the implementation contract for chapter aggregation and in-app page delivery.
 
 ## Current reader-capable adapters

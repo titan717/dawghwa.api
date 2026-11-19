@@ -191,6 +191,13 @@ export class Provider {
           details: { timeoutMs },
         });
       }
+      // An error raised before any upstream request (bad input such as a
+      // missing chapter URL) says nothing about the source's health.
+      const localOnly = stats.upstreamRequests === 0 && error.code === "VALIDATION_ERROR";
+      if (localOnly) {
+        this.breaker.onNeutral();
+        throw error;
+      }
       if (error.code !== "CANCELLED") {
         this.metrics.failures += 1;
         this.metrics.lastFailureAt = new Date().toISOString();

@@ -444,13 +444,24 @@ Finds the series on one chosen source and returns that source's chapter list. Th
 
 ### GET /api/titles/{ref}/chapters/all
 
-Aggregates chapters from operational providers that explicitly support chapter-page retrieval and are not client-only. The route discovers matching source titles, retrieves chapter lists with bounded concurrency, and returns one chronological list with source-specific variants.
+One canonical, deduplicated chapter list for a title, merged across every reader-capable provider (MangaDex, WEBTOON,
+Dynasty Reader). Rows have a stable canonical `key`, exact `number` string, `kind`, `language`, and `variants[]` (one per
+provider upload, with edition, group and match quality). Supports `stream=1` (NDJSON progressive events), `order`,
+`offset`/`limit`, `language` and `refresh`. Partial results are returned when a provider fails or times out.
+Full contract, merge rules and identity evidence: [UNIFIED_CHAPTERS.md](UNIFIED_CHAPTERS.md).
 
-Each chapter includes a stable key, number, optional title, and variants[] with sourceId, source, providerChapterId, source chapter URL and optional scanlation group. Same positive chapter number + normalized non-empty title are grouped as possible variants. Untitled/special rows remain source-specific.
+### GET /api/titles/{ref}/identity
 
-The current scraper contract does not expose a reliable per-chapter language field. Therefore language is null and languageVerified is false: a grouped entry is not a guarantee that translations or editions are identical. Clients must let readers choose a variant and must not silently change language.
+Canonical title plus, per reader provider, the linked record and the evidence (exact cross-reference or title + author
+corroboration), and every candidate left for review or rejected.
 
-The response also includes per-source chapter retrieval status, skipped sources and summary counts. limit defaults to 32 and accepts 1–64; refresh bypasses cached title/chapter results. This is an expensive endpoint and consumes one token from the expensive rate-limit bucket.
+### GET /api/sources/capabilities
+
+Capability matrix: declared vs live-verified capabilities, live availability and limitations per provider.
+
+### POST /api/reports
+
+Reader-reported failures of a chapter variant and fallback outcomes (202). Never affects routing or circuit state.
 
 ### POST /api/availability
 

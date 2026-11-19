@@ -12,6 +12,23 @@ export interface ScrapedChapter {
   isDownloaded?: boolean;
   lastUpdated?: string;
   group?: ScanlationGroup;
+  /**
+   * Unified-reader metadata (optional; filled by adapters that can supply it).
+   * `number` stays for compatibility but is lossy ("1.10" == "1.1"), so the
+   * aggregation engine prefers `chapterLabel`.
+   */
+  /** Chapter number exactly as the provider wrote it ("10.5", "0"); null when the provider has none. */
+  chapterLabel?: string | null;
+  /** How `number` was produced: by the provider, parsed from the title, or invented from list position. */
+  numberSource?: "provider" | "label" | "position";
+  volume?: string;
+  /** Translation language (ISO 639-1 / BCP-47, e.g. "en", "pt-br"). */
+  language?: string;
+  /** ISO-8601 publication time. */
+  publishedAt?: string;
+  pages?: number;
+  /** 1-based position in the provider's own ascending order. */
+  sequence?: number;
 }
 
 export interface SearchResult {

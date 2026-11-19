@@ -86,6 +86,26 @@ export class WebtoonScraper extends BaseScraper {
     return pages;
   }
 
+  /** WEBTOON serves each translation under a language path (/en/, /es/, /fr/, /zh-hant/ ...). */
+  languageOf(url: string): string {
+    try {
+      const first = new URL(url).pathname.split("/")[1]?.toLowerCase() ?? "";
+      if (/^[a-z]{2}(?:-[a-z]{2,4})?$/.test(first)) return first;
+    } catch {
+      /* fall through */
+    }
+    return "en";
+  }
+
+  /** Identity hints from the public series page (author meta tag). */
+  async getIdentityHints(mangaUrl: string): Promise<{ title: string; altTitles: string[]; authors: string[] }> {
+    const html = await this.fetchWithRetry(this.buildListUrl(mangaUrl, 1));
+    const $ = cheerio.load(html);
+    const title = $("meta[property='og:title']").attr("content")?.trim() || $(".detail_header .subj").first().text().trim();
+    const author = $("meta[property='com-linewebtoon:webtoon:author']").attr("content")?.trim() || "";
+    return { title, altTitles: [], authors: author.split(/\s*[,/]\s*/).filter(Boolean) };
+  }
+
   private getAppLockedCount($: cheerio.CheerioAPI): number {
     const lockedText = $(".detail_install_app strong em").first().text().trim();
     return parseInt(lockedText, 10) || 0;
@@ -126,12 +146,21 @@ export class WebtoonScraper extends BaseScraper {
       const dateText = $episode.find(".date").text().trim();
 
       seenEpisodes.add(episodeNo);
+      const label = title || `Episode ${episodeNo}`;
+      const published = Date.parse(dateText);
       chapters.push({
         id: `${episodeNo}`,
         number: episodeNo,
-        title: title || `Episode ${episodeNo}`,
+        // The episode_no is WEBTOON's list position (prologues and notices
+        // count), so the chapter number comes from the label when it has one.
+        chapterLabel: null,
+        numberSource: "position",
+        title: label,
         url: fullUrl,
         lastUpdated: dateText || undefined,
+        ...(Number.isFinite(published) ? { publishedAt: new Date(published).toISOString() } : {}),
+        language: this.languageOf(fullUrl),
+        sequence: episodeNo,
       });
     });
   }
@@ -151,7 +180,54 @@ export class WebtoonScraper extends BaseScraper {
     return found;
   }
 
+  /**
+   * Full public episode list from the mobile site's JSON list (one request
+   * instead of one HTML page per 10 episodes). Only episodes WEBTOON lists
+   * publicly are returned; Fast Pass / app-only episodes are not requested.
+   */
+  private async getEpisodeListJson(mangaUrl: string): Promise<ScrapedChapter[] | undefined> {
+    const url = new URL(mangaUrl);
+    const titleNo = url.searchParams.get("title_no");
+    if (!titleNo || !/^\d{1,9}$/.test(titleNo)) return undefined;
+    const language = this.languageOf(mangaUrl);
+    const response = await this.http(`https://m.webtoons.com/api/v1/webtoon/${titleNo}/episodes?pageSize=99999`, {
+      headers: {
+        "User-Agent": this.config.userAgent,
+        Accept: "application/json",
+        Referer: "https://m.webtoons.com/",
+      },
+    });
+    if (!response.ok) return undefined;
+    const body = (await response.json().catch(() => undefined)) as
+      | { result?: { episodeList?: { episodeNo?: number; episodeTitle?: string; viewerLink?: string; exposureDateMillis?: number }[] } }
+      | undefined;
+    const list = body?.result?.episodeList;
+    if (!Array.isArray(list) || !list.length) return undefined;
+    const out: ScrapedChapter[] = [];
+    for (const ep of list) {
+      if (!Number.isInteger(ep.episodeNo) || !ep.viewerLink || !ep.viewerLink.startsWith("/")) continue;
+      const viewer = new URL(ep.viewerLink, this.BASE_URL);
+      if (!viewer.pathname.endsWith("/viewer")) continue;
+      // The JSON list is served from the English mobile site; keep the language path of the series URL.
+      const title = (ep.episodeTitle || "").trim() || `Episode ${ep.episodeNo}`;
+      out.push({
+        id: String(ep.episodeNo),
+        number: ep.episodeNo!,
+        chapterLabel: null,
+        numberSource: "position",
+        title,
+        url: viewer.toString(),
+        ...(ep.exposureDateMillis ? { publishedAt: new Date(ep.exposureDateMillis).toISOString() } : {}),
+        language,
+        sequence: ep.episodeNo,
+      });
+    }
+    return out.sort((a, b) => a.number - b.number);
+  }
+
   async getChapterList(mangaUrl: string): Promise<ScrapedChapter[]> {
+    const fast = await this.getEpisodeListJson(mangaUrl).catch(() => undefined);
+    if (fast?.length) return fast;
     const chapters: ScrapedChapter[] = [];
     const seenEpisodes = new Set<number>();
 
