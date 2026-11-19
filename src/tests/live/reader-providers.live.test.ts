@@ -86,7 +86,7 @@ describe.runIf(process.env.LIVE_TESTS === "1")("native reader providers (live)",
     ["asurascan", "solo"],
     ["thunderscans", "the"],
     ["mangakatana", "solo"],
-    ["stonescape", "the"],
+    ["kayn-scans", "solo"],
   ])("%s: own chapter list -> real pages -> images, in order", async (id, query) => {
     const provider = getRegistry().get(id)!;
     const results = await provider.scraper.search(query);

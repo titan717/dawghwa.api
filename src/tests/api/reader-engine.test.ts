@@ -11,10 +11,13 @@ describe("GET /api/sources/capabilities", () => {
     expect(res.status).toBe(200);
     const body = (await res.json()) as { providers: { id: string; declared: { pages: boolean }; verified: { nativeReader: boolean } }[]; totals: Record<string, number> };
     const verified = body.providers.filter((p) => p.verified.nativeReader).map((p) => p.id).sort();
-    expect(verified).toEqual(Object.keys(READER_VERIFICATION).sort());
-    // verified implies an implemented page API
-    for (const p of body.providers) if (p.verified.nativeReader) expect(p.declared.pages).toBe(true);
+    const ledgerNative = Object.entries(READER_VERIFICATION).filter(([, v]) => v.nativeReader).map(([id]) => id).sort();
+    expect(verified).toEqual(ledgerNative);
+    // any live-verified page path implies an implemented page API
+    for (const p of body.providers) if (READER_VERIFICATION[p.id]?.pages) expect(p.declared.pages, p.id).toBe(true);
+    for (const id of Object.keys(READER_VERIFICATION)) expect(body.providers.some((p) => p.id === id), id).toBe(true);
     expect(body.totals.nativeReaderVerified).toBe(verified.length);
+    expect(body.totals.pagesVerified).toBe(Object.values(READER_VERIFICATION).filter((v) => v.pages && v.imageDelivery).length);
     expect(body.totals.registered).toBeGreaterThan(verified.length);
   });
 });

@@ -13,7 +13,9 @@ export const dynamic = "force-dynamic";
  * Honest capability matrix. `declared` is what an adapter implements;
  * `verified` is only true for providers in the live-verification ledger.
  * `nativeReaderVerified` counts only providers whose full reading path was
- * proven end-to-end against the live provider.
+ * proven end-to-end in the app against the live provider; `pagesVerified`
+ * counts providers whose live chapter pages and image bytes were verified
+ * through /api/pages and /api/image.
  */
 export const GET = route(async (_req, ctx) => {
   const rows = getRegistry()
@@ -53,7 +55,7 @@ export const GET = route(async (_req, ctx) => {
           lastErrorCode: m.lastErrorCode ?? null,
           readerReports: reportsFor(p.id) ?? null,
         },
-        limitations: v?.limitations ?? (p.capabilities.chapterPages ? ["Not live-verified"] : ["No permitted page API; not readable in the native reader"]),
+        limitations: v?.limitations ?? (p.capabilities.chapterPages ? ["Not live-verified"] : ["No working, permitted page extraction; see docs/PAGE_EXTRACTION.md"]),
       };
     });
   const count = (f: (r: (typeof rows)[number]) => boolean) => rows.filter(f).length;
@@ -63,6 +65,7 @@ export const GET = route(async (_req, ctx) => {
       totals: {
         registered: rows.length,
         declaredPages: count((r) => r.declared.pages),
+        pagesVerified: count((r) => r.verified.pages && r.verified.imageDelivery),
         nativeReaderVerified: count((r) => r.verified.nativeReader),
       },
     },

@@ -192,22 +192,6 @@ describe("provider-specific behaviour on real markup", () => {
     expect(await codeOf(pagesFor(mangapeak!, text))).toBe("PAGES_NOT_FOUND");
   });
 
-  const stonescape = byId.get("stonescape");
-  it("Stonescape: canvas-protected page delivery is PAGES_PROTECTED", async () => {
-    expect(stonescape).toBeDefined();
-    const protectedPages = stonescape!.responses.map((r) =>
-      r.url.endsWith("/pages") ? { ...r, text: r.text.replace(/"delivery":"public"/g, '"delivery":"protected"') } : r,
-    );
-    expect(await codeOf(pagesFor(stonescape!, protectedPages))).toBe("PAGES_PROTECTED");
-  });
-
-  it("Stonescape: a locked (coin) chapter is CHAPTER_LOCKED", async () => {
-    const locked = stonescape!.responses.map((r) =>
-      r.url.includes("/by-slug/") ? { ...r, text: r.text.replace(/"locked":false/g, '"locked":true') } : r,
-    );
-    expect(await codeOf(pagesFor(stonescape!, locked))).toBe("CHAPTER_LOCKED");
-  });
-
   const kappa = byId.get("kappabeast");
   it("KappaBeast: a chapter inside its early-access window is CHAPTER_LOCKED", async () => {
     expect(kappa).toBeDefined();
@@ -291,7 +275,7 @@ describe("page image allowlist rules", () => {
 
 describe("capability reporting", () => {
   /** Providers investigated and documented as not readable (docs/PAGE_EXTRACTION.md). */
-  const DOCUMENTED_UNSUPPORTED = ["mangago", "swarm", "rinko-comics", "novelcool"];
+  const DOCUMENTED_UNSUPPORTED = ["mangago", "swarm", "rinko-comics", "novelcool", "hive-toon", "baetoon", "ks-group", "stonescape"];
 
   it("chapterPages is true exactly when the adapter implements getChapterPages", () => {
     for (const p of getRegistry().all()) {
