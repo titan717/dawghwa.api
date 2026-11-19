@@ -29,7 +29,7 @@ async function all(ref: string): Promise<AllBody> {
 const MAGIC: [string, string][] = [["ffd8ff", "image/jpeg"], ["89504e47", "image/png"], ["52494646", "image/webp"], ["47494638", "image/gif"]];
 
 async function readChapter(v: Variant) {
-  const res = await pagesPOST(post("/api/pages", v.sourceId === "webtoon" ? { source: v.sourceId, url: v.url } : { source: v.sourceId, chapterId: v.providerChapterId }), { params: {} });
+  const res = await pagesPOST(post("/api/pages", v.sourceId === "webtoon" ? { source: v.sourceId, url: v.url } : { source: v.sourceId, chapterId: v.providerChapterId }));
   expect(res.status).toBe(200);
   const body = (await res.json()) as { pages: { url: string }[]; totalPages: number };
   expect(body.totalPages).toBeGreaterThan(0);

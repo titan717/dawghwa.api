@@ -7,7 +7,7 @@ import { get, post } from "./request";
 
 describe("GET /api/sources/capabilities", () => {
   it("only reports native-reader verification for ledger providers", async () => {
-    const res = await capabilitiesGET(get("/api/sources/capabilities"), { params: {} });
+    const res = await capabilitiesGET(get("/api/sources/capabilities"));
     expect(res.status).toBe(200);
     const body = (await res.json()) as { providers: { id: string; declared: { pages: boolean }; verified: { nativeReader: boolean } }[]; totals: Record<string, number> };
     const verified = body.providers.filter((p) => p.verified.nativeReader).map((p) => p.id).sort();
@@ -22,10 +22,10 @@ describe("GET /api/sources/capabilities", () => {
 describe("POST /api/reports", () => {
   it("accepts reader failure reports without touching provider health", async () => {
     resetReports();
-    const res = await reportsPOST(post("/api/reports", { sourceId: "mangadex", kind: "pages", fallback: { attempted: true, succeeded: true, toSourceId: "dynasty-reader" } }), { params: {} });
+    const res = await reportsPOST(post("/api/reports", { sourceId: "mangadex", kind: "pages", fallback: { attempted: true, succeeded: true, toSourceId: "dynasty-reader" } }));
     expect(res.status).toBe(202);
     expect(await res.json()).toMatchObject({ accepted: true, totals: { total: 1, fallbacks: 1, fallbackSucceeded: 1 } });
-    const caps = (await (await capabilitiesGET(get("/api/sources/capabilities"), { params: {} })).json()) as { providers: { id: string; availability: { circuit: string; failures: number; readerReports: { total: number } } }[] };
+    const caps = (await (await capabilitiesGET(get("/api/sources/capabilities"))).json()) as { providers: { id: string; availability: { circuit: string; failures: number; readerReports: { total: number } } }[] };
     const md = caps.providers.find((p) => p.id === "mangadex")!;
     expect(md.availability.readerReports.total).toBe(1);
     expect(md.availability.failures).toBe(0);
@@ -33,7 +33,7 @@ describe("POST /api/reports", () => {
   });
 
   it("validates input", async () => {
-    expect((await reportsPOST(post("/api/reports", { sourceId: "mangadex", kind: "nope" }), { params: {} })).status).toBe(400);
-    expect((await reportsPOST(post("/api/reports", { sourceId: "no-such-source", kind: "pages" }), { params: {} })).status).toBe(404);
+    expect((await reportsPOST(post("/api/reports", { sourceId: "mangadex", kind: "nope" }))).status).toBe(400);
+    expect((await reportsPOST(post("/api/reports", { sourceId: "no-such-source", kind: "pages" }))).status).toBe(404);
   });
 });
