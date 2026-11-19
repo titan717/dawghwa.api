@@ -3,6 +3,9 @@ import { currentContext } from "@/lib/core/context";
 import { upstreamFetch, upstreamText } from "@/lib/core/http";
 import { sleep } from "@/lib/core/retry";
 import { getConfig } from "@/lib/core/config";
+import { DawghwaError, UpstreamHttpError } from "@/lib/core/errors";
+import { finalizePages, pagesNotFound, type RawPage } from "./pages/extract";
+import { matchesImageRules, type ImageRule } from "./pages/policy";
 
 interface ScraperConfig {
   retryAttempts: number;
@@ -84,13 +87,84 @@ export abstract class BaseScraper {
   }
 
   /**
-   * Chapter page (image) retrieval. Only implemented by adapters whose provider
-   * offers a documented, permitted API for it (see docs/API.md#chapter-pages).
+   * Chapter page (image) retrieval through the provider's own public reader.
+   * Implemented only where extraction was verified against the live provider
+   * (see docs/PAGE_EXTRACTION.md). Never bypasses locks, logins, paywalls or
+   * anti-bot challenges; those surface as CHAPTER_LOCKED / UPSTREAM_BLOCKED.
    */
   getChapterPages?(chapter: { chapterId?: string; url?: string }, options?: { dataSaver?: boolean }): Promise<ChapterPage[]>;
 
   supportsChapterPages(): boolean {
     return typeof this.getChapterPages === "function";
+  }
+
+  /**
+   * Hosts that serve this provider's page images. /api/image relays only
+   * these. Adapters that implement getChapterPages must declare them.
+   */
+  pageImageRules(): ImageRule[] {
+    return [];
+  }
+
+  /** Referer the provider's own reader sends with image requests. */
+  pageImageReferer(): string {
+    return `${this.getBaseUrl().replace(/\/$/, "")}/`;
+  }
+
+  /**
+   * User-Agent for page image requests: "identifying" (Dawghwa's own UA, for
+   * providers with an API etiquette) or "browser" (the same UA used for the
+   * provider's HTML pages, for plain image CDNs).
+   */
+  pageImageUserAgent(): "identifying" | "browser" {
+    return "browser";
+  }
+
+  /** Validated page image URL, or null when it is not one of this provider's page hosts. */
+  allowPageImage(raw: string | URL | null | undefined): URL | null {
+    if (!raw) return null;
+    let u: URL;
+    try {
+      u = typeof raw === "string" ? new URL(raw) : raw;
+    } catch {
+      return null;
+    }
+    return matchesImageRules(u, this.pageImageRules()) ? u : null;
+  }
+
+  /** The chapter reader URL from a page request; it must belong to this provider. */
+  protected requireChapterUrl(ref: { chapterId?: string; url?: string }): string {
+    if (!ref.url) {
+      throw new DawghwaError("VALIDATION_ERROR", `${this.getName()} chapters are addressed by their reader URL; pass the chapter url`);
+    }
+    if (!this.canHandle(ref.url)) {
+      throw new DawghwaError("VALIDATION_ERROR", `That URL is not a ${this.getName()} chapter`);
+    }
+    return ref.url;
+  }
+
+  /** Normalize + validate raw pages against this provider's image hosts. */
+  protected finalize(raw: RawPage[], base: string) {
+    return finalizePages(raw, { base, source: this.getName(), allow: (u) => this.allowPageImage(u) !== null });
+  }
+
+  /**
+   * Fetch the chapter reader page and run an engine page locator over it.
+   * `html` is the provider's own public reader HTML; nothing is unlocked.
+   */
+  protected async readerPages(ref: { chapterId?: string; url?: string }, locate: (html: string, source: string) => RawPage[]) {
+    const url = this.requireChapterUrl(ref);
+    const res = await this.http(url);
+    if (!res.ok) throw new UpstreamHttpError(res.status, url);
+    // Removed chapters on WordPress sites redirect to the site root; that is
+    // "no pages", not a reader format change.
+    const landed = res.url ? new URL(res.url) : undefined;
+    if (landed && landed.pathname.replace(/\/+$/, "") === "" && new URL(url).pathname.replace(/\/+$/, "") !== "") {
+      await res.body?.cancel().catch(() => undefined);
+      throw pagesNotFound(this.getName(), "has removed this chapter (its link redirects to the home page)");
+    }
+    const html = await res.text();
+    return this.finalize(locate(html, this.getName()), url);
   }
 
   /**

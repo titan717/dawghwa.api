@@ -26,6 +26,14 @@ export const ERROR_CODES = {
   UPSTREAM_RESPONSE_TOO_LARGE: 502,
   UPSTREAM_ERROR: 502,
   PROXY_FORBIDDEN: 403,
+  /** The provider marks the chapter as locked (paid, coins, early access, login). Never bypassed. */
+  CHAPTER_LOCKED: 403,
+  /** The chapter resolved but has no page images. */
+  PAGES_NOT_FOUND: 404,
+  /** Pages are scrambled/encrypted by the provider; Dawghwa does not defeat that protection. */
+  PAGES_PROTECTED: 422,
+  /** The reader page no longer matches the extractor (provider changed its markup or image hosts). */
+  PAGE_FORMAT_CHANGED: 502,
   CANCELLED: 499,
   INTERNAL_ERROR: 500,
 } as const;

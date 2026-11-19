@@ -3,7 +3,6 @@ import { booleanish, httpUrlSchema, json, readJson, route, sourceIdSchema } from
 import { DawghwaError } from "@/lib/core/errors";
 import { getRegistry } from "@/lib/providers/registry";
 import { getChapterPages, resolveSourceUrl } from "@/lib/services/catalog";
-import { parseMangaDexPageUrl, parseWebtoonPageUrl, parseDynastyPageUrl } from "@/lib/services/cover-image";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -23,9 +22,12 @@ const bodySchema = z
 /**
  * POST /api/pages  { source, chapterId } | { url, source? }
  *
- * Returns image URLs for one chapter, only for sources whose provider offers a
- * documented, permitted page API (capabilities.chapterPages). Image bytes are
- * never proxied by Dawghwa.
+ * Returns the ordered page images of one chapter from the provider's own
+ * reader, for sources with capabilities.chapterPages. Dispatches to the
+ * selected provider's adapter (no MangaDex-specific ids are assumed); page
+ * URLs are rewritten to /api/image?source=<id> so bytes are relayed only from
+ * that provider's declared image hosts. Locked chapters -> 403 CHAPTER_LOCKED,
+ * empty -> 404 PAGES_NOT_FOUND, scrambled -> 422 PAGES_PROTECTED.
  */
 export const POST = route(async (req, ctx) => {
   const body = await readJson(req, bodySchema);
@@ -41,17 +43,13 @@ export const POST = route(async (req, ctx) => {
     ref = { chapterId: body.chapterId };
   }
   const r = await getChapterPages(provider, ref, { dataSaver: body.dataSaver, forceRefresh: body.refresh });
+  // Every page is served through /api/image, scoped to this provider's page hosts.
   const pages = r.pages.map((page) => {
-    const allowed = provider.id === "mangadex"
-      ? parseMangaDexPageUrl(page.url)
-      : provider.id === "webtoon"
-        ? parseWebtoonPageUrl(page.url)
-        : provider.id === "dynasty-reader"
-          ? parseDynastyPageUrl(page.url)
-          : null;
+    const allowed = provider.scraper.allowPageImage(page.url);
     if (!allowed) return page;
     const image = new URL("/api/image", req.nextUrl.origin);
     image.searchParams.set("url", allowed.toString());
+    image.searchParams.set("source", provider.id);
     return { ...page, url: image.toString() };
   });
   return json(
