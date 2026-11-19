@@ -1,5 +1,7 @@
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { webtoonclubPages } from "./pages/strategies";
+import { type ImageRule } from "./pages/policy";
 
 interface ApiSearchItem {
   id: number;
@@ -163,5 +165,13 @@ export class WebtoonClubScraper extends BaseScraper {
         };
       }),
     );
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "webtoonclub.com", pathPrefix: "/uploads/" }];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, webtoonclubPages("https://webtoonclub.com"));
   }
 }

@@ -1,5 +1,7 @@
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { chapterLocked, formatChanged, pagesNotFound } from "./pages/extract";
+import type { ImageRule } from "./pages/policy";
 
 interface GuyaListEntry {
   slug: string;
@@ -10,6 +12,7 @@ interface GuyaListEntry {
 
 interface GuyaChapter {
   title?: string;
+  folder?: string;
   is_public?: boolean;
   groups: Record<string, unknown>;
   release_date?: Record<string, number>;
@@ -201,5 +204,41 @@ export class DankeScraper extends BaseScraper {
       console.error("[Danke fürs Lesen] Search error:", error);
       throw error;
     }
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "danke.moe", pathPrefix: "/media/manga/" }];
+  }
+
+  /**
+   * Guya reader: pages come from the public series API (the reader's own
+   * source): chapters[key].groups[groupId] is the ordered file list, served
+   * from /media/manga/<slug>/chapters/<folder>/<groupId>/<file>. The group is
+   * the one the chapter list chose (pickGroup), so the edition never changes.
+   */
+  async getChapterPages(ref: { chapterId?: string; url?: string }) {
+    const url = this.requireChapterUrl(ref);
+    const m = new URL(url).pathname.match(/^\/read\/manga\/([^/]+)\/([^/]+)\//);
+    if (!m) throw formatChanged(this.getName(), "a Guya chapter URL");
+    const slug = decodeURIComponent(m[1]);
+    const key = m[2].replace(/-/g, ".");
+    const series = await this.fetchJson<GuyaSeries>(`/api/series/${encodeURIComponent(slug)}/`);
+    const chapter = series.chapters?.[key];
+    if (!chapter) throw pagesNotFound(this.getName(), "has no such chapter in its series data");
+    if (chapter.is_public === false) throw chapterLocked(this.getName(), "not public");
+    const group = this.pickGroup(chapter, series.groups || {});
+    const files = group ? chapter.groups[group.id] : undefined;
+    if (!group || !chapter.folder) throw formatChanged(this.getName(), "the chapter folder/group");
+    if (!Array.isArray(files)) throw formatChanged(this.getName(), "the chapter page list");
+    const base = `${this.BASE_URL}/media/manga/${encodeURIComponent(slug)}/chapters/${encodeURIComponent(chapter.folder)}/${encodeURIComponent(group.id)}/`;
+    return this.finalize(
+      // file names may carry a cache-buster query ("1.png?v2") that the reader keeps
+      files.map((file) => {
+        if (typeof file !== "string") return { url: undefined };
+        const [name, query] = file.split(/\?(.*)/s);
+        return { url: base + encodeURIComponent(name) + (query ? `?${query}` : "") };
+      }),
+      url,
+    );
   }
 }

@@ -1,6 +1,8 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { nextCmsPages } from "./pages/strategies";
+import { type ImageRule } from "./pages/policy";
 
 interface ElfSearchSeries {
   id: string;
@@ -207,5 +209,13 @@ export class ElfToonScraper extends BaseScraper {
         };
       }),
     );
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "elftoon.net", pathPrefix: "/uploads/" }];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, nextCmsPages);
   }
 }

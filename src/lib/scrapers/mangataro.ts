@@ -1,6 +1,8 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { mangapeakPages } from "./pages/mangapeak";
+import type { ImageRule } from "./pages/policy";
 
 export class MangataroScraper extends BaseScraper {
   private readonly BASE_URL = "https://mangataro.org";
@@ -396,5 +398,14 @@ export class MangataroScraper extends BaseScraper {
     );
 
     return resultsWithChapterInfo.slice(0, 5);
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "mangataro.yachts", pathPrefix: "/storage/chapters/" }];
+  }
+
+  async getChapterPages(ref: { chapterId?: string; url?: string }) {
+    const url = this.requireChapterUrl(ref);
+    return this.finalize(await mangapeakPages((u, init) => this.http(u, init), url, this.getName()), url);
   }
 }

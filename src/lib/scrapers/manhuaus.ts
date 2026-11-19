@@ -2,6 +2,8 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult } from "@/types";
+import { madaraPages } from "./pages/strategies";
+import { photon, type ImageRule } from "./pages/policy";
 
 export class ManhuausScraper extends BaseScraper {
   private readonly BASE_URL = "https://manhuaus.club";
@@ -204,5 +206,13 @@ export class ManhuausScraper extends BaseScraper {
     });
 
     return results;
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "manhuaus.club", pathPrefix: "/wp-content/uploads/" }, ...photon("manhuaus.club")];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, madaraPages);
   }
 }

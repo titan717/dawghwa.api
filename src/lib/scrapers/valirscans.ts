@@ -1,6 +1,8 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { nextCmsPages } from "./pages/strategies";
+import { type ImageRule } from "./pages/policy";
 
 interface ValirSearchSeries {
   id: string;
@@ -210,5 +212,13 @@ export class ValirScansScraper extends BaseScraper {
         };
       }),
     );
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "media.valirscans.org", pathPrefix: "/series/" }];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, nextCmsPages);
   }
 }

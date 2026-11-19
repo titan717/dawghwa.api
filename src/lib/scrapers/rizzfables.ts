@@ -2,6 +2,8 @@
 import * as cheerio from 'cheerio';
 import { BaseScraper } from './base';
 import { ScrapedChapter, SearchResult, SourceType } from '@/types';
+import { themesiaPages } from "./pages/strategies";
+import { type ImageRule } from "./pages/policy";
 
 export class RizzFablesScraper extends BaseScraper {
   getName(): string {
@@ -189,5 +191,17 @@ export class RizzFablesScraper extends BaseScraper {
         };
       }
     }));
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "cdn.55779955.xyz", pathPrefix: "/file/roraor/" }];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    // The reader appends a site-wide credit banner from cdn.rizzfables.com
+    // (currently HTTP 526); it is not chapter content.
+    return this.readerPages(ref, (html, source) =>
+      themesiaPages(html, source).filter((p) => !/^https:\/\/cdn\.rizzfables\.com\//.test(p.url ?? "")),
+    );
   }
 }

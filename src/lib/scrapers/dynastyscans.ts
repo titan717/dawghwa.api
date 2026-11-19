@@ -1,6 +1,7 @@
 import { DawghwaError } from "@/lib/core/errors";
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
+import { parseDynastyPageUrl } from "@/lib/services/cover-image";
 import { ChapterPage, ScrapedChapter, SearchResult, SourceType } from "@/types";
 
 interface DynastyTag {
@@ -29,6 +30,14 @@ export class DynastyScansScraper extends BaseScraper {
 
   getName(): string {
     return "Dynasty Reader";
+  }
+
+  override allowPageImage(raw: string | URL | null | undefined): URL | null {
+    return raw ? parseDynastyPageUrl(raw.toString()) : null;
+  }
+
+  pageImageUserAgent(): "identifying" | "browser" {
+    return "identifying";
   }
 
   getBaseUrl(): string {

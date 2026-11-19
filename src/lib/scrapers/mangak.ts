@@ -1,5 +1,7 @@
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult } from "@/types";
+import { nextDataPages } from "./pages/strategies";
+import { type ImageRule } from "./pages/policy";
 
 interface MangaKChapterRef {
   name: string;
@@ -141,5 +143,13 @@ export class MangaKScraper extends BaseScraper {
         rating: item.rating,
       };
     });
+  }
+
+  pageImageRules(): ImageRule[] {
+    return "abcdefghijklmnopqrstuvwxyz".split("").map((c) => ({ host: `rx.qvzr${c}.org`, pathPrefix: "/r/p/" }));
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, nextDataPages);
   }
 }

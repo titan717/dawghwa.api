@@ -1,6 +1,8 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { flightUrlList } from "./pages/strategies";
+import { type ImageRule } from "./pages/policy";
 
 interface RscChapter {
   id: string;
@@ -195,5 +197,13 @@ export class BaeToonScraper extends BaseScraper {
     });
 
     return results;
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "bulbasaur.poke-black-and-white.net", pathPrefix: "/storage/" }];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, flightUrlList("pages"));
   }
 }

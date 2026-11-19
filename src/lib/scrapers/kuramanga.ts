@@ -2,6 +2,8 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { domPages } from "./pages/strategies";
+import { type ImageRule } from "./pages/policy";
 
 export class KuramangaScraper extends BaseScraper {
   private readonly BASE_URL = "https://kuramanga.com";
@@ -156,5 +158,13 @@ export class KuramangaScraper extends BaseScraper {
       console.error("[KuraManga] Search error:", error);
       throw error;
     }
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "shadowabyss.com", pathPrefix: "/manhwa/" }];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, domPages("#chapterImages img"));
   }
 }

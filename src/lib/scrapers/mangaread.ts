@@ -2,6 +2,8 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult } from "@/types";
+import { madaraPages } from "./pages/strategies";
+import { type ImageRule } from "./pages/policy";
 
 export class MangaReadScraper extends BaseScraper {
   getName(): string {
@@ -175,5 +177,13 @@ export class MangaReadScraper extends BaseScraper {
     });
 
     return results;
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "www.mangaread.org", pathPrefix: "/wp-content/uploads/" }, { host: "mangaread.org", pathPrefix: "/wp-content/uploads/" }];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, madaraPages);
   }
 }

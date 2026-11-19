@@ -2,6 +2,8 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { themesiaPages } from "./pages/strategies";
+import { photon, type ImageRule } from "./pages/policy";
 
 export class ThunderscansScraper extends BaseScraper {
   private readonly BASE_URL = "https://en-thunderscans.com";
@@ -230,5 +232,13 @@ export class ThunderscansScraper extends BaseScraper {
     }
 
     return results;
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "en-thunderscans.com", pathPrefix: "/wp-content/uploads/" }, ...photon("en-thunderscans.com")];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, themesiaPages);
   }
 }

@@ -2,6 +2,8 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { madaraPages } from "./pages/strategies";
+import { photon, type ImageRule } from "./pages/policy";
 
 export class MangasushiScraper extends BaseScraper {
   private readonly BASE_URL = "https://mangasushi.org";
@@ -234,5 +236,13 @@ export class MangasushiScraper extends BaseScraper {
     }
 
     return results;
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "mangasushi.org", pathPrefix: "/wp-content/uploads/" }, ...photon("mangasushi.org")];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, madaraPages);
   }
 }

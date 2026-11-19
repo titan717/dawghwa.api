@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BaseScraper } from './base';
 import { ScrapedChapter, SearchResult, SourceType } from '@/types';
+import { chapterLocked, formatChanged, pagesNotFound, pagesProtected } from './pages/extract';
+import type { ImageRule } from './pages/policy';
 
 export class StonescapeScraper extends BaseScraper {
   getName(): string {
@@ -128,5 +130,34 @@ export class StonescapeScraper extends BaseScraper {
         lastUpdatedTimestamp: Number.isFinite(timestamp) ? timestamp : undefined,
       };
     });
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: 'stonescape.xyz', pathPrefix: '/pub/public-content/' }];
+  }
+
+  /**
+   * Stonescape's reader (ReaderView) resolves the chapter from
+   * `/api/series/by-slug/<slug>/chapters`, then loads `/api/chapters/<id>/pages`.
+   * Only pages with `delivery: "public"` are plain images; "protected" pages
+   * are rendered through the provider's canvas pipeline and are refused.
+   */
+  async getChapterPages(ref: { chapterId?: string; url?: string }) {
+    const url = this.requireChapterUrl(ref);
+    const m = new URL(url).pathname.match(/^\/series\/([a-z0-9-]+)\/ch-([0-9.]+)\/?$/);
+    if (!m) throw formatChanged(this.getName(), 'a Stonescape chapter URL');
+    const list = await this.fetchJson(`/api/series/by-slug/${encodeURIComponent(m[1])}/chapters`);
+    const wanted = parseFloat(m[2]);
+    const chapter = (list?.chapters ?? []).find((c: any) => parseFloat(c?.chapterNumber) === wanted && c?.status === 'published');
+    if (!chapter) throw pagesNotFound(this.getName(), 'has no published chapter with that number');
+    if (chapter.locked || (chapter.accessMode !== 'free' && !chapter.isFreeNow)) throw chapterLocked(this.getName());
+    const data = await this.fetchJson(`/api/chapters/${encodeURIComponent(chapter.chapterId)}/pages`);
+    const pages: any[] = Array.isArray(data?.pages) ? data.pages : [];
+    if (!pages.length) throw pagesNotFound(this.getName());
+    if (pages.some((p) => p?.delivery !== 'public')) throw pagesProtected(this.getName(), 'protected page delivery');
+    return this.finalize(
+      pages.map((p) => ({ url: typeof p.url === 'string' ? p.url : undefined, order: p.pageNumber, width: p.width, height: p.height })),
+      url,
+    );
   }
 }

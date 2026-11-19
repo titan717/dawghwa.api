@@ -2,6 +2,10 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { domPages } from "./pages/strategies";
+import { formatChanged, pagesNotFound } from "./pages/extract";
+import { UpstreamHttpError } from "@/lib/core/errors";
+import { type ImageRule } from "./pages/policy";
 
 export class ManhuaPlusScraper extends BaseScraper {
   getName(): string {
@@ -144,5 +148,36 @@ export class ManhuaPlusScraper extends BaseScraper {
       });
 
     return results;
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "cdn.manhuaplus.cc" }];
+  }
+
+  /**
+   * The reader page ships placeholders and then replaces #image_container with
+   * the HTML returned by `POST /ajax/image/list/chap/<CHAPTER_ID>` (robots.txt
+   * allows it). The same call is made here, with the reader page as Referer.
+   */
+  async getChapterPages(ref: { chapterId?: string; url?: string }) {
+    const url = this.requireChapterUrl(ref);
+    const page = await this.http(url);
+    if (!page.ok) throw new UpstreamHttpError(page.status, url);
+    const html = await page.text();
+    const id = html.match(/const\s+CHAPTER_ID\s*=\s*(\d+)/)?.[1];
+    if (!id) return this.finalize(domPages("#image_container .page-chapter img")(html, this.getName()), url);
+    const res = await this.http(`${new URL(url).origin}/ajax/image/list/chap/${id}`, {
+      method: "POST",
+      headers: { "X-Requested-With": "XMLHttpRequest", Referer: url, Accept: "application/json" },
+    });
+    if (!res.ok) throw new UpstreamHttpError(res.status, url);
+    let body: { status?: boolean; html?: string };
+    try {
+      body = (await res.json()) as typeof body;
+    } catch {
+      throw formatChanged(this.getName(), "the chapter image list response");
+    }
+    if (!body.status || typeof body.html !== "string") throw pagesNotFound(this.getName());
+    return this.finalize(domPages(".page-chapter img", { container: ".page-chapter" })(`<div>${body.html}</div>`, this.getName()), url);
   }
 }

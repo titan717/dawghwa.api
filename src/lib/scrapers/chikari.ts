@@ -1,5 +1,7 @@
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { chapterLocked, formatChanged, pagesNotFound } from "./pages/extract";
+import type { ImageRule } from "./pages/policy";
 
 interface ChikariSeries {
   id: number;
@@ -179,5 +181,39 @@ export class ChikariScraper extends BaseScraper {
       console.error("[Chikari] chapter list error:", error);
       throw error;
     }
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "cdn.irakich.st", pathPrefix: "/series/" }];
+  }
+
+  /**
+   * Chikari's reader loads `/api/series/<slug>/chapters/<n>` → `{pages, scan,
+   * scans, scan_fallback, club_block}`. The chapter list labels each chapter
+   * with its first listed scan; the default response must be that same scan
+   * (no silent edition switch), so a fallback or mismatch is refused.
+   */
+  async getChapterPages(ref: { chapterId?: string; url?: string }) {
+    const url = this.requireChapterUrl(ref);
+    const m = new URL(url).pathname.match(/^\/series\/([^/]+)\/([0-9.]+)\/?$/);
+    if (!m) throw formatChanged(this.getName(), "a Chikari chapter URL");
+    const data = await this.getJson<{
+      pages?: unknown[];
+      scan?: string;
+      scans?: { slug?: string; name?: string }[];
+      scan_fallback?: boolean;
+      club_block?: unknown;
+    }>(`/api/series/${encodeURIComponent(m[1])}/chapters/${encodeURIComponent(m[2])}`);
+    if (data.club_block) throw chapterLocked(this.getName(), "restricted to the provider's club members");
+    const listed = data.scans?.find((x) => x.name)?.slug;
+    if (data.scan_fallback || (listed && data.scan !== listed)) {
+      throw formatChanged(this.getName(), "the listed scanlation for this chapter");
+    }
+    if (!Array.isArray(data.pages)) throw formatChanged(this.getName(), "the chapter page list");
+    if (!data.pages.length) throw pagesNotFound(this.getName());
+    return this.finalize(
+      data.pages.map((u) => ({ url: typeof u === "string" ? u : undefined })),
+      url,
+    );
   }
 }
