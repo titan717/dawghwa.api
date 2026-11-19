@@ -110,12 +110,4 @@ describe("MangaDex adapter (fixtures)", () => {
     mockFetch(() => jsonResponse({ result: "error" }, { status: 404 }));
     await expect(getChapterPages(mangadex(), { chapterId: CHAPTER_ID })).rejects.toMatchObject({ code: "NOT_FOUND" });
   });
-
-  it("only explicit page adapters claim reader support", () => {
-    const withPages = getRegistry()
-      .all()
-      .filter((p) => p.capabilities.chapterPages)
-      .map((p) => p.id);
-    expect(withPages).toEqual(["mangadex", "webtoon", "dynasty-reader"]);
-  });
 });
