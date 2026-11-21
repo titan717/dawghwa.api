@@ -4,6 +4,25 @@ import { CacheEntry, CacheStore, MemoryStore, RedisRestStore, TieredStore } from
 
 export type CacheStatus = "hit" | "stale" | "miss" | "bypass";
 
+/**
+ * Keep the serverless function alive until a background promise settles.
+ * On Vercel, work still running after the response is sent is frozen and
+ * resumes on a later invocation, so its timers fire minutes late: upstream
+ * calls "time out", breakers open and health records every source as down.
+ * This is the request context that @vercel/functions' waitUntil() reads;
+ * elsewhere (next start, tests) it is absent and this is a no-op.
+ */
+export function keepAlive(p: Promise<unknown>): void {
+  try {
+    const store = (globalThis as Record<symbol, unknown>)[Symbol.for("@vercel/request-context")] as
+      | { get?: () => { waitUntil?: (p: Promise<unknown>) => void } | undefined }
+      | undefined;
+    store?.get?.()?.waitUntil?.(p);
+  } catch {
+    // no request context: nothing to extend
+  }
+}
+
 export interface CachedResult<T> {
   value: T;
   cache: CacheStatus;
@@ -89,6 +108,7 @@ export class CacheManager {
       .catch(() => undefined) // keep serving the stale value; breaker/health record the failure
       .finally(() => this.backgroundRefreshes.delete(p));
     this.backgroundRefreshes.add(p);
+    keepAlive(p);
   }
 
   /** Test helper: wait for all background revalidations. */

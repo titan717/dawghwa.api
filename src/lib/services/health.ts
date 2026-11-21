@@ -83,8 +83,21 @@ export async function probeProvider(
   }
 }
 
+/**
+ * Runs whose results cannot be trusted: the run took far longer than its own
+ * overall deadline, which only happens when the process was suspended mid-run
+ * (a frozen serverless function). Their "timeouts" are not observations.
+ */
+const suspendedRuns = new WeakSet<object>();
+/** Slack over the overall deadline before a run counts as suspended. */
+export const SUSPENDED_GRACE_MS = 10_000;
+export function isSuspendedRun(results: unknown): boolean {
+  return typeof results === "object" && results !== null && suspendedRuns.has(results);
+}
+
 export async function probeAll(providers: Provider[]): Promise<Record<string, SourceHealthResult>> {
   const cfg = getConfig().health;
+  const startedAt = Date.now();
   const results: Record<string, SourceHealthResult> = {};
   const lastChecked = new Date().toISOString();
   let timer: ReturnType<typeof setTimeout> | undefined;
@@ -119,7 +132,9 @@ export async function probeAll(providers: Provider[]): Promise<Record<string, So
     }
   }
   // Stable key order for consumers that diff the output.
-  return Object.fromEntries(Object.entries(results).sort(([a], [b]) => a.localeCompare(b)));
+  const out = Object.fromEntries(Object.entries(results).sort(([a], [b]) => a.localeCompare(b)));
+  if (Date.now() - startedAt > cfg.overallTimeoutMs + SUSPENDED_GRACE_MS) suspendedRuns.add(out);
+  return out;
 }
 
 export async function getHealth(
@@ -130,7 +145,8 @@ export async function getHealth(
     cacheKey("health", opts.scope ?? "all"),
     getConfig().cache.policies.health,
     () => probeAll(providers),
-    { forceRefresh: opts.forceRefresh },
+    // never store a run the process slept through (see isSuspendedRun)
+    { forceRefresh: opts.forceRefresh, shouldCache: (v) => !isSuspendedRun(v) },
   );
   return { sources: out.value, cache: out.cache, age: out.age };
 }
