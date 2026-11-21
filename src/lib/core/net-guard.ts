@@ -1,7 +1,7 @@
 import dns from "node:dns";
 import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
-import { Agent } from "undici";
+import { Agent, fetch as undiciFetch } from "undici";
 import { DawghwaError } from "./errors";
 
 /**
@@ -168,6 +168,18 @@ export function guardedDispatcher(): Agent {
  * this is what makes the check binding. A refused connection rejects like any
  * other network error (TypeError "fetch failed", cause = the guard error).
  */
+type FetchImpl = (input: string | URL, init: RequestInit) => Promise<Response>;
+let fetchImpl: FetchImpl | null = null;
+/** Test hook: route guarded requests through another fetch (the offline tests stub the global one). */
+export function setGuardedFetchImpl(fn: FetchImpl | null): void {
+  fetchImpl = fn;
+}
+
 export function guardedFetch(input: string | URL, init: RequestInit = {}): Promise<Response> {
-  return fetch(input, { ...init, dispatcher: guardedDispatcher() } as RequestInit);
+  if (fetchImpl) return fetchImpl(input, { ...init, dispatcher: guardedDispatcher() } as RequestInit);
+  // undici's own fetch, not the global one: the Agent above comes from the undici
+  // package, and handing it to the runtime's fetch (Node's bundled undici, which
+  // Next.js also wraps) mixes two implementations. In production that returned
+  // bodies JSON.parse could not read for every metadata provider.
+  return undiciFetch(input, { ...(init as object), dispatcher: guardedDispatcher() } as never) as unknown as Promise<Response>;
 }

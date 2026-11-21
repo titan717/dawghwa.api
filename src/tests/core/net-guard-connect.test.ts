@@ -7,7 +7,7 @@
 import { createServer, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { assertPublicDestination, guardedFetch, guardedLookup, setConnectLookup, setResolver } from "@/lib/core/net-guard";
+import { assertPublicDestination, guardedFetch, guardedLookup, setConnectLookup, setGuardedFetchImpl, setResolver } from "@/lib/core/net-guard";
 
 const lookupWith = (address: string, family = 4) => (_h: string, _o: unknown, cb: (e: null, a: { address: string; family: number }[]) => void) =>
   cb(null, [{ address, family }]);
@@ -54,6 +54,7 @@ describe("guardedFetch against a real socket", () => {
   beforeEach(async () => {
     // the offline test setup stubs fetch; this test only talks to a loopback server it owns
     vi.unstubAllGlobals();
+    setGuardedFetchImpl(null); // exercise the production path (undici's fetch + guarded Agent)
     server = createServer((_req, res) => res.end("private data"));
     await new Promise<void>((r) => server.listen(0, "127.0.0.1", r));
     port = (server.address() as AddressInfo).port;
