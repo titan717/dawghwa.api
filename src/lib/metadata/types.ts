@@ -100,6 +100,16 @@ export interface CatalogQuery {
   tags?: string[];
   status?: TitleStatus;
   format?: TitleFormat;
+  /** Any of these statuses (OR). Only for providers listing "statuses". */
+  statuses?: TitleStatus[];
+  /** Any of these formats (OR). Only for providers listing "formats". */
+  formats?: TitleFormat[];
+  /** Any of these demographics (OR). Only for providers listing "demographics". */
+  demographics?: Demographic[];
+  /** How included genres/tags combine. Default "and". */
+  genreMode?: MatchMode;
+  /** How excluded genres combine: "or" hides a title having any, "and" only one having all. Default "or". */
+  excludeMode?: MatchMode;
   year?: number;
   sort?: CatalogSort;
   nsfw?: boolean;
@@ -120,13 +130,33 @@ export interface CatalogPage {
   pageInfo: PageInfo;
 }
 
-export type CatalogFilter = "q" | "genres" | "excludeGenres" | "tags" | "status" | "format" | "year" | "sort" | "nsfw";
+export type MatchMode = "and" | "or";
+export const MATCH_MODES: readonly MatchMode[] = ["and", "or"];
+export type Demographic = "shounen" | "shoujo" | "seinen" | "josei" | "none";
+export const DEMOGRAPHICS: readonly Demographic[] = ["shounen", "shoujo", "seinen", "josei", "none"];
+
+export type CatalogFilter =
+  | "q"
+  | "genres"
+  | "excludeGenres"
+  | "tags"
+  | "status"
+  | "format"
+  | "statuses"
+  | "formats"
+  | "demographics"
+  | "genreMode"
+  | "excludeMode"
+  | "year"
+  | "sort"
+  | "nsfw";
 
 export interface CatalogCapabilities {
   filters: CatalogFilter[];
   sorts: CatalogSort[];
   formats: TitleFormat[];
   statuses: TitleStatus[];
+  demographics?: Demographic[];
   maxLimit: number;
   /** Highest page * limit the provider allows. */
   maxDepth?: number;

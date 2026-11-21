@@ -196,10 +196,26 @@ function toMetadata(m: MdManga): TitleMetadata {
 }
 
 const CAPABILITIES: CatalogCapabilities = {
-  filters: ["q", "genres", "excludeGenres", "tags", "status", "format", "year", "sort", "nsfw"],
+  filters: [
+    "q",
+    "genres",
+    "excludeGenres",
+    "tags",
+    "status",
+    "format",
+    "statuses",
+    "formats",
+    "demographics",
+    "genreMode",
+    "excludeMode",
+    "year",
+    "sort",
+    "nsfw",
+  ],
   sorts: ["relevance", "popularity", "score", "updated", "newest", "title"],
   formats: ["manga", "manhwa", "manhua", "one_shot", "oel", "doujinshi"],
   statuses: ["ongoing", "completed", "hiatus", "cancelled"],
+  demographics: ["shounen", "shoujo", "seinen", "josei", "none"],
   maxLimit: 100,
   maxDepth: 10_000,
 };
@@ -259,13 +275,35 @@ export const mangadexMeta: MetadataProvider = {
         details: { supported: CAPABILITIES.sorts },
       });
     }
-    if (q.format && !CAPABILITIES.formats.includes(q.format)) {
-      throw new DawghwaError("VALIDATION_ERROR", `MangaDex does not support format "${q.format}"`, {
+    const formats = q.formats?.length ? q.formats : q.format ? [q.format] : [];
+    const statuses = q.statuses?.length ? q.statuses : q.status ? [q.status] : [];
+    const badFormat = formats.filter((f) => !CAPABILITIES.formats.includes(f));
+    if (badFormat.length) {
+      throw new DawghwaError("VALIDATION_ERROR", `MangaDex does not support format "${badFormat.join(", ")}"`, {
         details: { supported: CAPABILITIES.formats },
       });
     }
-    if (q.status && !CAPABILITIES.statuses.includes(q.status)) {
-      throw new DawghwaError("VALIDATION_ERROR", `MangaDex does not support status "${q.status}"`);
+    const badStatus = statuses.filter((st) => !CAPABILITIES.statuses.includes(st));
+    if (badStatus.length) {
+      throw new DawghwaError("VALIDATION_ERROR", `MangaDex does not support status "${badStatus.join(", ")}"`, {
+        details: { supported: CAPABILITIES.statuses },
+      });
+    }
+    // Language formats (manga/manhwa/manhua/oel) map to originalLanguage[], which
+    // MangaDex ORs. One-shot and doujinshi are tags, which combine with the
+    // language filter and the genre filter by genreMode, so they cannot be
+    // OR-ed with other formats or used with genreMode=or without changing the
+    // meaning of the query. Refuse instead of returning a different result set.
+    const tagFormats = formats.filter((f) => f === "one_shot" || f === "doujinshi");
+    if (tagFormats.length && formats.length > 1) {
+      throw new DawghwaError("VALIDATION_ERROR", "MangaDex cannot combine one-shot or doujinshi with other formats", {
+        details: { formats },
+      });
+    }
+    if (tagFormats.length && q.genreMode === "or" && (q.genres?.length || q.tags?.length)) {
+      throw new DawghwaError("VALIDATION_ERROR", "MangaDex cannot apply a one-shot/doujinshi format with genreMode=or", {
+        details: { formats },
+      });
     }
     const offset = (q.page - 1) * q.limit;
     if (offset + q.limit > CAPABILITIES.maxDepth!) {
@@ -278,13 +316,16 @@ export const mangadexMeta: MetadataProvider = {
     params.set(`order[${order[0]}]`, order[1]);
     for (const inc of ["cover_art"]) params.append("includes[]", inc);
     const included = [...(q.genres ?? []), ...(q.tags ?? [])];
-    if (q.format === "one_shot") included.push("Oneshot");
-    if (q.format === "doujinshi") included.push("Doujinshi");
+    if (formats.includes("one_shot")) included.push("Oneshot");
+    if (formats.includes("doujinshi")) included.push("Doujinshi");
     for (const id of await tagIds(included)) params.append("includedTags[]", id);
-    for (const id of await tagIds(q.excludeGenres ?? [])) params.append("excludedTags[]", id);
-    if (included.length) params.set("includedTagsMode", "AND");
-    if (q.status) params.append("status[]", q.status);
-    for (const l of q.format ? (LANGS[q.format] ?? []) : []) params.append("originalLanguage[]", l);
+    const excluded = q.excludeGenres ?? [];
+    for (const id of await tagIds(excluded)) params.append("excludedTags[]", id);
+    if (included.length) params.set("includedTagsMode", q.genreMode === "or" ? "OR" : "AND");
+    if (excluded.length) params.set("excludedTagsMode", q.excludeMode === "and" ? "AND" : "OR");
+    for (const st of statuses) params.append("status[]", st);
+    for (const l of new Set(formats.flatMap((f) => LANGS[f] ?? []))) params.append("originalLanguage[]", l);
+    for (const d of q.demographics ?? []) params.append("publicationDemographic[]", d);
     if (q.year) params.set("year", String(q.year));
     for (const r of q.nsfw ? ["safe", "suggestive", "erotica", "pornographic"] : ["safe", "suggestive"]) {
       params.append("contentRating[]", r);

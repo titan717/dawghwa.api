@@ -68,14 +68,69 @@ describe("GET /api/catalog", () => {
     expect((await res.json()).details.supported).not.toContain("status");
   });
 
+  it("passes multi-value MangaDex filters through and rejects them where unsupported", async () => {
+    const seen: URL[] = [];
+    mockFetch((url) => {
+      const u = new URL(url);
+      seen.push(u);
+      if (u.pathname === "/manga/tag") {
+        return jsonResponse({
+          result: "ok",
+          data: [
+            { id: "t-action", type: "tag", attributes: { name: { en: "Action" }, group: "genre" } },
+            { id: "t-romance", type: "tag", attributes: { name: { en: "Romance" }, group: "genre" } },
+            { id: "t-horror", type: "tag", attributes: { name: { en: "Horror" }, group: "genre" } },
+          ],
+        });
+      }
+      if (u.pathname === "/manga") return jsonResponse({ result: "ok", total: 0, limit: 20, offset: 0, data: [] });
+      throw new Error(`unexpected ${url}`);
+    });
+    const res = await catalogGET(
+      get(
+        "/api/catalog?provider=mangadex&status=ongoing&status=hiatus&format=manhwa,manhua&demographic=seinen" +
+          "&genre=Action&genre=Romance&genreMode=or&excludeGenre=Horror&excludeMode=and",
+      ),
+    );
+    expect(res.status).toBe(200);
+    const md = seen.find((u) => u.pathname === "/manga")!.searchParams;
+    expect(md.getAll("status[]")).toEqual(["ongoing", "hiatus"]);
+    expect(md.getAll("originalLanguage[]")).toEqual(expect.arrayContaining(["ko", "zh"]));
+    expect(md.getAll("publicationDemographic[]")).toEqual(["seinen"]);
+    expect(md.getAll("includedTags[]")).toEqual(["t-action", "t-romance"]);
+    expect(md.get("includedTagsMode")).toBe("OR");
+    expect(md.getAll("excludedTags[]")).toEqual(["t-horror"]);
+    expect(md.get("excludedTagsMode")).toBe("AND");
+
+    for (const q of [
+      "provider=anilist&status=ongoing&status=hiatus",
+      "provider=anilist&demographic=seinen",
+      "provider=anilist&genre=Action&genreMode=or",
+      "provider=mangadex&demographic=kodomo",
+      "provider=mangadex&genreMode=xor",
+      "provider=mangadex&format=one_shot&format=manhwa",
+    ]) {
+      const r = await catalogGET(get(`/api/catalog?${q}`));
+      expect(r.status, q).toBe(400);
+      expect((await r.json()).code, q).toBe("VALIDATION_ERROR");
+    }
+  });
+
   it("lists providers and filter options", async () => {
     const res = await providersGET(get("/api/catalog/providers"));
     const body = await res.json();
     expect(body.providers.map((p: { id: string }) => p.id)).toEqual(["anilist", "mangadex", "mangaupdates"]);
-    mockFetch(() => jsonResponse({ data: { GenreCollection: ["Action"], MediaTagCollection: [{ name: "Dungeon", category: "Setting", isAdult: false }] } }));
+    mockFetch((url) =>
+      new URL(url).hostname === "api.mangadex.org"
+        ? jsonResponse({ result: "ok", data: [{ id: "t1", type: "tag", attributes: { name: { en: "Action" }, group: "genre" } }] })
+        : jsonResponse({ data: { GenreCollection: ["Action"], MediaTagCollection: [{ name: "Dungeon", category: "Setting", isAdult: false }] } }),
+    );
     const f = await (await filtersGET(get("/api/catalog/filters"))).json();
     expect(f.genres).toEqual(["Action"]);
     expect(f.capabilities.filters).toContain("status");
+    const md = await (await filtersGET(get("/api/catalog/filters?provider=mangadex"))).json();
+    expect(md.capabilities.filters).toEqual(expect.arrayContaining(["statuses", "formats", "demographics", "genreMode"]));
+    expect(md.capabilities.demographics).toContain("seinen");
   });
 });
 
