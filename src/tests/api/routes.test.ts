@@ -178,13 +178,32 @@ describe("POST /api/pages", () => {
     expect((await res.json()).code).toBe("UNSUPPORTED_CAPABILITY");
   });
 
-  it("returns MangaDex pages", async () => {
+  it("returns MangaDex pages relayed through /api/image", async () => {
+    const hash = "0123456789abcdef0123456789abcdef";
+    mockFetch(() =>
+      jsonResponse({ result: "ok", baseUrl: "https://uploads.mangadex.org", chapter: { hash, data: ["a.png"], dataSaver: [] } }),
+    );
+    const res = await pagesPOST(post("/api/pages", { source: "mangadex", chapterId: MANGA }));
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.totalPages).toBe(1);
+    const u = new URL(body.pages[0].url);
+    expect(u.pathname).toBe("/api/image");
+    expect(u.searchParams.get("source")).toBe("mangadex");
+    expect(u.searchParams.get("url")).toBe(`https://uploads.mangadex.org/data/${hash}/a.png`);
+  });
+
+  it("fails closed instead of handing out a page URL the relay would refuse (PR #6 review, finding 4)", async () => {
+    // "h" is not a MangaDex chapter hash, so /api/image would reject the page.
+    // Before the fix the route returned the raw upstream URL to the client.
     mockFetch(() =>
       jsonResponse({ result: "ok", baseUrl: "https://uploads.mangadex.org", chapter: { hash: "h", data: ["a.png"], dataSaver: [] } }),
     );
     const res = await pagesPOST(post("/api/pages", { source: "mangadex", chapterId: MANGA }));
-    expect(res.status).toBe(200);
-    expect(await res.json()).toMatchObject({ totalPages: 1, pages: [{ index: 0, url: "https://uploads.mangadex.org/data/h/a.png" }] });
+    expect(res.status).toBe(502);
+    const text = await res.text();
+    expect(JSON.parse(text).code).toBe("PAGE_FORMAT_CHANGED");
+    expect(text).not.toContain("/data/h/a.png");
   });
 });
 

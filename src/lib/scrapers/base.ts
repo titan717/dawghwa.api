@@ -152,7 +152,10 @@ export abstract class BaseScraper {
    * Fetch the chapter reader page and run an engine page locator over it.
    * `html` is the provider's own public reader HTML; nothing is unlocked.
    */
-  protected async readerPages(ref: { chapterId?: string; url?: string }, locate: (html: string, source: string) => RawPage[]) {
+  protected async readerPages(
+    ref: { chapterId?: string; url?: string },
+    locate: (html: string, source: string, chapterUrl: string) => RawPage[],
+  ) {
     const url = this.requireChapterUrl(ref);
     const res = await this.http(url);
     if (!res.ok) throw new UpstreamHttpError(res.status, url);
@@ -164,7 +167,7 @@ export abstract class BaseScraper {
       throw pagesNotFound(this.getName(), "has removed this chapter (its link redirects to the home page)");
     }
     const html = await res.text();
-    return this.finalize(locate(html, this.getName()), url);
+    return this.finalize(locate(html, this.getName(), url), url);
   }
 
   /**

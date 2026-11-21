@@ -16,6 +16,7 @@ import {
   pagesNotFound,
   pagesProtected,
   parseJsonAt,
+  pickChapterList,
   type RawPage,
 } from "./extract";
 
@@ -41,7 +42,8 @@ export function imagesBySelector($: Root, selector: string): RawPage[] {
     const $el = $(el);
     out.push({ url: imgSource($el), width: num($el.attr("width")), height: num($el.attr("height")) });
   });
-  return out.filter((p) => p.url);
+  // entries without a usable source are kept: finalizePages fails on them instead of dropping a page
+  return out;
 }
 
 /**
@@ -155,7 +157,7 @@ export function nextCmsPages(html: string, source: string): RawPage[] {
   const lists = jsonValuesAfterKey(flight, "pages").filter(
     (v): v is CmsPage[] => Array.isArray(v) && v.length > 0 && typeof (v[0] as CmsPage)?.imageUrl === "string",
   );
-  const pages = lists.sort((a, b) => b.length - a.length)[0];
+  const pages = pickChapterList(lists, source);
   if (!pages) {
     if (/"isLocked"\s*:\s*true/.test(flight)) throw chapterLocked(source);
     throw pagesNotFound(source);
@@ -267,8 +269,8 @@ export function domPages(selector: string, opts: { exclude?: RegExp; container?:
 
 /**
  * Next.js reader whose flight data carries the chapter's pages as a plain URL
- * array under `key` (Lua Comic `"images"`, BaeToon `"pages"`). The longest such
- * array is the chapter (others are covers / recommendations).
+ * array under `key` (Lua Comic `"images"`, BaeToon `"pages"`). Exactly one
+ * distinct array must be present (see pickChapterList).
  */
 export function flightUrlList(key: string) {
   return (html: string, source: string): RawPage[] => {
@@ -277,7 +279,7 @@ export function flightUrlList(key: string) {
     const lists = jsonValuesAfterKey(flight, key).filter(
       (v): v is string[] => Array.isArray(v) && v.length > 0 && v.every((x) => typeof x === "string"),
     );
-    const pages = lists.sort((a, b) => b.length - a.length)[0];
+    const pages = pickChapterList(lists, source);
     if (!pages) {
       if (/"(isLocked|locked|isPremium)"\s*:\s*true/.test(flight)) throw chapterLocked(source);
       throw pagesNotFound(source);
@@ -325,7 +327,7 @@ export function nextDataPages(html: string, source: string): RawPage[] {
     (v): v is { url?: string; width?: number; height?: number }[] =>
       Array.isArray(v) && v.length > 0 && typeof (v[0] as { url?: unknown })?.url === "string",
   );
-  const pages = lists.sort((a, b) => b.length - a.length)[0];
+  const pages = pickChapterList(lists, source);
   if (!pages) {
     if (/"(isLocked|locked|isPremium)"\s*:\s*true/.test(raw)) throw chapterLocked(source);
     throw pagesNotFound(source);
@@ -376,7 +378,7 @@ export function ritharPages(html: string, source: string): RawPage[] {
  * on the site's own origin. robots.txt disallows /api/, which is not used.
  */
 export function webtoonclubPages(origin: string) {
-  return (html: string, source: string): RawPage[] => {
+  return (html: string, source: string, chapterUrl: string): RawPage[] => {
     const flight = decodeNextFlight(html);
     if (!flight) throw formatChanged(source, "Next.js reader data");
     type Img = { filename?: string; sortOrder?: number; width?: number; height?: number };
@@ -384,7 +386,13 @@ export function webtoonclubPages(origin: string) {
     const chapters = jsonValuesAfterKey(flight, "chapter").filter(
       (v): v is Ch => Boolean(v) && typeof v === "object" && !Array.isArray(v) && Array.isArray((v as Ch).images),
     );
-    const ch = chapters.sort((a, b) => (b.images?.length ?? 0) - (a.images?.length ?? 0))[0];
+    // the requested chapter is the one whose number/slug matches the reader URL's last segment
+    const wanted = decodeURIComponent(new URL(chapterUrl).pathname.replace(/\/+$/, "").split("/").pop() ?? "");
+    const ch = pickChapterList(chapters, source, (c) => {
+      const o = c as Ch & { chapterNumber?: number | string; slug?: string };
+      const n = Number(o.chapterNumber);
+      return (wanted !== "" && Number.isFinite(n) && n === Number(wanted)) || o.slug === wanted || o.slug === `chapter-${wanted}` || String(o.id) === wanted;
+    });
     if (!ch) {
       if (/"(isLocked|locked|isPremium)"\s*:\s*true/.test(flight)) throw chapterLocked(source);
       throw formatChanged(source, "the chapter image list");

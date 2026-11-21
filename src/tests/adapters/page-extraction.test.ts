@@ -230,9 +230,9 @@ describe("page normalisation", () => {
     expect(() => finalizePages([], { base, source: "Test", allow })).toThrow(expect.objectContaining({ code: "PAGES_NOT_FOUND" }));
   });
 
-  it("only data:/blob: placeholders is PAGES_NOT_FOUND", () => {
+  it("a page list of only data:/blob: placeholders is PAGE_FORMAT_CHANGED (the reader loads pages some other way now)", () => {
     expect(() => finalizePages([{ url: "data:image/gif;base64,R0lGOD" }], { base, source: "Test", allow })).toThrow(
-      expect.objectContaining({ code: "PAGES_NOT_FOUND" }),
+      expect.objectContaining({ code: "PAGE_FORMAT_CHANGED" }),
     );
   });
 

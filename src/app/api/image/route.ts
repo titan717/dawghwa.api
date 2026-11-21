@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { assertPublicDestination } from "@/lib/core/net-guard";
+import { assertPublicDestination, guardedFetch } from "@/lib/core/net-guard";
 import {
   COVER_MAX_BYTES,
   COVER_USER_AGENT,
@@ -79,7 +79,7 @@ export async function GET(req: NextRequest): Promise<Response> {
     const signal = AbortSignal.timeout(12_000);
     upstream = pageProvider
       ? await fetchPageImage(pageProvider, url, { headers, signal, checkDestination: assertPublicDestination })
-      : await fetch(url, { redirect: "manual", headers, signal });
+      : await guardedFetch(url, { redirect: "manual", headers, signal });
   } catch {
     if (pageUrl) reportMangaDexAtHome(url, { success: false, bytes: 0, duration: Date.now() - started, cached: false });
     return fail(504, "Image request timed out", "UPSTREAM_TIMEOUT");

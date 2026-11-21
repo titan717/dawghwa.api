@@ -11,6 +11,8 @@
  *  - provider marks chapter locked -> CHAPTER_LOCKED   (never bypassed)
  *  - scrambled / encrypted images  -> PAGES_PROTECTED  (never defeated)
  *  - image on an unexpected host   -> PAGE_FORMAT_CHANGED (no silent page drops)
+ *  - malformed or plain-http entry -> PAGE_FORMAT_CHANGED (no silent page drops)
+ *  - several different page lists  -> PAGE_FORMAT_CHANGED (never guess the chapter)
  */
 import { DawghwaError } from "@/lib/core/errors";
 import type { ChapterPage } from "@/types";
@@ -40,9 +42,15 @@ const decodeEntities = (s: string) =>
     .replace(/&#x2F;/gi, "/")
     .replace(/&#0?39;/g, "'");
 
-/** Resolve one raw image reference to an absolute http(s) URL, or undefined. */
+/**
+ * Resolve one raw image reference to an absolute URL, or undefined when it is
+ * not a usable image reference at all (empty, data:/blob:, unparsable, or a
+ * non-web scheme). Protocol-relative references become https. Plain http is
+ * returned as-is so finalizePages can refuse it explicitly (page images are
+ * HTTPS only).
+ */
 export function resolveImageUrl(raw: string | undefined | null, base: string): URL | undefined {
-  if (!raw) return undefined;
+  if (!raw || typeof raw !== "string") return undefined;
   const s = decodeEntities(raw.trim()).replace(/\\\//g, "/");
   if (!s || s.startsWith("data:") || s.startsWith("blob:")) return undefined;
   try {
@@ -54,28 +62,50 @@ export function resolveImageUrl(raw: string | undefined | null, base: string): U
   }
 }
 
+/**
+ * Normalize a located page list. Every entry must become a page: an entry with
+ * no usable image reference, a plain-http image, or an image on a host the
+ * adapter did not declare fails the whole chapter (PAGE_FORMAT_CHANGED) rather
+ * than being dropped, because a silently shortened chapter reads as complete.
+ * Exact duplicate URLs are collapsed (readers that repeat the list for a
+ * preloader); that is the only entry that may disappear.
+ */
 export function finalizePages(raw: RawPage[], opts: FinalizeOptions): ChapterPage[] {
-  const withOrder = raw.every((p) => Number.isFinite(p.order));
+  const withOrder = raw.length > 0 && raw.every((p) => Number.isFinite(p.order));
   const list = withOrder ? [...raw].sort((a, b) => (a.order as number) - (b.order as number)) : raw;
   const seen = new Set<string>();
   const pages: ChapterPage[] = [];
   const rejected: string[] = [];
-  for (const p of list) {
+  const malformed: number[] = [];
+  const insecure: number[] = [];
+  list.forEach((p, i) => {
     const u = resolveImageUrl(p.url, opts.base);
-    if (!u) continue;
+    if (!u) return void malformed.push(i);
+    if (u.protocol !== "https:") return void insecure.push(i);
     const key = u.toString();
-    if (seen.has(key)) continue;
+    if (seen.has(key)) return;
     seen.add(key);
-    if (opts.allow && !opts.allow(u)) {
-      rejected.push(u.hostname);
-      continue;
-    }
+    if (opts.allow && !opts.allow(u)) return void rejected.push(u.hostname);
     pages.push({
       index: pages.length,
       url: key,
       ...(p.width && Number.isFinite(p.width) && p.width > 0 ? { width: Math.round(p.width) } : {}),
       ...(p.height && Number.isFinite(p.height) && p.height > 0 ? { height: Math.round(p.height) } : {}),
     });
+  });
+  if (malformed.length) {
+    throw new DawghwaError(
+      "PAGE_FORMAT_CHANGED",
+      `${opts.source} returned ${malformed.length} of ${list.length} page entries without a usable image URL`,
+      { details: { malformed: malformed.length, total: list.length, positions: malformed.slice(0, 5) } },
+    );
+  }
+  if (insecure.length) {
+    throw new DawghwaError(
+      "PAGE_FORMAT_CHANGED",
+      `${opts.source} served ${insecure.length} page images over plain http; Dawghwa only relays https page images`,
+      { details: { insecure: insecure.length, total: list.length } },
+    );
   }
   if (rejected.length) {
     // Dropping pages would silently skip part of the chapter. Fail instead so
@@ -88,6 +118,34 @@ export function finalizePages(raw: RawPage[], opts: FinalizeOptions): ChapterPag
   }
   if (!pages.length) throw pagesNotFound(opts.source);
   return pages;
+}
+
+/**
+ * Pick the one page list that belongs to the requested chapter.
+ *
+ * Framework payloads can embed several candidate lists (the chapter, a
+ * preview of the next one, recommendations). Identical copies are collapsed;
+ * `belongs` (when given) keeps only lists tied to the requested chapter. If
+ * more than one distinct list is left the payload is ambiguous and the
+ * request fails instead of guessing (the previous "longest list wins" rule
+ * would return another chapter's pages whenever that one was longer).
+ */
+export function pickChapterList<T>(lists: T[], source: string, belongs?: (list: T) => boolean): T | undefined {
+  const distinct = new Map<string, T>();
+  for (const l of lists) distinct.set(JSON.stringify(l), l);
+  let candidates = [...distinct.values()];
+  if (belongs && candidates.length > 1) {
+    const matching = candidates.filter(belongs);
+    if (matching.length) candidates = matching;
+  }
+  if (candidates.length > 1) {
+    throw new DawghwaError(
+      "PAGE_FORMAT_CHANGED",
+      `${source} reader data contains ${candidates.length} different page lists; refusing to guess which one is this chapter`,
+      { details: { candidates: candidates.length } },
+    );
+  }
+  return candidates[0];
 }
 
 export function pagesNotFound(source: string, why = "returned no page images for this chapter"): DawghwaError {

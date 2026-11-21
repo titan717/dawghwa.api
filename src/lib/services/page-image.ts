@@ -1,4 +1,5 @@
 import { getConfig } from "@/lib/core/config";
+import { guardedFetch } from "@/lib/core/net-guard";
 import type { Provider } from "@/lib/providers/provider";
 import { COVER_USER_AGENT } from "./cover-image";
 
@@ -33,7 +34,7 @@ export async function fetchPageImage(
 ): Promise<Response> {
   let current = url;
   for (let hop = 0; ; hop++) {
-    const res = await fetch(current, { redirect: "manual", headers: init.headers, signal: init.signal });
+    const res = await guardedFetch(current, { redirect: "manual", headers: init.headers, signal: init.signal });
     if (res.status < 300 || res.status >= 400 || res.status === 304) return res;
     const location = res.headers.get("location");
     await res.body?.cancel().catch(() => {});

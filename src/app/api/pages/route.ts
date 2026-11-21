@@ -44,9 +44,24 @@ export const POST = route(async (req, ctx) => {
   }
   const r = await getChapterPages(provider, ref, { dataSaver: body.dataSaver, forceRefresh: body.refresh });
   // Every page is served through /api/image, scoped to this provider's page hosts.
+  // A page the relay would refuse is never handed out as a direct upstream URL:
+  // the whole response fails closed so the reader falls back to another version.
+  const refused = r.pages.filter((page) => !provider.scraper.allowPageImage(page.url));
+  if (refused.length) {
+    let hosts: string[] = [];
+    try {
+      hosts = [...new Set(refused.map((p) => new URL(p.url).hostname))].slice(0, 5);
+    } catch {
+      /* unparsable page URL: reported by count only */
+    }
+    throw new DawghwaError(
+      "PAGE_FORMAT_CHANGED",
+      `${provider.name} returned ${refused.length} page image(s) outside its declared image hosts`,
+      { details: { refused: refused.length, total: r.pages.length, hosts } },
+    );
+  }
   const pages = r.pages.map((page) => {
-    const allowed = provider.scraper.allowPageImage(page.url);
-    if (!allowed) return page;
+    const allowed = provider.scraper.allowPageImage(page.url)!;
     const image = new URL("/api/image", req.nextUrl.origin);
     image.searchParams.set("url", allowed.toString());
     image.searchParams.set("source", provider.id);

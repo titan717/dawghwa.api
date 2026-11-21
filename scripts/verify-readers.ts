@@ -2,19 +2,49 @@
  * Live reader verification, end to end, per provider:
  *
  *   search (provider's own search) -> chapter list (provider's own list)
- *   -> pages for the first, a middle and the latest chapter
- *   -> image bytes for the first, middle and last page of each, fetched with
- *      the exact headers /api/image uses, checked for image/* + magic bytes.
+ *   -> POST /api/pages for the first, a middle and the latest chapter
+ *   -> GET of the /api/image URL that response handed out, for the first,
+ *      middle and last page, checked for status 200, image/* and magic bytes.
+ *
+ * The page and image steps go through the real route handlers, not the
+ * helpers behind them, so URL rewriting, allowlists and the relay are covered:
+ *
+ *   VERIFY_BASE_URL unset   route handlers invoked in-process (mode "handlers")
+ *   VERIFY_BASE_URL=<url>   real HTTP against a running API, e.g. `next start`
+ *                           or a preview deployment (mode "http")
  *
  *   npx tsx scripts/verify-readers.ts [ids...]   > docs/page-extraction-verification.json
  *
+ * The output records the mode and the network it ran from; a run from a
+ * developer machine says nothing about the production egress network.
  * Runs only providers with capabilities.chapterPages. No fixtures, no mocks.
  */
 import { getRegistry } from "../src/lib/providers/registry";
-import { getChapterPages } from "../src/lib/services/catalog";
-import { fetchPageImage, isGenericBinaryType, pageImageHeaders, sniffImageType } from "../src/lib/services/page-image";
-import { assertPublicDestination } from "../src/lib/core/net-guard";
+import { NextRequest } from "next/server";
+import { POST as pagesPOST } from "../src/app/api/pages/route";
+import { GET as imageGET } from "../src/app/api/image/route";
+import { isGenericBinaryType, sniffImageType } from "../src/lib/services/page-image";
 import type { Provider } from "../src/lib/providers/provider";
+
+const BASE = process.env.VERIFY_BASE_URL?.replace(/\/$/, "");
+const MODE = BASE ? "http" : "handlers";
+const LOCAL = "http://localhost";
+
+/** POST /api/pages, through HTTP or the in-process route handler. */
+async function callPages(body: Record<string, unknown>): Promise<Response> {
+  if (BASE) {
+    return fetch(`${BASE}/api/pages`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body), signal: AbortSignal.timeout(45_000) });
+  }
+  return pagesPOST(new NextRequest(`${LOCAL}/api/pages`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) }));
+}
+
+/** GET a page URL exactly as /api/pages returned it. */
+async function callImage(pageUrl: string): Promise<Response> {
+  const u = new URL(pageUrl);
+  if (BASE) return fetch(pageUrl, { signal: AbortSignal.timeout(25_000) });
+  if (u.origin !== LOCAL || u.pathname !== "/api/image") throw new Error(`page URL is not relayed through /api/image: ${u.host}`);
+  return imageGET(new NextRequest(u));
+}
 
 const QUERIES = (process.env.VERIFY_QUERIES ?? "solo,return,level,sword,love,the").split(",");
 
@@ -27,12 +57,10 @@ function magic(b: Uint8Array): string | undefined {
   return undefined;
 }
 
-async function image(p: Provider, url: string) {
+async function image(url: string) {
   const t = Date.now();
-  const allowed = p.scraper.allowPageImage(url);
-  if (!allowed) return { ok: false, why: "not allowed by provider rules", url };
   try {
-    const r = await fetchPageImage(p, allowed, { headers: pageImageHeaders(p), signal: AbortSignal.timeout(20_000), checkDestination: assertPublicDestination });
+    const r = await callImage(url);
     const buf = new Uint8Array(await r.arrayBuffer());
     const kind = magic(buf);
     return {
@@ -87,10 +115,13 @@ async function verify(p: Provider) {
   for (const ch of picks) {
     const t = Date.now();
     try {
-      const r = await getChapterPages(p, { url: ch.url, chapterId: ch.id }, { forceRefresh: true });
+      const res = await callPages({ source: p.id, url: ch.url, chapterId: /^[\w-]+$/.test(ch.id ?? "") ? ch.id : undefined, refresh: true });
+      const body = (await res.json()) as { pages?: { index: number; url: string }[]; error?: string; code?: string };
+      if (res.status !== 200 || !body.pages) throw Object.assign(new Error(body.error ?? `HTTP ${res.status}`), { code: body.code ?? `HTTP_${res.status}` });
+      const r = { pages: body.pages };
       const idx = [...new Set([0, Math.floor(r.pages.length / 2), r.pages.length - 1])];
       const imgs = [];
-      for (const i of idx) imgs.push({ page: i, ...(await image(p, r.pages[i].url)) });
+      for (const i of idx) imgs.push({ page: i, ...(await image(r.pages[i].url)) });
       results.push({
         chapter: ch.number,
         url: ch.url,
@@ -138,7 +169,9 @@ async function main() {
     }),
   );
   results.sort((a, b) => String(a.id).localeCompare(String(b.id)));
-  process.stdout.write(JSON.stringify({ generatedAt: new Date().toISOString(), results }, null, 1));
+  process.stdout.write(
+    JSON.stringify({ generatedAt: new Date().toISOString(), mode: MODE, target: BASE ?? "in-process route handlers", network: process.env.VERIFY_NETWORK ?? "unspecified (developer machine)", results }, null, 1),
+  );
 }
 
 void main();

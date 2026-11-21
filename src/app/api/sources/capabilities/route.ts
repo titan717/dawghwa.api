@@ -1,7 +1,7 @@
 import { json, route } from "@/lib/api/handler";
 import { getRegistry } from "@/lib/providers/registry";
 import { reportsFor } from "@/lib/providers/reports";
-import { READER_VERIFICATION } from "@/lib/providers/verification";
+import { READER_VERIFICATION, VERIFICATION_RUN } from "@/lib/providers/verification";
 import { sourceState } from "@/lib/services/availability";
 
 export const runtime = "nodejs";
@@ -14,8 +14,13 @@ export const dynamic = "force-dynamic";
  * `verified` is only true for providers in the live-verification ledger.
  * `nativeReaderVerified` counts only providers whose full reading path was
  * proven end-to-end in the app against the live provider; `pagesVerified`
- * counts providers whose live chapter pages and image bytes were verified
- * through /api/pages and /api/image.
+ * counts ledger entries whose live chapter pages and image bytes were checked.
+ *
+ * The ledger is static: it records one past run and is not re-checked at
+ * request time. `verification` says how that run was made (the 2026-11-19
+ * run called the extraction and image helpers directly, from a development
+ * network, not the deployed /api/pages and /api/image routes). Live health is
+ * in `availability`, which reflects this instance's real traffic.
  */
 export const GET = route(async (_req, ctx) => {
   const rows = getRegistry()
@@ -62,6 +67,7 @@ export const GET = route(async (_req, ctx) => {
   return json(
     {
       providers: rows,
+      verification: VERIFICATION_RUN,
       totals: {
         registered: rows.length,
         declaredPages: count((r) => r.declared.pages),

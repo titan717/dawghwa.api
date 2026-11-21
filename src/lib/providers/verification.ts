@@ -3,8 +3,9 @@
  *
  * A provider is listed here only after its reading path was exercised
  * against the real provider (not fixtures): search, the provider's own
- * chapter list, the page manifest from /api/pages and image bytes through
- * /api/image (scripts/verify-readers.ts -> docs/page-extraction-verification.json).
+ * chapter list, the page manifest and the image bytes
+ * (scripts/verify-readers.ts -> docs/page-extraction-verification.json; see
+ * VERIFICATION_RUN for exactly which code paths that run covered).
  * `nativeReader` is true only where the app's live E2E
  * (dawghwa e2e/live-providers.spec.ts) also rendered those pages and saved
  * progress. `metadata` is true only where metadata was checked live.
@@ -23,6 +24,19 @@ export interface ReaderVerification {
   evidence: string[];
   limitations: string[];
 }
+
+/**
+ * How the ledger below was produced. Shown verbatim by
+ * GET /api/sources/capabilities so clients do not over-read the totals.
+ */
+export const VERIFICATION_RUN = {
+  ranAt: "2026-11-19",
+  method: "helpers",
+  description:
+    "scripts/verify-readers.ts at the time called getChapterPages() and fetchPageImage() directly. It did not exercise the /api/pages URL rewriting or the /api/image route. The script now drives the route handlers (or a running server via VERIFY_BASE_URL); entries are not upgraded until it is re-run.",
+  network: "development sandbox; not the production (Vercel) egress network",
+  staticLedger: true,
+} as const;
 
 export const READER_VERIFICATION: Record<string, ReaderVerification> = {
   mangadex: {

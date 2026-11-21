@@ -28,9 +28,10 @@ function hostMatches(host: string, rule: { host: string; subdomains?: boolean })
 }
 
 export function matchesImageRules(url: URL, rules: readonly ImageRule[]): boolean {
-  if (url.protocol !== "https:" && url.protocol !== "http:") return false;
+  // page images are relayed over HTTPS on the default port only
+  if (url.protocol !== "https:") return false;
   if (url.username || url.password) return false;
-  if (url.port && url.port !== "443" && url.port !== "80") return false;
+  if (url.port && url.port !== "443") return false;
   return rules.some((rule) => {
     if (!hostMatches(url.hostname, rule)) return false;
     if (rule.pathPrefix && !url.pathname.startsWith(rule.pathPrefix)) return false;
@@ -43,6 +44,7 @@ export function matchesImageRules(url: URL, rules: readonly ImageRule[]): boolea
       } catch {
         return false;
       }
+      if (target.protocol !== "https:" || target.username || target.password || (target.port && target.port !== "443")) return false;
       return rule.proxiedHosts.some((h) => hostMatches(target.hostname, { host: h }));
     }
     return true;

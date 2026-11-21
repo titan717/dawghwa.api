@@ -189,4 +189,18 @@ describe("GET /api/image?source= (per-provider page relay)", () => {
     mockFetch(() => new Response("<html>Just a moment...</html>", { headers: { "content-type": "text/html" } }));
     expect((await image(asuraPage, "asurascan")).status).toBe(502);
   });
+
+  it("dials page hosts through the connect-time address guard (PR #6 review, finding 5)", async () => {
+    const fetchMock = mockFetch(() => new Response(JPEG, { headers: { "content-type": "image/jpeg" } }));
+    expect((await image(asuraPage, "asurascan")).status).toBe(200);
+    const init = fetchMock.mock.calls[0]![1] as RequestInit & { dispatcher?: unknown };
+    expect(init.dispatcher).toBeDefined();
+  });
+
+  it("dials provider HTML through the connect-time address guard as well", async () => {
+    const f = fixture("thunderscans");
+    const fetchMock = serveFixture(f);
+    expect((await pagesPOST(post("/api/pages", { url: f.chapterUrl }))).status).toBe(200);
+    for (const call of fetchMock.mock.calls) expect((call[1] as { dispatcher?: unknown }).dispatcher).toBeDefined();
+  });
 });
