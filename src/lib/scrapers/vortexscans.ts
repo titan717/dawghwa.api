@@ -1,6 +1,8 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { vcomicsPages } from "./pages/strategies";
+import { type ImageRule } from "./pages/policy";
 
 interface VortexScansChapter {
   number: number;
@@ -179,5 +181,16 @@ export class VortexScansScraper extends BaseScraper {
           rating: post.averageRating,
         };
       });
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [
+      { host: "storage.vortexscans.org", pathPrefix: "/upload/" },
+      { host: "storage.vortexscans.org", pathPrefix: "//upload/" },
+    ];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, vcomicsPages);
   }
 }

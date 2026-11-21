@@ -2,6 +2,8 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { domPages } from "./pages/strategies";
+import { type ImageRule } from "./pages/policy";
 
 interface SpiderChapter {
   url: string;
@@ -136,5 +138,13 @@ export class SpiderScansScraper extends BaseScraper {
         }
       })
     );
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "pub-8182b2aae6664caea2ac391db7b90d9e.r2.dev", pathPrefix: "/chapters/" }];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, domPages("#reader-pages img.reader-page-img"));
   }
 }

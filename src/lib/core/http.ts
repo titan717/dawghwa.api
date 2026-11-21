@@ -5,7 +5,7 @@ import { DawghwaError, UpstreamHttpError, isAbortError, safeHost } from "./error
 import { ProviderLimiter, ProviderRateLimit } from "./rate-limiter";
 import { backoffDelay, combineSignals, parseRetryAfter, sleep, timeoutError } from "./retry";
 import { SingleFlight } from "./singleflight";
-import { assertPublicDestination } from "./net-guard";
+import { assertPublicDestination, guardedFetch } from "./net-guard";
 
 /**
  * Shared outbound HTTP client used by every source adapter.
@@ -206,7 +206,7 @@ async function fetchWithGuardedRedirects(
   let body = init.body;
   for (let hop = 0; ; hop++) {
     await assertPublicDestination(current);
-    const res = await fetch(current, {
+    const res = await guardedFetch(current, {
       method: currentMethod,
       headers,
       body,

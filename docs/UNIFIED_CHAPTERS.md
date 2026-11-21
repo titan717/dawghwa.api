@@ -173,8 +173,8 @@ reports) and `limitations`. `totals.nativeReaderVerified` counts only ledger pro
 ## Image delivery and security
 
 * Allowlists per provider (host and path); no arbitrary URL proxying (`/api/proxy` is a separate, restricted endpoint).
-* `https:` only, standard ports, no credentials in URLs; DNS is resolved and private/loopback/link-local ranges are refused (SSRF guard).
-* Redirects are not followed (`redirect: "manual"`), so every hop would have to pass validation again — a redirect is a failure.
+* Page images: `https:` only on the default port, no credentials in URLs. DNS is resolved and private/loopback/link-local ranges are refused (SSRF guard), both before the request and again at connect time (the socket's own lookup), so a rebinding name cannot slip through.
+* Redirects are followed manually, at most 3 hops, and only while every hop is still one of the provider's declared page hosts and resolves to a public address. Any other redirect is a failure (502).
 * `Content-Type` must be an image type; size limits 5 MB (MangaDex covers) / 20 MB (pages); 12 s timeout.
 * No cookies, tokens or user identifiers are forwarded or logged.
 * Paywalls, logins and anti-bot protection are never bypassed. WEBTOON locked episodes are not requested; providers behind

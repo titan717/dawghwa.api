@@ -2,6 +2,8 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult } from "@/types";
+import { domPages } from "./pages/strategies";
+import { type ImageRule } from "./pages/policy";
 
 export class MgekoScraper extends BaseScraper {
   getName(): string {
@@ -173,5 +175,13 @@ export class MgekoScraper extends BaseScraper {
     });
 
     return results;
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "imgsrv5.com", pathPrefix: "/sv2/comic/" }];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, domPages("#chapter-reader img", { exclude: /\/credits-[^/]*$/ }));
   }
 }

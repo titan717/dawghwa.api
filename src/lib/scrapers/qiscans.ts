@@ -1,5 +1,7 @@
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { domPages } from "./pages/strategies";
+import { type ImageRule } from "./pages/policy";
 
 interface QiScansChapter {
   id: number;
@@ -212,5 +214,13 @@ export class QiScansScraper extends BaseScraper {
       console.error("QiScans chapter list error:", error);
       throw error;
     }
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "media.qimanga.com", pathPrefix: "/file/" }];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, domPages("app-reader .r-page img.r-page-img", { container: "app-reader" }));
   }
 }

@@ -46,7 +46,7 @@ All endpoints are under `/api`. Full reference with request/response examples an
 | POST | `/api/search` | Search one source (JSON) or many/all sources (NDJSON stream, or `stream:false` for one document) |
 | POST | `/api/chapters` | Chapter list for a manga URL, with optional `offset`/`limit`/`order` |
 | POST | `/api/manga` | Basic metadata (title, id) for a manga URL |
-| POST | `/api/pages` | Chapter page image URLs, only where the provider documents an API for it (MangaDex) |
+| POST | `/api/pages` | Real chapter pages from the selected provider (46 providers; see docs/PAGE_EXTRACTION.md) |
 | GET | `/api/browse` | Browse-capable sources, or `?source=id` for its tag/filter vocabulary |
 | POST | `/api/browse` | Filtered, ordered catalogue listing with metadata (MangaDex) |
 | GET | `/api/health` | Cached health of all sources, or `?source=id` |
@@ -91,7 +91,7 @@ Sources are matched by title similarity against every known title of the series.
 
 Latest probe from a datacenter network (2026-11-16, [docs/SOURCE_STATUS.md](docs/SOURCE_STATUS.md)): 58 of 82 operational sources healthy, 22 blocked by anti-bot challenges, 1 HTTP 403, 1 timeout. Dawghwa reports challenges as `UPSTREAM_BLOCKED` and does not try to bypass them.
 
-In-app reading (`POST /api/pages` + the restricted `GET /api/image` relay) is implemented and live-verified for three providers: **MangaDex** (documented [MangaDex@Home API](https://api.mangadex.org/docs/04-chapter/retrieving-chapter/)), **WEBTOON** (public episodes only) and **Dynasty Reader** (public chapter manifest). `GET /api/titles/{ref}/chapters/all` merges their chapter lists into one canonical list. No other adapter claims page support; see `GET /api/sources/capabilities` and [docs/UNIFIED_CHAPTERS.md](docs/UNIFIED_CHAPTERS.md).
+In-app reading (`POST /api/pages` + the provider-scoped `GET /api/image` relay) is implemented for **46 providers**. Each one was live-verified on 2026-11-19 from its own chapter list through to image bytes. Five were also verified in the app's native reader by the live E2E: MangaDex, WEBTOON, Dynasty Reader, Asura Scans and Thunderscans. Providers whose readers encrypt or canvas-draw pages, sit behind anti-bot challenges, or are disallowed by robots.txt are not supported, and each reason is documented. See [docs/PAGE_EXTRACTION.md](docs/PAGE_EXTRACTION.md), `GET /api/sources/capabilities` and [docs/UNIFIED_CHAPTERS.md](docs/UNIFIED_CHAPTERS.md).
 
 ## How it works
 

@@ -2,6 +2,8 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { vcomicsPages } from "./pages/strategies";
+import { type ImageRule } from "./pages/policy";
 
 interface KenscansSeries {
   id: number;
@@ -243,5 +245,16 @@ export class KenscansScraper extends BaseScraper {
     }
 
     return now;
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [
+      { host: "storage.kencomics.com", pathPrefix: "/public/" },
+      { host: "storage.kenscans.com", pathPrefix: "/public/" },
+    ];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, vcomicsPages);
   }
 }

@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
+import { DawghwaError, UpstreamHttpError } from "@/lib/core/errors";
+import { pagesNotFound } from "./pages/extract";
+import { parseWebtoonPageUrl } from "@/lib/services/cover-image";
 import { ChapterPage, ScrapedChapter, SearchResult, SourceType } from "@/types";
 
 export class WebtoonScraper extends BaseScraper {
@@ -8,6 +11,18 @@ export class WebtoonScraper extends BaseScraper {
 
   getName(): string {
     return "WEBTOON";
+  }
+
+  override allowPageImage(raw: string | URL | null | undefined): URL | null {
+    return raw ? parseWebtoonPageUrl(raw.toString()) : null;
+  }
+
+  override pageImageReferer(): string {
+    return "https://www.webtoons.com/";
+  }
+
+  pageImageUserAgent(): "identifying" | "browser" {
+    return "identifying";
   }
 
   getBaseUrl(): string {
@@ -44,10 +59,10 @@ export class WebtoonScraper extends BaseScraper {
    * this adapter does not attempt to bypass those restrictions.
    */
   async getChapterPages(chapter: { chapterId?: string; url?: string }): Promise<ChapterPage[]> {
-    if (!chapter.url) throw new Error("WEBTOON chapter URL is required");
+    if (!chapter.url) throw new DawghwaError("VALIDATION_ERROR", "WEBTOON chapters are addressed by their viewer URL; pass the chapter url");
     const chapterUrl = new URL(chapter.url);
     if (chapterUrl.hostname !== "www.webtoons.com" || !chapterUrl.pathname.endsWith("/viewer")) {
-      throw new Error("Invalid WEBTOON viewer URL");
+      throw new DawghwaError("VALIDATION_ERROR", "That URL is not a WEBTOON episode viewer");
     }
 
     const response = await this.http(chapterUrl, {
@@ -57,7 +72,7 @@ export class WebtoonScraper extends BaseScraper {
         Referer: this.BASE_URL + "/",
       },
     });
-    if (!response.ok) throw new Error(`WEBTOON viewer request failed: HTTP ${response.status}`);
+    if (!response.ok) throw new UpstreamHttpError(response.status, chapterUrl.toString());
     const html = await response.text();
     const $ = cheerio.load(html);
     const pages: ChapterPage[] = [];
@@ -82,7 +97,7 @@ export class WebtoonScraper extends BaseScraper {
       });
     });
 
-    if (pages.length === 0) throw new Error("WEBTOON returned no publicly readable episode panels");
+    if (pages.length === 0) throw pagesNotFound(this.getName(), "returned no publicly readable episode panels");
     return pages;
   }
 

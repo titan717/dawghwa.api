@@ -1,5 +1,8 @@
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import * as cheerio from "cheerio";
+import { chapterLocked, formatChanged, pagesNotFound, type RawPage } from "./pages/extract";
+import type { ImageRule } from "./pages/policy";
 
 interface StrapiManga {
   documentId: string;
@@ -238,5 +241,56 @@ export class KappaBeastScraper extends BaseScraper {
       console.error("[KappaBeast] Search error:", error);
       throw error;
     }
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [
+      { host: "blogger.googleusercontent.com", pathPrefix: "/img/" },
+      { host: "strapi.kappabeast.com", pathPrefix: "/uploads/" },
+    ];
+  }
+
+  /**
+   * KappaBeast's reader (/reader/<slug>/<n>) asks its public Strapi content
+   * API for one chapter with `populate[pages][populate]=*`. Images arrive
+   * either as `<img>` tags in `htmlContent` (Blogger-hosted) or as a `pages`
+   * media list. Chapters still inside their Patreon early-access window are
+   * reported as locked, exactly as the site gates them for anonymous readers.
+   */
+  async getChapterPages(ref: { chapterId?: string; url?: string }) {
+    const url = this.requireChapterUrl(ref);
+    const m = new URL(url).pathname.match(/^\/reader\/([^/]+)\/([0-9.]+)\/?$/);
+    if (!m) throw formatChanged(this.getName(), "a KappaBeast reader URL");
+    const manga = await this.findMangaBySlug(decodeURIComponent(m[1]));
+    if (!manga) throw pagesNotFound(this.getName(), "no longer lists this series");
+    const params = new URLSearchParams();
+    params.set("filters[manga][documentId][$eq]", manga.documentId);
+    params.set("filters[number][$eq]", m[2]);
+    params.set("populate[pages][populate]", "*");
+    params.set("pagination[pageSize]", "1");
+    const result = await this.api<{ data: Array<StrapiChapter & { htmlContent?: string | null; pages?: unknown }> }>("chapters", params);
+    const chapter = result.data?.[0];
+    if (!chapter) throw pagesNotFound(this.getName(), "has no chapter with that number");
+    if (!this.isReleased(chapter)) throw chapterLocked(this.getName());
+
+    const raw: RawPage[] = [];
+    const media = Array.isArray(chapter.pages)
+      ? chapter.pages
+      : Array.isArray((chapter.pages as { data?: unknown })?.data)
+        ? (chapter.pages as { data: unknown[] }).data
+        : [];
+    for (const item of media as Array<{ url?: string }>) {
+      if (typeof item?.url === "string") {
+        raw.push({ url: item.url.startsWith("http") ? item.url : `${this.ASSET_URL}${item.url}`, order: raw.length });
+      }
+    }
+    if (!raw.length && chapter.htmlContent) {
+      const $ = cheerio.load(chapter.htmlContent);
+      $("img").each((_, el) => {
+        const src = $(el).attr("src")?.trim();
+        if (src) raw.push({ url: src, order: raw.length });
+      });
+    }
+    return this.finalize(raw, url);
   }
 }

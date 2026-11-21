@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { flightUrlList } from "./pages/strategies";
+import { type ImageRule } from "./pages/policy";
 
 interface LuaComicChapter {
   id: number;
@@ -277,5 +279,13 @@ export class LuaComicScraper extends BaseScraper {
       console.error("[Lua Comic] Search error:", error);
       throw error;
     }
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "media.luacomic.org", pathPrefix: "/file/" }];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, flightUrlList("images"));
   }
 }

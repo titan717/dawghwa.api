@@ -77,4 +77,44 @@ describe.runIf(process.env.LIVE_TESTS === "1")("native reader providers (live)",
     const first = body.chapters[0]!.variants.find((v) => v.sourceId === "webtoon")!;
     expect(await readChapter(first)).toBeGreaterThan(0);
   }, 120_000);
+  /**
+   * Scanlation-site readers: chapter references come from the provider's own
+   * chapter list (never constructed), then pages via /api/pages and image
+   * bytes via /api/image for the first, a middle and the latest chapter.
+   */
+  it.each([
+    ["asurascan", "solo"],
+    ["thunderscans", "the"],
+    ["mangakatana", "solo"],
+    ["kayn-scans", "solo"],
+  ])("%s: own chapter list -> real pages -> images, in order", async (id, query) => {
+    const provider = getRegistry().get(id)!;
+    const results = await provider.scraper.search(query);
+    expect(results.length, `${id} search`).toBeGreaterThan(0);
+    let chapters: { url: string; number: number }[] = [];
+    for (const r of results.slice(0, 4)) {
+      chapters = await provider.scraper.getChapterList(r.url);
+      if (chapters.length) break;
+    }
+    expect(chapters.length, `${id} chapter list`).toBeGreaterThan(0);
+    const picks = [...new Set([0, Math.floor(chapters.length / 2), chapters.length - 1])].map((i) => chapters[i]!);
+    let read = 0;
+    for (const ch of picks) {
+      const res = await pagesPOST(post("/api/pages", { source: id, url: ch.url }));
+      const body = (await res.json()) as { pages: { url: string; index: number }[]; code?: string };
+      if (res.status === 403 && body.code === "CHAPTER_LOCKED") continue; // the provider's own gate
+      expect(res.status, `${id} ${ch.url} ${body.code ?? ""}`).toBe(200);
+      expect(body.pages.map((p) => p.index)).toEqual(body.pages.map((_, i) => i));
+      for (const page of [body.pages[0]!, body.pages[body.pages.length - 1]!]) {
+        const u = new URL(page.url);
+        expect(u.searchParams.get("source")).toBe(id);
+        const img = await imageGET(get(`${u.pathname}${u.search}`));
+        expect(img.status, page.url).toBe(200);
+        const hex = Buffer.from(new Uint8Array(await img.arrayBuffer()).slice(0, 4)).toString("hex");
+        expect(MAGIC.find(([m]) => hex.startsWith(m)), `image magic ${hex}`).toBeDefined();
+      }
+      read++;
+    }
+    expect(read, `${id}: at least one chapter readable`).toBeGreaterThan(0);
+  }, 180_000);
 });

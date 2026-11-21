@@ -159,31 +159,31 @@ This wraps the adapter's `extractMangaInfo()`. Fields beyond `title` and `id` de
 
 ## POST /api/pages
 
-Returns image URLs for a chapter. It is only available for sources whose provider documents a page API: currently **MangaDex** ([MangaDex@Home](https://api.mangadex.org/docs/04-chapter/retrieving-chapter/)). Every other source returns `501 UNSUPPORTED_CAPABILITY`. You can check `capabilities.chapterPages` in `/api/sources`.
+Returns the real page images of one chapter from the provider that listed it. It is available for every source whose adapter implements page extraction (`capabilities.chapterPages`, currently 46 providers). Other sources return `501 UNSUPPORTED_CAPABILITY`. The per-provider techniques, evidence and unsupported providers are in [PAGE_EXTRACTION.md](PAGE_EXTRACTION.md).
 
 ```json
-{ "source": "mangadex", "chapterId": "a1b2c3d4-0000-4000-8000-000000000001", "dataSaver": false }
+{ "source": "asurascan", "url": "https://asurascans.com/comics/solo-leveling-ragnarok-7ba78ec7/chapter/1" }
 ```
 
-or `{ "url": "https://mangadex.org/chapter/<uuid>" }`.
+or `{ "source": "mangadex", "chapterId": "a1b2c3d4-0000-4000-8000-000000000001", "dataSaver": false }`. Pass the `url` or `chapterId` exactly as `/api/chapters` (or `/api/titles/{ref}/chapters`) returned it for that source. A URL on another provider's domain is rejected with `400 VALIDATION_ERROR`, and chapter ids are never assumed to be MangaDex UUIDs. If `source` is omitted, it is resolved from the URL's domain.
 
 ```json
 {
   "pages": [
-    { "index": 0, "url": "https://cmdxd98sb0x3yprd.mangadex.network/data/<hash>/1-....png" }
+    { "index": 0, "url": "https://<api host>/api/image?url=https%3A%2F%2Fcdn.asurascans.com%2Fasura-images%2Fchapters%2Fsolo-leveling-ragnarok%2F1%2F001.webp%3Fv%3D1770499638&source=asurascan", "width": 1200, "height": 800 }
   ],
-  "totalPages": 18,
-  "source": "MangaDex",
-  "sourceId": "mangadex",
-  "chapterId": "a1b2c3d4-...",
+  "totalPages": 19,
+  "source": "AsuraScan",
+  "sourceId": "asurascan",
   "meta": { "cache": "miss", "age": 0, "dataSaver": false }
 }
 ```
 
 Notes:
-- MangaDex@Home base URLs are temporary (about 15 minutes), so page lists are cached for only 5 minutes and never served stale. Validated MangaDex data/data-saver page URLs, public WEBTOON panel URLs, and public Dynasty Reader page URLs are rewritten to Dawghwa’s restricted /api/image relay. Other providers’ page URLs remain direct unless a provider-specific permitted relay is implemented.
-- MangaDex asks clients to [report image load success/failure](https://api.mangadex.org/docs/04-chapter/retrieving-chapter/) for its network. For accepted *.mangadex.network node URLs, the server-side relay reports success/failure, bytes, duration and cache-hit status to MangaDex@Home asynchronously. uploads.mangadex.org URLs are not @Home nodes and are not reported.
-- Chapters hosted externally (`externalUrl`) are not part of MangaDex chapter lists, so they have no pages here.
+- Pages are in reading order. Every page URL is an `/api/image` URL on the API origin, scoped to the provider (`source=`). `width`/`height` are included when the provider publishes them. `chapterId` is echoed when the request used one. Adapters only return URLs on that provider's declared image hosts and paths.
+- Cache key: provider id + chapter URL/id + data-saver flag, so pages are never shared across providers. MangaDex@Home base URLs expire after about 15 minutes, so MangaDex page lists are cached for 5 minutes and never served stale.
+- Page-specific errors: `403 CHAPTER_LOCKED` (premium/coin/early-access/role-gated, never bypassed), `404 PAGES_NOT_FOUND` (removed chapter, text-only chapter, empty reader), `422 PAGES_PROTECTED` (encrypted, scrambled or canvas-drawn pages, never decrypted), `502 PAGE_FORMAT_CHANGED` (the reader no longer has a recognisable page list).
+- MangaDex asks clients to [report image load success/failure](https://api.mangadex.org/docs/04-chapter/retrieving-chapter/). For accepted *.mangadex.network node URLs, the relay reports success/failure, bytes, duration and cache-hit status asynchronously. Chapters hosted externally (`externalUrl`) have no pages.
 
 ## GET / POST /api/browse
 
@@ -278,7 +278,7 @@ It returns `{ source, sourceName, section: { id, title, type, items: [...] }, fe
 
 ## GET /api/proxy/html
 
-`GET /api/proxy/html?url=<https URL>` exists for the client-only sources (AsuraScan, WeebCentral) whose HTML is parsed in the client. Restrictions:
+`GET /api/proxy/html?url=<https URL>` exists for the remaining client-only source (WeebCentral) whose HTML is parsed in the client. Asura Scans is no longer client-only: its pages come from `/api/pages`. Restrictions:
 
 - Only `https`, default port, no credentials.
 - The host must match exactly (or be a subdomain of) a domain of an operational client-only source. Upstream used an unanchored regex, which accepted `https://evil.example/?u=https://weebcentral.com`.
@@ -290,16 +290,13 @@ Rejections return `403 PROXY_FORBIDDEN`.
 
 ## GET /api/image
 
-GET /api/image?url=... relays validated MangaDex cover/chapter images, public WEBTOON panel images, and public Dynasty Reader pages.
+`GET /api/image?url=<https URL>[&source=<provider id>]` relays cover images and chapter pages. It is not a general-purpose proxy.
 
-- Covers accept only https://uploads.mangadex.org/covers/{uuid}/{file}, including .256.jpg and .512.jpg thumbnails.
-- MangaDex chapter pages accept only /data/{hash}/{file} and /data-saver/{hash}/{file} paths on the exact MangaDex image hosts accepted by parseMangaDexPageUrl.
-- WEBTOON panels accept only HTTPS image paths on webtoon-phinf.pstatic.net and swebtoon-phinf.pstatic.net, with the optional type=qNN quality parameter.
-- Dynasty Reader pages accept only HTTPS image files hosted on dynasty-scans.com or its subdomains.
-- Arbitrary hosts, URL credentials, non-default ports, query/hash modifiers, unexpected paths, and redirects are rejected. No client headers or cookies are forwarded.
-- Cover responses are limited to 5 MB; chapter pages are limited to 20 MB. Only image/* responses are passed through, with timeouts and CDN/browser caching.
-- This is not a general-purpose proxy. Other providers need explicit provider-specific host/path allowlists before their image bytes can be relayed. WEBTOON extraction reads only public viewer HTML; locked/app-only episodes return unavailable. Dynasty Reader extraction parses its public page manifest as JSON without executing provider JavaScript.
-
+- Without `source`, it accepts only MangaDex covers (`uploads.mangadex.org/covers/{uuid}/{file}`, including `.256.jpg`/`.512.jpg`), MangaDex chapter pages (`/data/` and `/data-saver/` on MangaDex image hosts), WEBTOON panels (`webtoon-phinf`/`swebtoon-phinf.pstatic.net`, optional `type=qNN`) and Dynasty Reader pages (`dynasty-scans.com`, including `+` in double-page file names).
+- With `source=<id>`, the URL must match that provider's declared page-image rules (exact host plus path prefix). `/api/pages` builds these URLs. The request is sent with that provider's referer and user agent. Client cookies and headers are never forwarded. A URL that does not match the named provider returns `400`.
+- Redirects are followed manually, at most 3 hops. Each hop must again match the provider's rules and pass the destination check. Off-host hops, a hop that resolves to a private/loopback/link-local/reserved address, or more than 3 hops return `502`.
+- Only HTTPS on the default port without credentials. Covers are limited to 5 MB and pages to 20 MB. `image/*` responses pass through. `application/octet-stream` / `binary/octet-stream` is accepted only when the bytes sniff as JPEG, PNG, WebP, GIF or AVIF, and is then served with the sniffed type. HTML (for example a Cloudflare challenge) and other types return `502`.
+- Responses carry long CDN/browser cache headers and `X-Content-Type-Options: nosniff`.
 
 ## Catalogue and metadata
 
@@ -457,7 +454,7 @@ corroboration), and every candidate left for review or rejected.
 
 ### GET /api/sources/capabilities
 
-Capability matrix: declared vs live-verified capabilities, live availability and limitations per provider.
+Capability matrix: declared vs live-verified capabilities, live availability and limitations per provider. `totals.declaredPages` counts adapters with page extraction, `totals.pagesVerified` those whose pages and image bytes were live-verified, and `totals.nativeReaderVerified` those also rendered by the app's live E2E.
 
 ### POST /api/reports
 
@@ -489,6 +486,10 @@ Every error body has this shape: `{ "error": string, "code": string, "requestId"
 | 413 | `PAYLOAD_TOO_LARGE` | Body larger than `API_MAX_BODY_BYTES` |
 | 415 | `UNSUPPORTED_MEDIA_TYPE` | Body is not JSON / text |
 | 429 | `RATE_LIMITED` | Client exceeded its rate limit (`Retry-After` set) |
+| 403 | `CHAPTER_LOCKED` | Chapter is premium, coin-locked, early-access or role-gated on the provider |
+| 404 | `PAGES_NOT_FOUND` | Chapter has no page images (removed, text-only, empty reader) |
+| 422 | `PAGES_PROTECTED` | Provider encrypts, scrambles or canvas-draws the pages. Not circumvented. |
+| 502 | `PAGE_FORMAT_CHANGED` | Provider reader changed. No recognisable page list or undeclared image hosts. |
 | 501 | `UNSUPPORTED_CAPABILITY` | The source cannot do this (pages, frontpage) |
 | 502 | `UPSTREAM_BLOCKED` | Source served an anti-bot challenge (Cloudflare, DDoS-Guard, DataDome, Sucuri) |
 | 502 | `UPSTREAM_HTTP_ERROR` | Source answered with an HTTP error (`details.upstreamStatus`) |

@@ -2,6 +2,8 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { themesiaPages } from "./pages/strategies";
+import { photon, type ImageRule } from "./pages/policy";
 
 export class VioletscansScraper extends BaseScraper {
   private readonly BASE_URL = "https://violetscans.org";
@@ -19,7 +21,13 @@ export class VioletscansScraper extends BaseScraper {
   }
 
   canHandle(url: string): boolean {
-    return url.includes("violetscans.org");
+    // violetscans.org redirects to violetmanga.com; chapter links use the new domain
+    try {
+      const h = new URL(url).hostname.replace(/^www\./, "");
+      return h === "violetscans.org" || h === "violetmanga.com";
+    } catch {
+      return false;
+    }
   }
 
   async extractMangaInfo(url: string): Promise<{ title: string; id: string }> {
@@ -229,5 +237,13 @@ export class VioletscansScraper extends BaseScraper {
     }
 
     return results;
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "violetmanga.com", pathPrefix: "/wp-content/uploads/" }, ...photon("violetmanga.com")];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, themesiaPages);
   }
 }

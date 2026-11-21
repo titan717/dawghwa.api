@@ -44,8 +44,8 @@ describe("WEBTOON chapter page adapter", () => {
 
   it("rejects non-viewer URLs", async () => {
     const scraper = new FixtureWebtoonScraper("<div></div>");
-    await expect(scraper.getChapterPages({ url: "https://www.webtoons.com/en/title/list" })).rejects.toThrow(
-      "Invalid WEBTOON viewer URL",
-    );
+    await expect(scraper.getChapterPages({ url: "https://www.webtoons.com/en/title/list" })).rejects.toMatchObject({
+      code: "VALIDATION_ERROR",
+    });
   });
 });

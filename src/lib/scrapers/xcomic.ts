@@ -1,6 +1,8 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult } from "@/types";
+import { xcomicPages } from "./pages/strategies";
+import { type ImageRule } from "./pages/policy";
 
 interface XComicSource {
   id: string;
@@ -254,5 +256,13 @@ export class XComicScraper extends BaseScraper {
     );
 
     return results;
+  }
+
+  pageImageRules(): ImageRule[] {
+    return Array.from({ length: 10 }, (_, i) => ({ host: `img0${i}.org`, subdomains: true, pathPrefix: "/_f/" }));
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, xcomicPages);
   }
 }

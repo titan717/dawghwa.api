@@ -2,6 +2,8 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { ritharPages } from "./pages/strategies";
+import { type ImageRule } from "./pages/policy";
 
 export class RitharscansScraper extends BaseScraper {
   private readonly BASE_URL = "https://ritharscans.com";
@@ -215,5 +217,13 @@ export class RitharscansScraper extends BaseScraper {
     }
 
     return results;
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "cdn.ritharscans.com", pathPrefix: "/series/" }];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, ritharPages);
   }
 }

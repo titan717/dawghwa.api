@@ -1,6 +1,8 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { mangakatanaPages } from "./pages/strategies";
+import { type ImageRule } from "./pages/policy";
 
 export class MangaKatanaScraper extends BaseScraper {
   private readonly BASE_URL = "https://mangakatana.com";
@@ -127,5 +129,13 @@ export class MangaKatanaScraper extends BaseScraper {
   protected override extractChapterNumber(chapterUrl: string): number {
     const match = chapterUrl.match(/\/c(\d+(?:\.\d+)?)/);
     return match ? parseFloat(match[1]) : 0;
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "i1.mangakatana.com", pathPrefix: "/token/" }, { host: "i2.mangakatana.com", pathPrefix: "/token/" }, { host: "i3.mangakatana.com", pathPrefix: "/token/" }];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, mangakatanaPages);
   }
 }

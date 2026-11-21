@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as cheerio from "cheerio";
+import { DawghwaError } from "@/lib/core/errors";
 import { BaseScraper } from "./base";
-import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { ChapterPage, ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { astroProps, astroValue } from "./pages/strategies";
+import { chapterLocked, formatChanged, num } from "./pages/extract";
+import type { ImageRule } from "./pages/policy";
 
 export class AsuraScanScraper extends BaseScraper {
   private readonly BASE_URL = "https://asurascans.com";
@@ -48,12 +52,70 @@ export class AsuraScanScraper extends BaseScraper {
     return url.includes("asurascans.com") || url.includes("asuracomic.net");
   }
 
+  /**
+   * Search, chapter lists and chapter pages all run server-side from Asura's
+   * public HTML, so Asura is a normal reader provider (not proxied to the client).
+   */
   isClientOnly(): boolean {
-    return true;
+    return false;
   }
 
   getType(): SourceType {
     return "scanlator";
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "cdn.asurascans.com", pathPrefix: "/asura-images/" }];
+  }
+
+  /**
+   * Asura's reader is an Astro island (`ChapterReader`) whose props carry the
+   * ordered page list (`pages: [{url,width,height}]`) and the chapter's access
+   * flags. Locked / premium chapters are reported, never unlocked.
+   * Robots.txt disallows /api/, so only the public reader page is used.
+   */
+  async getChapterPages(ref: { chapterId?: string; url?: string }): Promise<ChapterPage[]> {
+    const url = this.requireChapterUrl(ref);
+    if (!/\/comics\/[^/]+\/chapter\/[^/?#]+/.test(new URL(url).pathname)) {
+      throw new DawghwaError("VALIDATION_ERROR", "Not an Asura Scans chapter reader URL");
+    }
+    const html = await this.fetchWithRetry(url);
+    const props = astroProps(html, /ChapterReader/);
+    if (!props) throw formatChanged(this.getName(), "the ChapterReader component");
+    const locked = astroValue(props.isLocked) === true;
+    const premium = astroValue(props.isPremium) === true;
+    const pages = astroValue(props.pages);
+    if (locked) throw chapterLocked(this.getName(), premium ? "premium early access" : "locked");
+    if (!Array.isArray(pages) || pages.length === 0) {
+      if (premium) throw chapterLocked(this.getName(), "premium early access");
+      throw formatChanged(this.getName(), "any pages in the ChapterReader props");
+    }
+    return this.finalize(
+      (pages as { url?: string; width?: number; height?: number }[]).map((p) => ({ url: p?.url, width: num(p?.width), height: num(p?.height) })),
+      url,
+    );
+  }
+
+  /**
+   * Identity evidence for cross-provider linking, from the public series page:
+   * the title, the "alt-titles" line and the Author / Artist links. Title
+   * alone is never enough to merge; these let the matcher use authors too.
+   */
+  async getIdentityHints(mangaUrl: string): Promise<{ title: string; altTitles: string[]; authors: string[] }> {
+    const html = await this.fetchWithRetry(mangaUrl);
+    const $ = cheerio.load(html);
+    const title = $("h1").first().text().replace(/\s+/g, " ").trim();
+    const altTitles = $("#alt-titles")
+      .text()
+      .split(/\s*[•|]\s*/)
+      .map((t) => t.replace(/\s+/g, " ").trim())
+      .filter((t) => t && t !== title);
+    const authors = new Set<string>();
+    $('a[href*="/browse?author="], a[href*="/browse?artist="]').each((_, el) => {
+      const name = $(el).text().replace(/\s+/g, " ").trim();
+      if (name && !/^(-|n\/a|unknown|updating)$/i.test(name)) authors.add(name);
+    });
+    return { title, altTitles: [...new Set(altTitles)], authors: [...authors] };
   }
 
   async search(query: string): Promise<SearchResult[]> {

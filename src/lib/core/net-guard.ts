@@ -1,5 +1,7 @@
+import dns from "node:dns";
 import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
+import { Agent } from "undici";
 import { DawghwaError } from "./errors";
 
 /**
@@ -9,6 +11,12 @@ import { DawghwaError } from "./errors";
  * only http/https, default ports, no credentials, and the destination host
  * must not be (or resolve to) a loopback, private, link-local, CGNAT,
  * multicast or otherwise reserved address. DNS answers are cached briefly.
+ *
+ * assertPublicDestination() is a pre-flight check: it resolves the name once,
+ * and the socket would otherwise resolve it again when it connects (a DNS
+ * rebinding window). guardedFetch() closes that window by connecting through
+ * an undici Agent whose `lookup` refuses private answers, so the address that
+ * is checked is the address that is dialled.
  */
 
 function v4ToInt(ip: string): number {
@@ -110,4 +118,56 @@ export async function assertPublicDestination(rawUrl: string): Promise<void> {
   if (entry.addrs.some(isPrivateAddress)) {
     throw new DawghwaError("PROXY_FORBIDDEN", "Destination resolves to a private or reserved address");
   }
+}
+
+type LookupCallback = (err: NodeJS.ErrnoException | null, address: string | dns.LookupAddress[], family?: number) => void;
+type LookupFn = (host: string, options: dns.LookupOptions, cb: LookupCallback) => void;
+const systemLookup: LookupFn = (host, options, cb) =>
+  dns.lookup(host, { ...options, all: true }, (err, addrs) => cb(err, addrs as dns.LookupAddress[]));
+let connectLookupImpl: LookupFn = systemLookup;
+
+/** Test hook: replace the resolver used at connect time (null restores the system resolver). */
+export function setConnectLookup(fn: LookupFn | null): void {
+  connectLookupImpl = fn ?? systemLookup;
+}
+
+function forbidden(message: string): NodeJS.ErrnoException {
+  return Object.assign(new Error(message), { code: "EDAWGHWA_FORBIDDEN_DESTINATION" });
+}
+
+/**
+ * dns.lookup-compatible resolver for outbound sockets: resolves every address
+ * and refuses the connection when the name is a blocked one or any answer is
+ * private/reserved. Used as the undici connector's `lookup`.
+ */
+export function guardedLookup(host: string, options: dns.LookupOptions, cb: LookupCallback): void {
+  const name = host.replace(/^\[|\]$/g, "").replace(/\.$/, "");
+  if (BLOCKED_NAMES.test(name)) return cb(forbidden("Destination host is not allowed"), []);
+  connectLookupImpl(name, { ...options, all: true }, (err, result) => {
+    if (err) return cb(err, []);
+    const addrs = (Array.isArray(result) ? result : [{ address: result, family: isIP(result) || 4 }]) as dns.LookupAddress[];
+    if (!addrs.length) return cb(Object.assign(new Error(`No addresses for ${name}`), { code: "ENOTFOUND" }), []);
+    if (addrs.some((a) => isPrivateAddress(a.address))) {
+      return cb(forbidden("Destination resolves to a private or reserved address"), []);
+    }
+    if (options.all) return cb(null, addrs);
+    cb(null, addrs[0].address, addrs[0].family);
+  });
+}
+
+let agent: Agent | undefined;
+/** Shared connection pool whose sockets only dial public addresses. */
+export function guardedDispatcher(): Agent {
+  agent ??= new Agent({ connect: { lookup: guardedLookup as never }, connections: 64 });
+  return agent;
+}
+
+/**
+ * fetch() that connects only to public addresses, checked at connect time.
+ * Callers still run assertPublicDestination() first for a clear early error;
+ * this is what makes the check binding. A refused connection rejects like any
+ * other network error (TypeError "fetch failed", cause = the guard error).
+ */
+export function guardedFetch(input: string | URL, init: RequestInit = {}): Promise<Response> {
+  return fetch(input, { ...init, dispatcher: guardedDispatcher() } as RequestInit);
 }

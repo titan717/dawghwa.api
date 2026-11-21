@@ -1,0 +1,5921 @@
+{
+  "generatedAt": "2026-11-19T13:55:17.004Z",
+  "note": "Live run of scripts/verify-readers.ts from the development sandbox. hachirumi, stonescape and kappabeast re-run on generatedAt; others from the full run at fullRunAt. Entries with \"excluded\" were measured but are not supported.",
+  "fullRunAt": "2026-11-19T13:41:17.353Z",
+  "results": [
+    {
+      "id": "asmodeus-scans",
+      "name": "Asmodeus Scans",
+      "query": "solo",
+      "search": true,
+      "title": "A Former Hero Returned From Another World ~i Was Supposed to Solo Clear Modern Day Dungeons Using Items I Brought Back With a Goddess’s Power, but Somehow I Ended Up Forming a Hero Party~",
+      "chapters": true,
+      "chapterCount": 10,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://asmotoon.com/a-former-hero-returned-from-another-world-i-was-supposed-to-solo-clear-modern-day-dungeons-using-items-i-brought-back-with-a-goddesss-power-but-somehow-i-ended-up-forming-a-hero-party-chapter-1",
+          "pages": 44,
+          "pagesMs": 593,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/avif",
+              "kind": "avif",
+              "bytes": 156818,
+              "ms": 148
+            },
+            {
+              "page": 22,
+              "ok": true,
+              "status": 200,
+              "type": "image/avif",
+              "kind": "avif",
+              "bytes": 108716,
+              "ms": 83
+            },
+            {
+              "page": 43,
+              "ok": true,
+              "status": 200,
+              "type": "image/avif",
+              "kind": "avif",
+              "bytes": 113857,
+              "ms": 146
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 6,
+          "url": "https://asmotoon.com/a-former-hero-returned-from-another-world-i-was-supposed-to-solo-clear-modern-day-dungeons-using-items-i-brought-back-with-a-goddesss-power-but-somehow-i-ended-up-forming-a-hero-party-chapter-6",
+          "pages": 21,
+          "pagesMs": 322,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/avif",
+              "kind": "avif",
+              "bytes": 156581,
+              "ms": 107
+            },
+            {
+              "page": 10,
+              "ok": true,
+              "status": 200,
+              "type": "image/avif",
+              "kind": "avif",
+              "bytes": 192693,
+              "ms": 41
+            },
+            {
+              "page": 20,
+              "ok": true,
+              "status": 200,
+              "type": "image/avif",
+              "kind": "avif",
+              "bytes": 113857,
+              "ms": 119
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 10,
+          "url": "https://asmotoon.com/a-former-hero-returned-from-another-world-i-was-supposed-to-solo-clear-modern-day-dungeons-using-items-i-brought-back-with-a-goddesss-power-but-somehow-i-ended-up-forming-a-hero-party-chapter-10",
+          "pages": 34,
+          "pagesMs": 190,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/avif",
+              "kind": "avif",
+              "bytes": 129819,
+              "ms": 52
+            },
+            {
+              "page": 17,
+              "ok": true,
+              "status": 200,
+              "type": "image/avif",
+              "kind": "avif",
+              "bytes": 163840,
+              "ms": 38
+            },
+            {
+              "page": 33,
+              "ok": true,
+              "status": 200,
+              "type": "image/avif",
+              "kind": "avif",
+              "bytes": 515772,
+              "ms": 42
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "asurascan",
+      "name": "AsuraScan",
+      "query": "solo",
+      "search": true,
+      "title": "Solo Leveling: Ragnarok",
+      "chapters": true,
+      "chapterCount": 73,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://asurascans.com/comics/solo-leveling-ragnarok-7ba78ec7/chapter/1",
+          "pages": 19,
+          "pagesMs": 578,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 237210,
+              "ms": 170
+            },
+            {
+              "page": 9,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1360322,
+              "ms": 315
+            },
+            {
+              "page": 18,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 246582,
+              "ms": 29
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 37,
+          "url": "https://asurascans.com/comics/solo-leveling-ragnarok-7ba78ec7/chapter/37",
+          "pages": 14,
+          "pagesMs": 370,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 237802,
+              "ms": 25
+            },
+            {
+              "page": 7,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 738418,
+              "ms": 41
+            },
+            {
+              "page": 13,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 356134,
+              "ms": 24
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 73,
+          "url": "https://asurascans.com/comics/solo-leveling-ragnarok-7ba78ec7/chapter/73",
+          "pages": 22,
+          "pagesMs": 290,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 248488,
+              "ms": 20
+            },
+            {
+              "page": 11,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 779118,
+              "ms": 30
+            },
+            {
+              "page": 21,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 964458,
+              "ms": 201
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "baetoon",
+      "name": "BaeToon",
+      "query": "solo",
+      "search": true,
+      "title": "Solo Swordmaster",
+      "chapters": true,
+      "chapterCount": 28,
+      "samples": [
+        {
+          "chapter": 0,
+          "url": "https://baetoon.com/chapter-detail/6ac20055ea38f57bb1da78b8",
+          "pages": 8,
+          "pagesMs": 399,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": false,
+              "status": 403,
+              "type": "text/html; charset=UTF-8",
+              "bytes": 4560,
+              "ms": 127
+            },
+            {
+              "page": 4,
+              "ok": false,
+              "status": 403,
+              "type": "text/html; charset=UTF-8",
+              "bytes": 4560,
+              "ms": 69
+            },
+            {
+              "page": 7,
+              "ok": false,
+              "status": 403,
+              "type": "text/html; charset=UTF-8",
+              "bytes": 4560,
+              "ms": 20
+            }
+          ],
+          "ok": false
+        },
+        {
+          "chapter": 14,
+          "url": "https://baetoon.com/chapter-detail/6abd454892c9db6d688741a5",
+          "pages": 173,
+          "pagesMs": 272,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": false,
+              "status": 403,
+              "type": "text/html; charset=UTF-8",
+              "bytes": 4560,
+              "ms": 23
+            },
+            {
+              "page": 86,
+              "ok": false,
+              "status": 403,
+              "type": "text/html; charset=UTF-8",
+              "bytes": 4560,
+              "ms": 9
+            },
+            {
+              "page": 172,
+              "ok": false,
+              "status": 403,
+              "type": "text/html; charset=UTF-8",
+              "bytes": 4560,
+              "ms": 13
+            }
+          ],
+          "ok": false
+        },
+        {
+          "chapter": 27,
+          "url": "https://baetoon.com/chapter-detail/6afc67c8a91bdf88681d4be8",
+          "pages": 32,
+          "pagesMs": 236,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": false,
+              "status": 403,
+              "type": "text/html; charset=UTF-8",
+              "bytes": 4560,
+              "ms": 21
+            },
+            {
+              "page": 16,
+              "ok": false,
+              "status": 403,
+              "type": "text/html; charset=UTF-8",
+              "bytes": 4560,
+              "ms": 57
+            },
+            {
+              "page": 31,
+              "ok": false,
+              "status": 403,
+              "type": "text/html; charset=UTF-8",
+              "bytes": 4560,
+              "ms": 9
+            }
+          ],
+          "ok": false
+        }
+      ],
+      "pages": true,
+      "images": false,
+      "verified": false,
+      "excluded": "Image CDN returned 403 Cloudflare HTML; page support removed."
+    },
+    {
+      "id": "chikari",
+      "name": "Chikari",
+      "query": "solo",
+      "search": true,
+      "title": "Solo Leveling: Ragnarok",
+      "chapters": true,
+      "chapterCount": 73,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://chikari.moe/series/solo-leveling-ragnarok/1",
+          "pages": 19,
+          "pagesMs": 837,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 237210,
+              "ms": 215
+            },
+            {
+              "page": 9,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1360322,
+              "ms": 345
+            },
+            {
+              "page": 18,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 246582,
+              "ms": 138
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 37,
+          "url": "https://chikari.moe/series/solo-leveling-ragnarok/37",
+          "pages": 14,
+          "pagesMs": 469,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 237802,
+              "ms": 132
+            },
+            {
+              "page": 7,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 738418,
+              "ms": 54
+            },
+            {
+              "page": 13,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 356134,
+              "ms": 127
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 73,
+          "url": "https://chikari.moe/series/solo-leveling-ragnarok/73",
+          "pages": 22,
+          "pagesMs": 464,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 248488,
+              "ms": 144
+            },
+            {
+              "page": 11,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 779118,
+              "ms": 36
+            },
+            {
+              "page": 21,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 964458,
+              "ms": 134
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "danke-furs-lesen",
+      "name": "Danke fürs Lesen",
+      "query": "return",
+      "search": true,
+      "title": "When I Returned to My Hometown, My Childhood Friend was Broken",
+      "chapters": true,
+      "chapterCount": 65,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://danke.moe/read/manga/kaettekitara-osananajimi/1/1/",
+          "pages": 1,
+          "pagesMs": 250,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 1685890,
+              "ms": 226
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 33,
+          "url": "https://danke.moe/read/manga/kaettekitara-osananajimi/33/1/",
+          "pages": 4,
+          "pagesMs": 873,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 2092271,
+              "ms": 253
+            },
+            {
+              "page": 2,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 2050533,
+              "ms": 352
+            },
+            {
+              "page": 3,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 2067009,
+              "ms": 246
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 50.93,
+          "url": "https://danke.moe/read/manga/kaettekitara-osananajimi/50-93/1/",
+          "pages": 1,
+          "pagesMs": 151,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 2552126,
+              "ms": 129
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "diva-scans",
+      "name": "Diva Scans",
+      "query": "solo",
+      "search": true,
+      "title": "NTR Solology",
+      "chapters": true,
+      "chapterCount": 25,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://divascans.org/series/comic/ntr-solology/chapter/1",
+          "pages": 10,
+          "pagesMs": 714,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 812176,
+              "ms": 132
+            },
+            {
+              "page": 5,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 950916,
+              "ms": 103
+            },
+            {
+              "page": 9,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 979638,
+              "ms": 16
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 13,
+          "url": "https://divascans.org/series/comic/ntr-solology/chapter/13",
+          "pages": 10,
+          "pagesMs": 552,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 519016,
+              "ms": 42
+            },
+            {
+              "page": 5,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 401538,
+              "ms": 68
+            },
+            {
+              "page": 9,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 382182,
+              "ms": 18
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 25,
+          "url": "https://divascans.org/series/comic/ntr-solology/chapter/25",
+          "pages": 11,
+          "pagesMs": 620,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 751290,
+              "ms": 20
+            },
+            {
+              "page": 5,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 637310,
+              "ms": 41
+            },
+            {
+              "page": 10,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 565046,
+              "ms": 34
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "drake-scans",
+      "name": "Drake Scans",
+      "query": "solo",
+      "search": true,
+      "title": "I, Who Was Banished, Am the Strongest Adventurer With the Off-The-Beaten-Path Gift of \"Translator\"! ~ Rising to the Top Making the Best Use of My Ability to Communicate With Demons!",
+      "chapters": true,
+      "chapterCount": 14,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://drakecomic.net/series/comic/i-who-was-banished-am-the-strongest-adventurer-with-the-off-the-beaten-path-gift-of-translator-rising-to-the-top-making-the-best-use-of-my-ability-to-communicate-with-demons/chapter/1",
+          "pages": 37,
+          "pagesMs": 1738,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 184760,
+              "ms": 358
+            },
+            {
+              "page": 18,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 371392,
+              "ms": 590
+            },
+            {
+              "page": 36,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 24372,
+              "ms": 304
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 8,
+          "url": "https://drakecomic.net/series/comic/i-who-was-banished-am-the-strongest-adventurer-with-the-off-the-beaten-path-gift-of-translator-rising-to-the-top-making-the-best-use-of-my-ability-to-communicate-with-demons/chapter/8",
+          "pages": 34,
+          "pagesMs": 2877,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 764602,
+              "ms": 1038
+            },
+            {
+              "page": 17,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 542428,
+              "ms": 331
+            },
+            {
+              "page": 33,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 783374,
+              "ms": 1037
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 14,
+          "url": "https://drakecomic.net/series/comic/i-who-was-banished-am-the-strongest-adventurer-with-the-off-the-beaten-path-gift-of-translator-rising-to-the-top-making-the-best-use-of-my-ability-to-communicate-with-demons/chapter/14",
+          "pages": 30,
+          "pagesMs": 632,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 693348,
+              "ms": 45
+            },
+            {
+              "page": 15,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 432204,
+              "ms": 55
+            },
+            {
+              "page": 29,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 992570,
+              "ms": 29
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "dynasty-reader",
+      "name": "Dynasty Reader",
+      "query": "level",
+      "search": true,
+      "title": "How Did a Pro Player Like Me End Up as a Max-Level Priestess in Another World?",
+      "chapters": true,
+      "chapterCount": 2,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://dynasty-scans.com/chapters/how_did_a_pro_player_like_me_end_up_as_a_max_level_priestess_in_another_world_ch01",
+          "pages": 12,
+          "pagesMs": 1144,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 268072,
+              "ms": 456
+            },
+            {
+              "page": 6,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 339546,
+              "ms": 466
+            },
+            {
+              "page": 11,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 104272,
+              "ms": 109
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 2,
+          "url": "https://dynasty-scans.com/chapters/how_did_a_pro_player_like_me_end_up_as_a_max_level_priestess_in_another_world_ch02",
+          "pages": 9,
+          "pagesMs": 673,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 258974,
+              "ms": 191
+            },
+            {
+              "page": 4,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1185316,
+              "ms": 277
+            },
+            {
+              "page": 8,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 52072,
+              "ms": 101
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "elf-toon",
+      "name": "Elf Toon",
+      "query": "solo",
+      "search": true,
+      "title": "I Have Infinite Golden Traits",
+      "chapters": true,
+      "chapterCount": 22,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://elftoon.net/series/comic/i-have-infinite-golden-traits/chapter/1",
+          "pages": 15,
+          "pagesMs": 948,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1038732,
+              "ms": 242
+            },
+            {
+              "page": 7,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 632524,
+              "ms": 284
+            },
+            {
+              "page": 14,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 351298,
+              "ms": 145
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 12,
+          "url": "https://elftoon.net/series/comic/i-have-infinite-golden-traits/chapter/12",
+          "pages": 15,
+          "pagesMs": 1032,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 793270,
+              "ms": 229
+            },
+            {
+              "page": 7,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 537772,
+              "ms": 159
+            },
+            {
+              "page": 14,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 254816,
+              "ms": 167
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 22,
+          "url": "https://elftoon.net/series/comic/i-have-infinite-golden-traits/chapter/22",
+          "pages": 12,
+          "pagesMs": 945,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1046060,
+              "ms": 156
+            },
+            {
+              "page": 6,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 628798,
+              "ms": 113
+            },
+            {
+              "page": 11,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 373806,
+              "ms": 188
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "eva-scans",
+      "name": "Eva Scans",
+      "query": "return",
+      "search": true,
+      "title": "I Faked a Pregnancy, but My Husband Returned",
+      "chapters": true,
+      "chapterCount": 43,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://evascans.net/i-faked-a-pregnancy-but-my-husband-returned-chapter-1/",
+          "pages": 25,
+          "pagesMs": 4766,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 658339,
+              "ms": 235
+            },
+            {
+              "page": 12,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 530944,
+              "ms": 3663
+            },
+            {
+              "page": 24,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 229476,
+              "ms": 54
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 22,
+          "url": "https://evascans.net/i-faked-a-pregnancy-but-my-husband-returned-chapter-22/",
+          "pages": 21,
+          "pagesMs": 1076,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 422334,
+              "ms": 64
+            },
+            {
+              "page": 10,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 255411,
+              "ms": 68
+            },
+            {
+              "page": 20,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 83299,
+              "ms": 42
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 43,
+          "url": "https://evascans.net/i-faked-a-pregnancy-but-my-husband-returned-chapter-43/",
+          "pages": 10,
+          "pagesMs": 5776,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 914941,
+              "ms": 68
+            },
+            {
+              "page": 5,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 829440,
+              "ms": 4670
+            },
+            {
+              "page": 9,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 887636,
+              "ms": 145
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "genz-toons",
+      "name": "Genz Toons",
+      "query": "solo",
+      "search": true,
+      "title": "Solo Farming in the Tower",
+      "chapters": true,
+      "chapterCount": 52,
+      "samples": [
+        {
+          "chapter": 101,
+          "url": "https://genztoons.org/chapter/646c7b3b3c9-646cb66f4fa/",
+          "pages": 20,
+          "pagesMs": 638,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "webp",
+              "bytes": 1226990,
+              "ms": 278
+            },
+            {
+              "page": 10,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "webp",
+              "bytes": 2159000,
+              "ms": 170
+            },
+            {
+              "page": 19,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "webp",
+              "bytes": 1608886,
+              "ms": 54
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 127,
+          "url": "https://genztoons.org/chapter/646c7b3b3c9-653a58774c6/",
+          "pages": 18,
+          "pagesMs": 431,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "webp",
+              "bytes": 1638542,
+              "ms": 51
+            },
+            {
+              "page": 9,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "webp",
+              "bytes": 1614656,
+              "ms": 49
+            },
+            {
+              "page": 17,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "webp",
+              "bytes": 1558546,
+              "ms": 247
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 152,
+          "url": "https://genztoons.org/chapter/646c7b3b3c9-6602e3542f1/",
+          "pages": 18,
+          "pagesMs": 259,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/avif",
+              "kind": "avif",
+              "bytes": 292710,
+              "ms": 33
+            },
+            {
+              "page": 9,
+              "ok": true,
+              "status": 200,
+              "type": "image/avif",
+              "kind": "avif",
+              "bytes": 281933,
+              "ms": 87
+            },
+            {
+              "page": 17,
+              "ok": true,
+              "status": 200,
+              "type": "image/avif",
+              "kind": "avif",
+              "bytes": 90935,
+              "ms": 50
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "hachirumi",
+      "name": "Hachirumi",
+      "query": "love",
+      "search": true,
+      "title": "Love : Cute Short Stories",
+      "chapters": true,
+      "chapterCount": 7,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://hachirumi.com/read/manga/love-cute-short-stories/1/1/",
+          "pages": 5,
+          "pagesMs": 224,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 2709168,
+              "ms": 30
+            },
+            {
+              "page": 2,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 3146335,
+              "ms": 106
+            },
+            {
+              "page": 4,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 231972,
+              "ms": 42
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 4,
+          "url": "https://hachirumi.com/read/manga/love-cute-short-stories/4/1/",
+          "pages": 5,
+          "pagesMs": 225,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 1628091,
+              "ms": 46
+            },
+            {
+              "page": 2,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 1301176,
+              "ms": 88
+            },
+            {
+              "page": 4,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 206474,
+              "ms": 21
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 7,
+          "url": "https://hachirumi.com/read/manga/love-cute-short-stories/7/1/",
+          "pages": 6,
+          "pagesMs": 345,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 601245,
+              "ms": 40
+            },
+            {
+              "page": 3,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 812889,
+              "ms": 193
+            },
+            {
+              "page": 5,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 1262658,
+              "ms": 27
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "hive-toon",
+      "name": "Hive Toon",
+      "query": "solo",
+      "search": true,
+      "title": "Solo Swordmaster",
+      "chapters": true,
+      "chapterCount": 26,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://hivetoons.org/series/solo-swordmaster/chapter-1",
+          "pages": 73,
+          "pagesMs": 812,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": false,
+              "status": 403,
+              "type": "text/html; charset=UTF-8",
+              "bytes": 6081,
+              "ms": 183
+            },
+            {
+              "page": 36,
+              "ok": false,
+              "status": 403,
+              "type": "text/html; charset=UTF-8",
+              "bytes": 6084,
+              "ms": 76
+            },
+            {
+              "page": 72,
+              "ok": false,
+              "status": 403,
+              "type": "text/html; charset=UTF-8",
+              "bytes": 6084,
+              "ms": 106
+            }
+          ],
+          "ok": false
+        },
+        {
+          "chapter": 14,
+          "url": "https://hivetoons.org/series/solo-swordmaster/chapter-14",
+          "pages": 52,
+          "pagesMs": 652,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": false,
+              "status": 403,
+              "type": "text/html; charset=UTF-8",
+              "bytes": 6084,
+              "ms": 125
+            },
+            {
+              "page": 26,
+              "ok": false,
+              "status": 403,
+              "type": "text/html; charset=UTF-8",
+              "bytes": 6084,
+              "ms": 100
+            },
+            {
+              "page": 51,
+              "ok": false,
+              "status": 403,
+              "type": "text/html; charset=UTF-8",
+              "bytes": 6078,
+              "ms": 163
+            }
+          ],
+          "ok": false
+        },
+        {
+          "chapter": 26,
+          "url": "https://hivetoons.org/series/solo-swordmaster/chapter-26",
+          "pages": 37,
+          "pagesMs": 707,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": false,
+              "status": 403,
+              "type": "text/html; charset=UTF-8",
+              "bytes": 6084,
+              "ms": 153
+            },
+            {
+              "page": 18,
+              "ok": false,
+              "status": 403,
+              "type": "text/html; charset=UTF-8",
+              "bytes": 6084,
+              "ms": 153
+            },
+            {
+              "page": 36,
+              "ok": false,
+              "status": 403,
+              "type": "text/html; charset=UTF-8",
+              "bytes": 6213,
+              "ms": 154
+            }
+          ],
+          "ok": false
+        }
+      ],
+      "pages": true,
+      "images": false,
+      "verified": false,
+      "excluded": "Image CDN returned 403 Cloudflare HTML; page support removed."
+    },
+    {
+      "id": "kappabeast",
+      "name": "KappaBeast",
+      "query": "level",
+      "search": true,
+      "title": "Kiwamete KENZEN na Bishoujo Level Up\n",
+      "chapters": true,
+      "chapterCount": 6,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://kappabeast.com/reader/Kiwamete-kenzen-na-bishoujo-level-up/1",
+          "pages": 42,
+          "pagesMs": 1044,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 106053,
+              "ms": 300
+            },
+            {
+              "page": 21,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 63282,
+              "ms": 367
+            },
+            {
+              "page": 41,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 22020,
+              "ms": 220
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 4,
+          "url": "https://kappabeast.com/reader/Kiwamete-kenzen-na-bishoujo-level-up/4",
+          "pages": 39,
+          "pagesMs": 876,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 78967,
+              "ms": 392
+            },
+            {
+              "page": 19,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 55889,
+              "ms": 196
+            },
+            {
+              "page": 38,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 38289,
+              "ms": 132
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 6,
+          "url": "https://kappabeast.com/reader/Kiwamete-kenzen-na-bishoujo-level-up/6",
+          "pages": 31,
+          "pagesMs": 755,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 85877,
+              "ms": 250
+            },
+            {
+              "page": 15,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 72556,
+              "ms": 103
+            },
+            {
+              "page": 30,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 80710,
+              "ms": 250
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "kayn-scans",
+      "name": "Kayn Scans",
+      "query": "solo",
+      "search": true,
+      "title": "Solo Swordmaster",
+      "chapters": true,
+      "chapterCount": 24,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://kaynscans.com/series/comic/solo-swordmaster/chapter/1",
+          "pages": 25,
+          "pagesMs": 622,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 247910,
+              "ms": 49
+            },
+            {
+              "page": 12,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 870694,
+              "ms": 122
+            },
+            {
+              "page": 24,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 247910,
+              "ms": 36
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 13,
+          "url": "https://kaynscans.com/series/comic/solo-swordmaster/chapter/13",
+          "pages": 22,
+          "pagesMs": 858,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 247998,
+              "ms": 25
+            },
+            {
+              "page": 11,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 581676,
+              "ms": 184
+            },
+            {
+              "page": 21,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 247998,
+              "ms": 160
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 24,
+          "url": "https://kaynscans.com/series/comic/solo-swordmaster/chapter/24",
+          "pages": 16,
+          "pagesMs": 734,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 247762,
+              "ms": 33
+            },
+            {
+              "page": 8,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1525690,
+              "ms": 257
+            },
+            {
+              "page": 15,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 247762,
+              "ms": 70
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "kenscans",
+      "name": "Kenscans",
+      "query": "solo",
+      "search": true,
+      "title": "I'm a Solo Guide",
+      "chapters": true,
+      "chapterCount": 25,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://kencomics.com/series/im-a-solo-guide/chapter-1",
+          "pages": 47,
+          "pagesMs": 686,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 106770,
+              "ms": 218
+            },
+            {
+              "page": 23,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 729896,
+              "ms": 144
+            },
+            {
+              "page": 46,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 485706,
+              "ms": 116
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 76,
+          "url": "https://kencomics.com/series/im-a-solo-guide/chapter-76",
+          "pages": 15,
+          "pagesMs": 878,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1600176,
+              "ms": 230
+            },
+            {
+              "page": 7,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1221882,
+              "ms": 175
+            },
+            {
+              "page": 14,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 723482,
+              "ms": 242
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 88,
+          "url": "https://kencomics.com/series/im-a-solo-guide/chapter-88",
+          "pages": 33,
+          "pagesMs": 391,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1175916,
+              "ms": 55
+            },
+            {
+              "page": 16,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 357056,
+              "ms": 40
+            },
+            {
+              "page": 32,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 471166,
+              "ms": 40
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "ks-group",
+      "name": "KS Group",
+      "query": "solo",
+      "search": true,
+      "title": "S-Rank Party wo Munou da to Tsuihousareta kedo, “Kantei” to “Chiyu Mahou” de Nariagari Musou",
+      "chapters": true,
+      "chapterCount": 30,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://ksgroupscans.com/manga/s-rank-party-wo-munou-da-to-tsuihousareta-kedo-kantei-to-chiyu-mahou-de-nariagari-musou/chapter-1/",
+          "pages": 44,
+          "pagesMs": 2257,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 702680,
+              "ms": 763
+            },
+            {
+              "page": 22,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 1015397,
+              "ms": 820
+            },
+            {
+              "page": 43,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 122541,
+              "ms": 520
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 16,
+          "url": "https://ksgroupscans.com/manga/s-rank-party-wo-munou-da-to-tsuihousareta-kedo-kantei-to-chiyu-mahou-de-nariagari-musou/chapter-16/",
+          "pages": 37,
+          "pagesMs": 3132,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 700982,
+              "ms": 787
+            },
+            {
+              "page": 18,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 321184,
+              "ms": 1565
+            },
+            {
+              "page": 36,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 150223,
+              "ms": 631
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 30,
+          "url": "https://ksgroupscans.com/manga/s-rank-party-wo-munou-da-to-tsuihousareta-kedo-kantei-to-chiyu-mahou-de-nariagari-musou/chapter-30/",
+          "pages": 31,
+          "pagesMs": 2208,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 701775,
+              "ms": 804
+            },
+            {
+              "page": 15,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 346313,
+              "ms": 650
+            },
+            {
+              "page": 30,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 150223,
+              "ms": 611
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": false,
+      "excluded": "robots.txt disallows the paths used (ks-group: Disallow: / for *; stonescape: /api/, /read/, /pub/). Page support removed."
+    },
+    {
+      "id": "kuramanga",
+      "name": "KuraManga",
+      "query": "solo",
+      "search": true,
+      "title": "30 Years Since the Prologue",
+      "chapters": true,
+      "chapterCount": 25,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://kuramanga.com/30yearssincetheprologue/chapter-1",
+          "pages": 38,
+          "pagesMs": 775,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 172200,
+              "ms": 441
+            },
+            {
+              "page": 19,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 912504,
+              "ms": 79
+            },
+            {
+              "page": 37,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 358832,
+              "ms": 69
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 13,
+          "url": "https://kuramanga.com/30yearssincetheprologue/chapter-13",
+          "pages": 30,
+          "pagesMs": 220,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 168978,
+              "ms": 11
+            },
+            {
+              "page": 15,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 833114,
+              "ms": 8
+            },
+            {
+              "page": 29,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 256604,
+              "ms": 7
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 25,
+          "url": "https://kuramanga.com/30yearssincetheprologue/chapter-25",
+          "pages": 32,
+          "pagesMs": 191,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 221214,
+              "ms": 8
+            },
+            {
+              "page": 16,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 96026,
+              "ms": 5
+            },
+            {
+              "page": 31,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 402642,
+              "ms": 7
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "lua-comic",
+      "name": "Lua Comic",
+      "query": "solo",
+      "search": true,
+      "title": "I Became the Cursed Idol Leader",
+      "chapters": true,
+      "chapterCount": 56,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://luacomic.org/series/i-became-the-cursed-idol-leader/chapter-1",
+          "pages": 21,
+          "pagesMs": 732,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpg",
+              "kind": "webp",
+              "bytes": 474308,
+              "ms": 100
+            },
+            {
+              "page": 10,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpg",
+              "kind": "webp",
+              "bytes": 644266,
+              "ms": 84
+            },
+            {
+              "page": 20,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpg",
+              "kind": "webp",
+              "bytes": 326010,
+              "ms": 49
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 29,
+          "url": "https://luacomic.org/series/i-became-the-cursed-idol-leader/chapter-29",
+          "pages": 11,
+          "pagesMs": 412,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpg",
+              "kind": "webp",
+              "bytes": 977884,
+              "ms": 129
+            },
+            {
+              "page": 5,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpg",
+              "kind": "webp",
+              "bytes": 1025130,
+              "ms": 51
+            },
+            {
+              "page": 10,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpg",
+              "kind": "webp",
+              "bytes": 775578,
+              "ms": 42
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 56,
+          "url": "https://luacomic.org/series/i-became-the-cursed-idol-leader/chapter-56",
+          "pages": 10,
+          "pagesMs": 271,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpg",
+              "kind": "webp",
+              "bytes": 948158,
+              "ms": 40
+            },
+            {
+              "page": 5,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpg",
+              "kind": "webp",
+              "bytes": 1006282,
+              "ms": 19
+            },
+            {
+              "page": 9,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpg",
+              "kind": "webp",
+              "bytes": 233922,
+              "ms": 27
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "madarascans",
+      "name": "Madarascans",
+      "query": "solo",
+      "search": true,
+      "title": "Solo Swordmaster",
+      "chapters": true,
+      "chapterCount": 22,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://madarascans.net/solo-swordmaster-chapter-1/",
+          "pages": 44,
+          "pagesMs": 2138,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 724063,
+              "ms": 890
+            },
+            {
+              "page": 22,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 563033,
+              "ms": 58
+            },
+            {
+              "page": 43,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 288023,
+              "ms": 774
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 12,
+          "url": "https://madarascans.net/solo-swordmaster-chapter-12/",
+          "pages": 16,
+          "pagesMs": 2610,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1162292,
+              "ms": 1025
+            },
+            {
+              "page": 8,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1585116,
+              "ms": 50
+            },
+            {
+              "page": 15,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1662258,
+              "ms": 1136
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 22,
+          "url": "https://madarascans.net/solo-swordmaster-chapter-22/",
+          "pages": 24,
+          "pagesMs": 1947,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 484022,
+              "ms": 893
+            },
+            {
+              "page": 12,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 537786,
+              "ms": 41
+            },
+            {
+              "page": 23,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 108436,
+              "ms": 637
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "mangadex",
+      "name": "MangaDex",
+      "query": "solo",
+      "search": true,
+      "title": "Rental Magica from SOLOMON",
+      "chapters": true,
+      "chapterCount": 1,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://mangadex.org/chapter/ad6c783d-3f5c-4810-9362-d5cb9f2c8914",
+          "pages": 31,
+          "pagesMs": 590,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 500838,
+              "ms": 116
+            },
+            {
+              "page": 15,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 349171,
+              "ms": 81
+            },
+            {
+              "page": 30,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 368990,
+              "ms": 17
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "mangak",
+      "name": "MangaK",
+      "query": "solo",
+      "search": true,
+      "title": "Emperor of Solo Play",
+      "chapters": true,
+      "chapterCount": 93,
+      "samples": [
+        {
+          "chapter": 0,
+          "url": "https://mangak.io/emperor-of-solo-play/chapter-0",
+          "pages": 3,
+          "pagesMs": 969,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 165660,
+              "ms": 332
+            },
+            {
+              "page": 1,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 91024,
+              "ms": 237
+            },
+            {
+              "page": 2,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 87430,
+              "ms": 207
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 46,
+          "url": "https://mangak.io/emperor-of-solo-play/chapter-46",
+          "pages": 27,
+          "pagesMs": 1243,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 140232,
+              "ms": 252
+            },
+            {
+              "page": 13,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 216844,
+              "ms": 175
+            },
+            {
+              "page": 26,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 213110,
+              "ms": 222
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 92,
+          "url": "https://mangak.io/emperor-of-solo-play/chapter-92",
+          "pages": 4,
+          "pagesMs": 994,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 128378,
+              "ms": 177
+            },
+            {
+              "page": 2,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 78810,
+              "ms": 224
+            },
+            {
+              "page": 3,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 133100,
+              "ms": 308
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "mangakatana",
+      "name": "MangaKatana",
+      "query": "solo",
+      "search": true,
+      "title": "Solo Sex",
+      "chapters": true,
+      "chapterCount": 6,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://mangakatana.com/manga/solo-sex.14082/c1",
+          "pages": 39,
+          "pagesMs": 2503,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 148570,
+              "ms": 1125
+            },
+            {
+              "page": 19,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 135962,
+              "ms": 855
+            },
+            {
+              "page": 38,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 78582,
+              "ms": 367
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 4,
+          "url": "https://mangakatana.com/manga/solo-sex.14082/c4",
+          "pages": 29,
+          "pagesMs": 1490,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 102155,
+              "ms": 452
+            },
+            {
+              "page": 14,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 155066,
+              "ms": 499
+            },
+            {
+              "page": 28,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 70804,
+              "ms": 365
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 5.5,
+          "url": "https://mangakatana.com/manga/solo-sex.14082/c5.5",
+          "pages": 9,
+          "pagesMs": 2438,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 70804,
+              "ms": 1112
+            },
+            {
+              "page": 4,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 92292,
+              "ms": 592
+            },
+            {
+              "page": 8,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 77644,
+              "ms": 562
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "mangaread",
+      "name": "MangaRead",
+      "query": "solo",
+      "search": true,
+      "title": "Solo Swordmaster",
+      "chapters": true,
+      "chapterCount": 27,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://www.mangaread.org/manga/solo-swordmaster/chapter-1/",
+          "pages": 26,
+          "pagesMs": 680,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 643204,
+              "ms": 24
+            },
+            {
+              "page": 13,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 553524,
+              "ms": 82
+            },
+            {
+              "page": 25,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 157512,
+              "ms": 15
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 14,
+          "url": "https://www.mangaread.org/manga/solo-swordmaster/chapter-14/",
+          "pages": 20,
+          "pagesMs": 572,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 861261,
+              "ms": 21
+            },
+            {
+              "page": 10,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 472201,
+              "ms": 27
+            },
+            {
+              "page": 19,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 405942,
+              "ms": 19
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 27,
+          "url": "https://www.mangaread.org/manga/solo-swordmaster/chapter-27/",
+          "pages": 118,
+          "pagesMs": 498,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 103620,
+              "ms": 20
+            },
+            {
+              "page": 59,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 39758,
+              "ms": 16
+            },
+            {
+              "page": 117,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 91559,
+              "ms": 14
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "mangasushi",
+      "name": "Mangasushi",
+      "query": "solo",
+      "search": true,
+      "title": "Hisabisa Ni Kenko Shindan Wo Uketara Saikyo Status Ni Natteita Tsuiho Sareta Ossan Boken Sha, Imasara Eiyu Wo Mezasu",
+      "chapters": true,
+      "chapterCount": 1,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://mangasushi.org/manga/hisabisa-ni-kenko-shindan-wo-uketara-saikyo-status-ni-natteita-tsuiho-sareta-ossan-boken-sha-imasara-eiyu-wo-mezasu/chapter-1/",
+          "pages": 35,
+          "pagesMs": 363,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 773197,
+              "ms": 74
+            },
+            {
+              "page": 17,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 826418,
+              "ms": 49
+            },
+            {
+              "page": 34,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 110988,
+              "ms": 73
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "mangataro",
+      "name": "Mangataro",
+      "query": "solo",
+      "search": true,
+      "title": "Emperor of Solo Play",
+      "chapters": true,
+      "chapterCount": 92,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://mangataro.org/read/emperor-of-solo-play/ch1-341209",
+          "pages": 66,
+          "pagesMs": 1021,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 145112,
+              "ms": 281
+            },
+            {
+              "page": 33,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 89896,
+              "ms": 223
+            },
+            {
+              "page": 65,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 183784,
+              "ms": 137
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 47,
+          "url": "https://mangataro.org/read/emperor-of-solo-play/ch47-608116",
+          "pages": 48,
+          "pagesMs": 800,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 110034,
+              "ms": 121
+            },
+            {
+              "page": 24,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 159482,
+              "ms": 153
+            },
+            {
+              "page": 47,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 3068,
+              "ms": 127
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 92,
+          "url": "https://mangataro.org/read/emperor-of-solo-play/ch92-708276",
+          "pages": 60,
+          "pagesMs": 789,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 226964,
+              "ms": 143
+            },
+            {
+              "page": 30,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 149598,
+              "ms": 138
+            },
+            {
+              "page": 59,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 68934,
+              "ms": 125
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "manhuaplus",
+      "name": "Manhuaplus",
+      "query": "solo",
+      "search": true,
+      "title": "Solo Leveling: Ragnarok",
+      "chapters": true,
+      "chapterCount": 75,
+      "samples": [
+        {
+          "chapter": 0,
+          "url": "https://manhuaplus.top/manga/solo-leveling-ragnarok/chapter-0",
+          "pages": 1,
+          "pagesMs": 1105,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 895316,
+              "ms": 334
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 36,
+          "url": "https://manhuaplus.top/manga/solo-leveling-ragnarok/chapter-36",
+          "pages": 17,
+          "pagesMs": 3142,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 127078,
+              "ms": 75
+            },
+            {
+              "page": 8,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 917252,
+              "ms": 2442
+            },
+            {
+              "page": 16,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 174138,
+              "ms": 40
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 73,
+          "url": "https://manhuaplus.top/manga/solo-leveling-ragnarok/chapter-73",
+          "pages": 12,
+          "pagesMs": 1930,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 513946,
+              "ms": 60
+            },
+            {
+              "page": 6,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 562708,
+              "ms": 1020
+            },
+            {
+              "page": 11,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 673920,
+              "ms": 87
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "manhuaus",
+      "name": "Manhuaus",
+      "query": "solo",
+      "search": true,
+      "title": "Solo Swordmaster",
+      "chapters": true,
+      "chapterCount": 27,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://manhuaus.club/manga/v9nvedpbvh7wtvo/chapter-1/",
+          "pages": 26,
+          "pagesMs": 479,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 700286,
+              "ms": 106
+            },
+            {
+              "page": 13,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 574911,
+              "ms": 256
+            },
+            {
+              "page": 25,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 209283,
+              "ms": 12
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 14,
+          "url": "https://manhuaus.club/manga/v9nvedpbvh7wtvo/chapter-14/",
+          "pages": 20,
+          "pagesMs": 268,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 883540,
+              "ms": 19
+            },
+            {
+              "page": 10,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 501859,
+              "ms": 72
+            },
+            {
+              "page": 19,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 454810,
+              "ms": 26
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 27,
+          "url": "https://manhuaus.club/manga/v9nvedpbvh7wtvo/chapter-27/",
+          "pages": 117,
+          "pagesMs": 212,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 105796,
+              "ms": 25
+            },
+            {
+              "page": 58,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 45951,
+              "ms": 89
+            },
+            {
+              "page": 116,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 101659,
+              "ms": 34
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "mgeko",
+      "name": "Mgeko",
+      "query": "solo",
+      "search": true,
+      "title": "Solo Swordmaster",
+      "chapters": true,
+      "chapterCount": 27,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://www.mgeko.cc/reader/en/c9me-solo-swordmaster-chapter-1-eng-li/",
+          "pages": 26,
+          "pagesMs": 709,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 700286,
+              "ms": 299
+            },
+            {
+              "page": 13,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 574911,
+              "ms": 98
+            },
+            {
+              "page": 25,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 209283,
+              "ms": 146
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 14,
+          "url": "https://www.mgeko.cc/reader/en/c9me-solo-swordmaster-chapter-14-eng-li/",
+          "pages": 20,
+          "pagesMs": 365,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 883540,
+              "ms": 63
+            },
+            {
+              "page": 10,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 501859,
+              "ms": 19
+            },
+            {
+              "page": 19,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 454810,
+              "ms": 125
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 27,
+          "url": "https://www.mgeko.cc/reader/en/c9me-solo-swordmaster-chapter-27-eng-li/",
+          "pages": 117,
+          "pagesMs": 294,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 105796,
+              "ms": 48
+            },
+            {
+              "page": 58,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 45951,
+              "ms": 15
+            },
+            {
+              "page": 116,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 101659,
+              "ms": 46
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "nyx-scans",
+      "name": "Nyx Scans",
+      "query": "solo",
+      "search": true,
+      "title": "Your Throne",
+      "chapters": true,
+      "chapterCount": 251,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://nyxscans.com/series/your-throne/chapter-1",
+          "pages": 185,
+          "pagesMs": 1119,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 167134,
+              "ms": 148
+            },
+            {
+              "page": 92,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 66144,
+              "ms": 480
+            },
+            {
+              "page": 184,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 34258,
+              "ms": 34
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 126,
+          "url": "https://nyxscans.com/series/your-throne/chapter-126",
+          "pages": 206,
+          "pagesMs": 632,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 76700,
+              "ms": 40
+            },
+            {
+              "page": 103,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 124938,
+              "ms": 169
+            },
+            {
+              "page": 205,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 45502,
+              "ms": 38
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 251,
+          "url": "https://nyxscans.com/series/your-throne/chapter-251",
+          "pages": 39,
+          "pagesMs": 1919,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 132358,
+              "ms": 664
+            },
+            {
+              "page": 19,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 220584,
+              "ms": 723
+            },
+            {
+              "page": 38,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 2374,
+              "ms": 292
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "orion-scans",
+      "name": "Orion Scans",
+      "query": "solo",
+      "search": true,
+      "title": "I May Be a Guild Receptionist, but I'll Solo Any Boss to Clock Out on Time",
+      "chapters": true,
+      "chapterCount": 56,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://orion-scans.com/series/i-may-be-a-guild-receptionist-but-i'll-solo-any-boss-to-clock-out-on-time/chapter-1",
+          "pages": 49,
+          "pagesMs": 1032,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 145681,
+              "ms": 220
+            },
+            {
+              "page": 24,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 362781,
+              "ms": 142
+            },
+            {
+              "page": 48,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 235772,
+              "ms": 69
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 29,
+          "url": "https://orion-scans.com/series/i-may-be-a-guild-receptionist-but-i'll-solo-any-boss-to-clock-out-on-time/chapter-29",
+          "pages": 30,
+          "pagesMs": 517,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 305495,
+              "ms": 66
+            },
+            {
+              "page": 15,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 264719,
+              "ms": 90
+            },
+            {
+              "page": 29,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 138837,
+              "ms": 62
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 53,
+          "url": "https://orion-scans.com/series/i-may-be-a-guild-receptionist-but-i'll-solo-any-boss-to-clock-out-on-time/chapter-53",
+          "pages": 32,
+          "pagesMs": 474,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 141914,
+              "ms": 55
+            },
+            {
+              "page": 16,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 784728,
+              "ms": 64
+            },
+            {
+              "page": 31,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 523335,
+              "ms": 63
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "qi-scans",
+      "name": "Qi Scans",
+      "query": "solo",
+      "search": true,
+      "title": "Solo School",
+      "chapters": true,
+      "chapterCount": 73,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://qimanga.com/series/solo-school/chapter-1",
+          "pages": 57,
+          "pagesMs": 381,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 383724,
+              "ms": 106
+            },
+            {
+              "page": 28,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 410956,
+              "ms": 142
+            },
+            {
+              "page": 56,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 379724,
+              "ms": 21
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 37,
+          "url": "https://qimanga.com/series/solo-school/chapter-37",
+          "pages": 11,
+          "pagesMs": 122,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1466102,
+              "ms": 27
+            },
+            {
+              "page": 5,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1537036,
+              "ms": 41
+            },
+            {
+              "page": 10,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 936454,
+              "ms": 21
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 78,
+          "url": "https://qimanga.com/series/solo-school/chapter-78",
+          "pages": 98,
+          "pagesMs": 105,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 37268,
+              "ms": 18
+            },
+            {
+              "page": 49,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 41550,
+              "ms": 17
+            },
+            {
+              "page": 97,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 244,
+              "ms": 13
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "rd-scans",
+      "name": "RD Scans",
+      "query": "solo",
+      "search": true,
+      "title": "Isekai Harem Loop",
+      "chapters": true,
+      "chapterCount": 9,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://rdscans.com/manga/isekai-harem-loop/chapter-1/",
+          "pages": 33,
+          "pagesMs": 1234,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 448213,
+              "ms": 354
+            },
+            {
+              "page": 16,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 492313,
+              "ms": 433
+            },
+            {
+              "page": 32,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 393794,
+              "ms": 311
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 5,
+          "url": "https://rdscans.com/manga/isekai-harem-loop/chapter-5/",
+          "pages": 31,
+          "pagesMs": 832,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 412026,
+              "ms": 211
+            },
+            {
+              "page": 15,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 364009,
+              "ms": 221
+            },
+            {
+              "page": 30,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 372700,
+              "ms": 351
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 9,
+          "url": "https://rdscans.com/manga/isekai-harem-loop/chapter-9/",
+          "ok": false,
+          "error": "PAGES_NOT_FOUND",
+          "message": "RD Scans has removed this chapter (its link redirects to the home page)",
+          "pagesMs": 105
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "ritharscans",
+      "name": "Ritharscans",
+      "query": "solo",
+      "search": true,
+      "title": "The Solo Camper’s Casual, Free-Spirited Journey in Another World",
+      "chapters": true,
+      "chapterCount": 5,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://ritharscans.com/read/dbc8efa6-694a-4a06-b33d-26986bd2563d",
+          "pages": 34,
+          "pagesMs": 749,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 876888,
+              "ms": 164
+            },
+            {
+              "page": 17,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 738862,
+              "ms": 223
+            },
+            {
+              "page": 33,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 529615,
+              "ms": 39
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 3,
+          "url": "https://ritharscans.com/read/ff3da7ce-afc9-4094-875b-435a491d290b",
+          "pages": 32,
+          "pagesMs": 681,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 1211784,
+              "ms": 185
+            },
+            {
+              "page": 16,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 1102865,
+              "ms": 197
+            },
+            {
+              "page": 31,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 529615,
+              "ms": 35
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 5,
+          "url": "https://ritharscans.com/read/a6fd3d31-b75f-47bb-bb9a-6f4062979ccc",
+          "pages": 31,
+          "pagesMs": 466,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 1319910,
+              "ms": 28
+            },
+            {
+              "page": 15,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 1102952,
+              "ms": 104
+            },
+            {
+              "page": 30,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 529615,
+              "ms": 25
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "rizz-fables",
+      "name": "Rizz Fables",
+      "query": "solo",
+      "search": true,
+      "title": "Solo Farming In The Tower",
+      "chapters": true,
+      "chapterCount": 101,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://rizzfables.com/chapter/r2311170-solo-farming-in-the-tower-chapter-1",
+          "pages": 19,
+          "pagesMs": 5282,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 151268,
+              "ms": 1429
+            },
+            {
+              "page": 9,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 902758,
+              "ms": 2130
+            },
+            {
+              "page": 18,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 361972,
+              "ms": 1439
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 51,
+          "url": "https://rizzfables.com/chapter/r2311170-solo-farming-in-the-tower-chapter-51",
+          "pages": 20,
+          "pagesMs": 5876,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1693246,
+              "ms": 1636
+            },
+            {
+              "page": 10,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1544660,
+              "ms": 1843
+            },
+            {
+              "page": 19,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 716620,
+              "ms": 1507
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 100.5,
+          "url": "https://rizzfables.com/chapter/r2311170-solo-farming-in-the-tower-chapter-100.5",
+          "pages": 1,
+          "pagesMs": 2183,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 328182,
+              "ms": 1314
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "rokari-comics",
+      "name": "Rokari Comics",
+      "query": "solo",
+      "search": true,
+      "title": "Wanna Go Grocery Shopping Together?",
+      "chapters": true,
+      "chapterCount": 53,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://rokaricomics.com/wanna-shop-together-chapter-1/",
+          "pages": 7,
+          "pagesMs": 672,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 1677912,
+              "ms": 87
+            },
+            {
+              "page": 3,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 1600856,
+              "ms": 342
+            },
+            {
+              "page": 6,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 1054236,
+              "ms": 33
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 27,
+          "url": "https://rokaricomics.com/wanna-shop-together-chapter-27/",
+          "pages": 10,
+          "pagesMs": 587,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 1332520,
+              "ms": 56
+            },
+            {
+              "page": 5,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 1208933,
+              "ms": 226
+            },
+            {
+              "page": 9,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 1208412,
+              "ms": 39
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 53,
+          "url": "https://rokaricomics.com/wanna-shop-together-chapter-53/",
+          "pages": 10,
+          "pagesMs": 398,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 1455571,
+              "ms": 46
+            },
+            {
+              "page": 5,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 1459874,
+              "ms": 67
+            },
+            {
+              "page": 9,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 650403,
+              "ms": 23
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "roliascan",
+      "name": "RoliaScan",
+      "query": "solo",
+      "search": true,
+      "title": "Solo Bug Player",
+      "chapters": true,
+      "chapterCount": 203,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://roliascan.com/read/solo-bug-player/ch1-55920/",
+          "pages": 38,
+          "pagesMs": 480,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 20206,
+              "ms": 35
+            },
+            {
+              "page": 19,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 156348,
+              "ms": 48
+            },
+            {
+              "page": 37,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 49392,
+              "ms": 42
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 102,
+          "url": "https://roliascan.com/read/solo-bug-player/ch102-56021/",
+          "pages": 34,
+          "pagesMs": 1306,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 219648,
+              "ms": 39
+            },
+            {
+              "page": 17,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 193150,
+              "ms": 36
+            },
+            {
+              "page": 33,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 53020,
+              "ms": 33
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 203,
+          "url": "https://roliascan.com/read/solo-bug-player/ch203-374083/",
+          "pages": 9,
+          "pagesMs": 890,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 1487377,
+              "ms": 184
+            },
+            {
+              "page": 4,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 1038448,
+              "ms": 160
+            },
+            {
+              "page": 8,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 407008,
+              "ms": 33
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "sana-scans",
+      "name": "Sana Scans",
+      "query": "return",
+      "search": true,
+      "title": "The Cold Duke Turned Sweet After I Returned from Death",
+      "chapters": true,
+      "chapterCount": 13,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://sanascans.com/series/the-cold-duke-turned-sweet-after-i-returned-from-death/chapter-1",
+          "pages": 38,
+          "pagesMs": 1272,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 384158,
+              "ms": 186
+            },
+            {
+              "page": 19,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 459028,
+              "ms": 576
+            },
+            {
+              "page": 37,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 485558,
+              "ms": 145
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 7,
+          "url": "https://sanascans.com/series/the-cold-duke-turned-sweet-after-i-returned-from-death/chapter-7",
+          "pages": 26,
+          "pagesMs": 584,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 590356,
+              "ms": 48
+            },
+            {
+              "page": 13,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 448928,
+              "ms": 233
+            },
+            {
+              "page": 25,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 455546,
+              "ms": 39
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 13,
+          "url": "https://sanascans.com/series/the-cold-duke-turned-sweet-after-i-returned-from-death/chapter-13",
+          "pages": 10,
+          "pagesMs": 565,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 662428,
+              "ms": 37
+            },
+            {
+              "page": 5,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 660164,
+              "ms": 207
+            },
+            {
+              "page": 9,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 692056,
+              "ms": 48
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "siren-scans",
+      "name": "Siren Scans",
+      "query": "solo",
+      "search": true,
+      "title": "The Mistreated Noble Lady and the Tainted Duke I’ll Purify Your Curse",
+      "chapters": true,
+      "chapterCount": 40,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://sirenscans.com/the-mistreated-noble-lady-and-the-tainted-duke-i-ll-purify-your-curse-chapter-1",
+          "pages": 4,
+          "pagesMs": 785,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 1846561,
+              "ms": 153
+            },
+            {
+              "page": 2,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 1762744,
+              "ms": 477
+            },
+            {
+              "page": 3,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 1522987,
+              "ms": 71
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 21,
+          "url": "https://sirenscans.com/the-mistreated-noble-lady-and-the-tainted-duke-i-ll-purify-your-curse-chapter-21",
+          "pages": 3,
+          "pagesMs": 386,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 1600549,
+              "ms": 80
+            },
+            {
+              "page": 1,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 1749278,
+              "ms": 193
+            },
+            {
+              "page": 2,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 13995,
+              "ms": 51
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 40,
+          "url": "https://sirenscans.com/the-mistreated-noble-lady-and-the-tainted-duke-i-ll-purify-your-curse-chapter-40",
+          "pages": 4,
+          "pagesMs": 191,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/avif",
+              "kind": "avif",
+              "bytes": 85066,
+              "ms": 42
+            },
+            {
+              "page": 2,
+              "ok": true,
+              "status": 200,
+              "type": "image/avif",
+              "kind": "avif",
+              "bytes": 1161459,
+              "ms": 68
+            },
+            {
+              "page": 3,
+              "ok": true,
+              "status": 200,
+              "type": "image/avif",
+              "kind": "avif",
+              "bytes": 938689,
+              "ms": 25
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "spider-scans",
+      "name": "Spider Scans",
+      "query": "return",
+      "search": true,
+      "title": "The Dark Swordsman Returns",
+      "chapters": true,
+      "chapterCount": 74,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://spiderscans.xyz/chapter/the-dark-swordsman-returns-chapter-1/",
+          "pages": 17,
+          "pagesMs": 2626,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 482254,
+              "ms": 425
+            },
+            {
+              "page": 8,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 392276,
+              "ms": 418
+            },
+            {
+              "page": 16,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 159126,
+              "ms": 281
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 38,
+          "url": "https://spiderscans.xyz/chapter/the-dark-swordsman-returns-chapter-38/",
+          "pages": 24,
+          "pagesMs": 1943,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 53942,
+              "ms": 279
+            },
+            {
+              "page": 12,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 278062,
+              "ms": 307
+            },
+            {
+              "page": 23,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 236173,
+              "ms": 305
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 74,
+          "url": "https://spiderscans.xyz/chapter/the-dark-swordsman-returns-chapter-74/",
+          "pages": 17,
+          "pagesMs": 1303,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 222604,
+              "ms": 270
+            },
+            {
+              "page": 8,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 770185,
+              "ms": 300
+            },
+            {
+              "page": 16,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 669234,
+              "ms": 292
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "stonescape",
+      "name": "Stonescape",
+      "query": "return",
+      "search": true,
+      "title": "Mia Has Returned",
+      "chapters": true,
+      "chapterCount": 45,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://stonescape.xyz/series/mia-has-returned/ch-1",
+          "pages": 17,
+          "pagesMs": 1801,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 712320,
+              "ms": 414
+            },
+            {
+              "page": 8,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 3037234,
+              "ms": 639
+            },
+            {
+              "page": 16,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1681672,
+              "ms": 377
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 23,
+          "url": "https://stonescape.xyz/series/mia-has-returned/ch-23",
+          "pages": 15,
+          "pagesMs": 2284,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 3681228,
+              "ms": 651
+            },
+            {
+              "page": 7,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 3148360,
+              "ms": 783
+            },
+            {
+              "page": 14,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1445448,
+              "ms": 424
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 44.5,
+          "url": "https://stonescape.xyz/series/mia-has-returned/ch-44.5",
+          "pages": 1,
+          "pagesMs": 727,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1721114,
+              "ms": 427
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": false,
+      "excluded": "robots.txt disallows the paths used (ks-group: Disallow: / for *; stonescape: /api/, /read/, /pub/). Page support removed."
+    },
+    {
+      "id": "tcb-scans",
+      "name": "TCB Scans",
+      "query": "love",
+      "search": true,
+      "title": "Black Clover",
+      "chapters": true,
+      "chapterCount": 376,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://tcbonepiecechapters.com/chapters/1991/black-clover-chapter-1-review-1687770238",
+          "pages": 57,
+          "pagesMs": 4080,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 388673,
+              "ms": 1714
+            },
+            {
+              "page": 28,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 352752,
+              "ms": 186
+            },
+            {
+              "page": 56,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 198733,
+              "ms": 1883
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 189,
+          "url": "https://tcbonepiecechapters.com/chapters/2179/black-clover-chapter-189-review-1687770237",
+          "pages": 18,
+          "pagesMs": 1465,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 310536,
+              "ms": 108
+            },
+            {
+              "page": 9,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 409485,
+              "ms": 63
+            },
+            {
+              "page": 17,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 242908,
+              "ms": 733
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 391.5,
+          "url": "https://tcbonepiecechapters.com/chapters/8008/black-clover-chapter-391.5",
+          "pages": 14,
+          "pagesMs": 972,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 1731775,
+              "ms": 115
+            },
+            {
+              "page": 7,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 1514880,
+              "ms": 253
+            },
+            {
+              "page": 13,
+              "ok": true,
+              "status": 200,
+              "type": "image/png",
+              "kind": "png",
+              "bytes": 1663192,
+              "ms": 66
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "thunderscans",
+      "name": "Thunderscans",
+      "query": "solo",
+      "search": true,
+      "title": "Solo Swordmaster",
+      "chapters": true,
+      "chapterCount": 24,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://en-thunderscans.com/solo-swordmaster-chapter-1/",
+          "pages": 26,
+          "pagesMs": 491,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 1190940,
+              "ms": 30
+            },
+            {
+              "page": 13,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 980484,
+              "ms": 100
+            },
+            {
+              "page": 25,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 403953,
+              "ms": 23
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 13,
+          "url": "https://en-thunderscans.com/solo-swordmaster-chapter-13/",
+          "pages": 20,
+          "pagesMs": 419,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 494584,
+              "ms": 16
+            },
+            {
+              "page": 10,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 433634,
+              "ms": 16
+            },
+            {
+              "page": 19,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 398460,
+              "ms": 17
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 24,
+          "url": "https://en-thunderscans.com/solo-swordmaster-chapter-24/",
+          "pages": 25,
+          "pagesMs": 442,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 700070,
+              "ms": 19
+            },
+            {
+              "page": 12,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 564690,
+              "ms": 26
+            },
+            {
+              "page": 24,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 141396,
+              "ms": 30
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "valir-scans",
+      "name": "Valir Scans",
+      "query": "solo",
+      "search": true,
+      "title": "I Only Need the Duke's Child",
+      "chapters": true,
+      "chapterCount": 33,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://valirscans.org/series/comic/i-only-need-the-dukes-child/chapter/1",
+          "pages": 39,
+          "pagesMs": 870,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 347222,
+              "ms": 123
+            },
+            {
+              "page": 19,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 426270,
+              "ms": 271
+            },
+            {
+              "page": 38,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 157884,
+              "ms": 22
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 17,
+          "url": "https://valirscans.org/series/comic/i-only-need-the-dukes-child/chapter/17",
+          "pages": 31,
+          "pagesMs": 656,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 308210,
+              "ms": 58
+            },
+            {
+              "page": 15,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 286118,
+              "ms": 153
+            },
+            {
+              "page": 30,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 452400,
+              "ms": 32
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 33,
+          "url": "https://valirscans.org/series/comic/i-only-need-the-dukes-child/chapter/33",
+          "pages": 44,
+          "pagesMs": 594,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 336336,
+              "ms": 60
+            },
+            {
+              "page": 22,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 208208,
+              "ms": 91
+            },
+            {
+              "page": 43,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 336336,
+              "ms": 40
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "violetscans",
+      "name": "Violetscans",
+      "query": "solo",
+      "search": true,
+      "title": "I Was Just Having Fun With The Time Limit",
+      "chapters": true,
+      "chapterCount": 64,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://violetmanga.com/i-was-just-having-fun-with-the-time-limit-chapter-1/",
+          "pages": 12,
+          "pagesMs": 2609,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 518332,
+              "ms": 879
+            },
+            {
+              "page": 6,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 755336,
+              "ms": 738
+            },
+            {
+              "page": 11,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 286924,
+              "ms": 743
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 33,
+          "url": "https://violetmanga.com/i-was-just-having-fun-with-the-time-limit-chapter-33/",
+          "pages": 18,
+          "pagesMs": 2668,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 450034,
+              "ms": 895
+            },
+            {
+              "page": 9,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 689802,
+              "ms": 779
+            },
+            {
+              "page": 17,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 772216,
+              "ms": 678
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 67,
+          "url": "https://violetmanga.com/i-was-just-having-fun-with-the-time-limit-chapter-67/",
+          "pages": 37,
+          "pagesMs": 2418,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 826947,
+              "ms": 684
+            },
+            {
+              "page": 18,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 620956,
+              "ms": 683
+            },
+            {
+              "page": 36,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 521847,
+              "ms": 676
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "vortex-scans",
+      "name": "Vortex Scans",
+      "query": "solo",
+      "search": true,
+      "title": "Emperor of Solo Play",
+      "chapters": true,
+      "chapterCount": 24,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://vortexscans.org/series/emperor-of-solo-play/chapter-1",
+          "pages": 221,
+          "pagesMs": 767,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 74616,
+              "ms": 173
+            },
+            {
+              "page": 110,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 102846,
+              "ms": 116
+            },
+            {
+              "page": 220,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 16676,
+              "ms": 22
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 13,
+          "url": "https://vortexscans.org/series/emperor-of-solo-play/chapter-13",
+          "pages": 157,
+          "pagesMs": 350,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 31246,
+              "ms": 40
+            },
+            {
+              "page": 78,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 185348,
+              "ms": 29
+            },
+            {
+              "page": 156,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 21316,
+              "ms": 22
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 24,
+          "url": "https://vortexscans.org/series/emperor-of-solo-play/chapter-24",
+          "pages": 15,
+          "pagesMs": 541,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1674006,
+              "ms": 209
+            },
+            {
+              "page": 7,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1852844,
+              "ms": 58
+            },
+            {
+              "page": 14,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 1428242,
+              "ms": 100
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "webtoon",
+      "name": "WEBTOON",
+      "query": "solo",
+      "search": true,
+      "title": "Emperor of Solo Play",
+      "chapters": true,
+      "chapterCount": 84,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://www.webtoons.com/en/action/emperor-of-solo-play/episode-1/viewer?title_no=7830&episode_no=1",
+          "pages": 221,
+          "pagesMs": 1086,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 58926,
+              "ms": 79
+            },
+            {
+              "page": 110,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 75131,
+              "ms": 35
+            },
+            {
+              "page": 220,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 13700,
+              "ms": 8
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 43,
+          "url": "https://www.webtoons.com/en/action/emperor-of-solo-play/episode-43/viewer?title_no=7830&episode_no=43",
+          "pages": 148,
+          "pagesMs": 953,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 77290,
+              "ms": 8
+            },
+            {
+              "page": 74,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 61713,
+              "ms": 14
+            },
+            {
+              "page": 147,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 8199,
+              "ms": 9
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 84,
+          "url": "https://www.webtoons.com/en/action/emperor-of-solo-play/episode-84/viewer?title_no=7830&episode_no=84",
+          "pages": 150,
+          "pagesMs": 886,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 55453,
+              "ms": 6
+            },
+            {
+              "page": 75,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 112146,
+              "ms": 11
+            },
+            {
+              "page": 149,
+              "ok": true,
+              "status": 200,
+              "type": "image/jpeg",
+              "kind": "jpeg",
+              "bytes": 4222,
+              "ms": 5
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "webtoonclub",
+      "name": "WebtoonClub",
+      "query": "solo",
+      "search": true,
+      "title": "Solo Leveling",
+      "chapters": true,
+      "chapterCount": 263,
+      "samples": [
+        {
+          "chapter": 0,
+          "url": "https://webtoonclub.com/webtoon/solo-leveling/chapter/0",
+          "pages": 12,
+          "pagesMs": 1203,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 45824,
+              "ms": 610
+            },
+            {
+              "page": 6,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 200808,
+              "ms": 43
+            },
+            {
+              "page": 11,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 15028,
+              "ms": 367
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 97,
+          "url": "https://webtoonclub.com/webtoon/solo-leveling/chapter/97",
+          "pages": 122,
+          "pagesMs": 3724,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 134200,
+              "ms": 1392
+            },
+            {
+              "page": 61,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 52236,
+              "ms": 55
+            },
+            {
+              "page": 121,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 51182,
+              "ms": 2048
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 203,
+          "url": "https://webtoonclub.com/webtoon/solo-leveling/chapter/203",
+          "pages": 1,
+          "pagesMs": 616,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 77228,
+              "ms": 408
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "writers'-scans",
+      "name": "Writers' Scans",
+      "query": "love",
+      "search": true,
+      "title": "Catastrophic Love",
+      "chapters": true,
+      "chapterCount": 19,
+      "samples": [
+        {
+          "chapter": 1,
+          "url": "https://writerscans.com/chapter/643fa9566d7-643fcfe15ca/",
+          "pages": 5,
+          "pagesMs": 795,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 2860958,
+              "ms": 114
+            },
+            {
+              "page": 2,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 2610288,
+              "ms": 264
+            },
+            {
+              "page": 4,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 1458209,
+              "ms": 362
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 10,
+          "url": "https://writerscans.com/chapter/643fa9566d7-64c605974f3/",
+          "pages": 5,
+          "pagesMs": 422,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 3002175,
+              "ms": 190
+            },
+            {
+              "page": 2,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 2660343,
+              "ms": 54
+            },
+            {
+              "page": 4,
+              "ok": true,
+              "status": 200,
+              "type": "application/octet-stream",
+              "kind": "jpeg",
+              "bytes": 1506296,
+              "ms": 133
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 19,
+          "url": "https://writerscans.com/chapter/643fa9566d7-65b0525de8f/",
+          "pages": 5,
+          "pagesMs": 614,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/avif",
+              "kind": "avif",
+              "bytes": 334340,
+              "ms": 113
+            },
+            {
+              "page": 2,
+              "ok": true,
+              "status": 200,
+              "type": "image/avif",
+              "kind": "avif",
+              "bytes": 313757,
+              "ms": 244
+            },
+            {
+              "page": 4,
+              "ok": true,
+              "status": 200,
+              "type": "image/avif",
+              "kind": "avif",
+              "bytes": 79138,
+              "ms": 206
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    },
+    {
+      "id": "xcomic",
+      "name": "XComic",
+      "query": "solo",
+      "search": true,
+      "title": "Solo Leveling",
+      "chapters": true,
+      "chapterCount": 218,
+      "samples": [
+        {
+          "chapter": 0,
+          "url": "https://xcomic.me/chapter/7xlq4d",
+          "pages": 15,
+          "pagesMs": 1174,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 488332,
+              "ms": 288
+            },
+            {
+              "page": 7,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 117142,
+              "ms": 228
+            },
+            {
+              "page": 14,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 20572,
+              "ms": 383
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 101,
+          "url": "https://xcomic.me/chapter/qjq2lgz",
+          "pages": 120,
+          "pagesMs": 1577,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 170978,
+              "ms": 578
+            },
+            {
+              "page": 60,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 41802,
+              "ms": 358
+            },
+            {
+              "page": 119,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 13458,
+              "ms": 344
+            }
+          ],
+          "ok": true
+        },
+        {
+          "chapter": 200.5,
+          "url": "https://xcomic.me/chapter/q3wew2b",
+          "pages": 3,
+          "pagesMs": 933,
+          "ordered": true,
+          "images": [
+            {
+              "page": 0,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 179562,
+              "ms": 462
+            },
+            {
+              "page": 1,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 25742,
+              "ms": 171
+            },
+            {
+              "page": 2,
+              "ok": true,
+              "status": 200,
+              "type": "image/webp",
+              "kind": "webp",
+              "bytes": 20290,
+              "ms": 36
+            }
+          ],
+          "ok": true
+        }
+      ],
+      "pages": true,
+      "images": true,
+      "verified": true
+    }
+  ]
+}

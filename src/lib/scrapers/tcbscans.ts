@@ -2,6 +2,8 @@
 import * as cheerio from "cheerio";
 import { BaseScraper } from "./base";
 import { ScrapedChapter, SearchResult, SourceType } from "@/types";
+import { domPages } from "./pages/strategies";
+import { type ImageRule } from "./pages/policy";
 
 export class TCBScansScraper extends BaseScraper {
   private readonly BASE_URL = "https://tcbonepiecechapters.com";
@@ -151,5 +153,13 @@ export class TCBScansScraper extends BaseScraper {
       latestChapter: latestNumbers[index] ?? 0,
       lastUpdated: "",
     }));
+  }
+
+  pageImageRules(): ImageRule[] {
+    return [{ host: "cdn.onepiecechapters.com", pathPrefix: "/file/" }];
+  }
+
+  getChapterPages(ref: { chapterId?: string; url?: string }) {
+    return this.readerPages(ref, domPages("picture.fixed-ratio img.fixed-ratio-content", { container: "main" }));
   }
 }

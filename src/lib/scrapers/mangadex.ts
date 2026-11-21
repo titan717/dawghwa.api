@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BaseScraper } from "./base";
+import { parseMangaDexPageUrl } from "@/lib/services/cover-image";
 import {
   BrowseItem,
   BrowseQuery,
@@ -118,6 +119,16 @@ export class MangaDexScraper extends BaseScraper {
 
   getName(): string {
     return "MangaDex";
+  }
+
+  /** MangaDex@Home: only documented data/data-saver paths on MangaDex-owned hosts. */
+  override allowPageImage(raw: string | URL | null | undefined): URL | null {
+    return raw ? parseMangaDexPageUrl(raw.toString()) : null;
+  }
+
+  /** MangaDex asks API clients to identify themselves rather than pose as a browser. */
+  pageImageUserAgent(): "identifying" | "browser" {
+    return "identifying";
   }
 
   getBaseUrl(): string {

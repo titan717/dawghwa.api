@@ -107,6 +107,6 @@ export function parseDynastyPageUrl(raw: string | null): URL | null {
   const host = url.hostname.toLowerCase();
   if (url.protocol !== "https:" || !(host === "dynasty-scans.com" || host.endsWith(".dynasty-scans.com"))) return null;
   if (url.username || url.password || (url.port && url.port !== "443") || url.search || url.hash) return null;
-  if (url.pathname.split("/").includes("..") || !/^\/(?:[a-z0-9_.-]+\/)*[a-z0-9_.-]+\.(?:jpe?g|png|webp|gif)$/i.test(url.pathname)) return null;
+  if (url.pathname.split("/").includes("..") || !/^\/(?:[a-z0-9_.+-]+\/)*[a-z0-9_.+-]+\.(?:jpe?g|png|webp|gif)$/i.test(url.pathname)) return null;
   return new URL(url.toString());
 }
