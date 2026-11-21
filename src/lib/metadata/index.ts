@@ -125,7 +125,20 @@ export function clampCatalogQuery(provider: MetadataProvider, q: CatalogQuery): 
       details: { maxDepth: depth },
     });
   }
-  for (const f of ["genres", "excludeGenres", "tags", "status", "format", "year", "nsfw"] as const) {
+  for (const f of [
+    "genres",
+    "excludeGenres",
+    "tags",
+    "status",
+    "format",
+    "statuses",
+    "formats",
+    "demographics",
+    "genreMode",
+    "excludeMode",
+    "year",
+    "nsfw",
+  ] as const) {
     const v = q[f];
     const used = Array.isArray(v) ? v.length > 0 : v !== undefined && v !== false;
     if (used && !provider.capabilities.filters.includes(f)) {
@@ -153,6 +166,11 @@ export async function browseCatalog(
       q.tags?.map((g) => g.toLowerCase()).sort(),
       q.status,
       q.format,
+      q.statuses?.slice().sort(),
+      q.formats?.slice().sort(),
+      q.demographics?.slice().sort(),
+      q.genreMode,
+      q.excludeMode,
       q.year,
       q.sort,
       Boolean(q.nsfw),

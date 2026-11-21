@@ -321,11 +321,14 @@ Browse or search the catalogue.
 | --- | --- |
 | `provider` | `anilist` (default), `mangadex`, `mangaupdates` |
 | `q` | Title search |
-| `genre` / `genres` | Repeatable or comma-separated. All of them must match. |
+| `genre` / `genres` | Repeatable or comma-separated. All of them must match, unless `genreMode=or`. |
+| `genreMode` | `and` (default) or `or`: how included genres/tags combine. MangaDex only. |
 | `excludeGenre` | Repeatable or comma-separated |
+| `excludeMode` | `or` (default: hide a title with any excluded genre) or `and` (hide only titles with all of them). MangaDex only. |
 | `tag` | Repeatable or comma-separated. AniList tags, MangaDex tags or MangaUpdates categories. |
-| `status` | `ongoing`, `completed`, `hiatus`, `cancelled`, `upcoming` |
-| `format` | `manga`, `manhwa`, `manhua`, `one_shot`, `novel`, `doujinshi`, `oel` |
+| `status` | `ongoing`, `completed`, `hiatus`, `cancelled`, `upcoming`. Repeat (or comma-separate) to match any of several; several values are MangaDex only. |
+| `format` | `manga`, `manhwa`, `manhua`, `one_shot`, `novel`, `doujinshi`, `oel`. Several values (MangaDex only) match any of them; `one_shot` and `doujinshi` cannot be combined with other formats or with `genreMode=or`. |
+| `demographic` | `shounen`, `shoujo`, `seinen`, `josei`, `none`. Repeatable; matches any. MangaDex only. |
 | `year` | Start year |
 | `sort` | `relevance` (needs `q`), `popularity`, `score`, `trending`, `updated`, `newest`, `title` |
 | `nsfw` | Include adult entries (default `false`) |
