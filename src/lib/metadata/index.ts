@@ -190,7 +190,9 @@ export async function getFilterOptions(provider: MetadataProvider): Promise<{ op
     { ttl: 86_400, swr: 604_800 },
     () => provider.filterOptions(),
   );
-  return { options: out.value, cache: out.cache, age: out.age };
+  // Capabilities are code, not upstream data: never serve a cached copy, or a
+  // deploy that adds a filter would advertise the old list for up to a day.
+  return { options: { ...out.value, capabilities: provider.capabilities }, cache: out.cache, age: out.age };
 }
 
 export function describeMetadataProviders() {

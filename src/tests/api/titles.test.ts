@@ -120,10 +120,17 @@ describe("GET /api/catalog", () => {
     const res = await providersGET(get("/api/catalog/providers"));
     const body = await res.json();
     expect(body.providers.map((p: { id: string }) => p.id)).toEqual(["anilist", "mangadex", "mangaupdates"]);
-    mockFetch(() => jsonResponse({ data: { GenreCollection: ["Action"], MediaTagCollection: [{ name: "Dungeon", category: "Setting", isAdult: false }] } }));
+    mockFetch((url) =>
+      new URL(url).hostname === "api.mangadex.org"
+        ? jsonResponse({ result: "ok", data: [{ id: "t1", type: "tag", attributes: { name: { en: "Action" }, group: "genre" } }] })
+        : jsonResponse({ data: { GenreCollection: ["Action"], MediaTagCollection: [{ name: "Dungeon", category: "Setting", isAdult: false }] } }),
+    );
     const f = await (await filtersGET(get("/api/catalog/filters"))).json();
     expect(f.genres).toEqual(["Action"]);
     expect(f.capabilities.filters).toContain("status");
+    const md = await (await filtersGET(get("/api/catalog/filters?provider=mangadex"))).json();
+    expect(md.capabilities.filters).toEqual(expect.arrayContaining(["statuses", "formats", "demographics", "genreMode"]));
+    expect(md.capabilities.demographics).toContain("seinen");
   });
 });
 
