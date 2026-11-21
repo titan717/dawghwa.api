@@ -2,7 +2,7 @@ import { afterEach, beforeEach, vi } from "vitest";
 import { resetConfig } from "@/lib/core/config";
 import { resetCache } from "@/lib/core/cache";
 import { resetHttpState } from "@/lib/core/http";
-import { setResolver } from "@/lib/core/net-guard";
+import { setGuardedFetchImpl, setResolver } from "@/lib/core/net-guard";
 import { resetRegistry } from "@/lib/providers/registry";
 import { resetApiRateLimits } from "@/lib/api/handler";
 import { resetMetadataClient } from "@/lib/metadata/client";
@@ -34,6 +34,8 @@ beforeEach(() => {
       vi.spyOn(console, "warn").mockImplementation(() => undefined);
     }
     setResolver(async () => ["93.184.216.34"]);
+    // Production uses undici's own fetch; offline tests intercept the global one.
+    setGuardedFetchImpl((input, init) => globalThis.fetch(input, init));
     vi.stubGlobal(
       "fetch",
       vi.fn(async (input: unknown) => {
@@ -48,4 +50,5 @@ afterEach(() => {
   vi.restoreAllMocks();
   vi.useRealTimers();
   setResolver(null);
+  setGuardedFetchImpl(null);
 });

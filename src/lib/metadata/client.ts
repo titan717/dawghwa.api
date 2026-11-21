@@ -97,7 +97,11 @@ export async function metaJson<T>(
     try {
       body = text ? JSON.parse(text) : undefined;
     } catch {
-      throw new DawghwaError("UPSTREAM_ERROR", `${NAMES[provider]} returned an invalid response`, { cause: new Error(`HTTP ${res.status}: ${text.slice(0, 200)}`) });
+      throw new DawghwaError("UPSTREAM_ERROR", `${NAMES[provider]} returned an invalid response`, {
+        // Status and type only (never the body) so a production failure is diagnosable from the response.
+        details: { upstreamStatus: res.status, contentType: res.headers.get("content-type") ?? null },
+        cause: new Error(`HTTP ${res.status}: ${text.slice(0, 200)}`),
+      });
     }
     if (!res.ok) {
       // AniList returns validation problems as 400 with a GraphQL error body.
