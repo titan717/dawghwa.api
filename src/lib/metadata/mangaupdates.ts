@@ -102,6 +102,7 @@ function toSummary(r: MuRecord, withStatus = false): TitleSummary {
     score: typeof r.bayesian_rating === "number" ? Math.round(r.bayesian_rating * 10) : undefined,
     adult: genres.some((g) => MU_ADULT_GENRES.includes(g)),
     latestChapter: r.latest_chapter || undefined,
+    externalIds: { mangaupdates: String(r.series_id) },
   };
 }
 
@@ -130,6 +131,10 @@ const CAPABILITIES: CatalogCapabilities = {
   sorts: ["relevance", "popularity", "score", "trending", "newest", "title"],
   formats: ["manga", "manhwa", "manhua", "novel", "doujinshi", "oel"],
   statuses: [],
+  signals: {
+    readership: { sort: "popularity", basis: "Number of MangaUpdates users with the title on their reading list (list_reading)" },
+    trending: { sort: "trending", basis: "MangaUpdates weekly rank position (week_pos)" },
+  },
   maxLimit: 100,
 };
 

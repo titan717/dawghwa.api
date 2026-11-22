@@ -208,6 +208,61 @@ describe("MangaDex catalogue", () => {
     expect(item.tagNames).toEqual(["Action", "Monsters"]);
     expect(item.genres).toEqual(["Action"]);
     expect(item.demographic).toBe("shounen");
+    expect(item.externalIds).toEqual({ mangadex: "32d76d19-8a05-4db0-9fc2-e0b0648fe9d0" });
+  });
+
+  it("carries the exact tracker ids MangaDex publishes in links on list items", async () => {
+    mockFetch((url) => {
+      if (new URL(url).pathname === "/manga") {
+        return jsonResponse({
+          result: "ok",
+          total: 1,
+          limit: 1,
+          offset: 0,
+          data: [
+            {
+              id: "32d76d19-8a05-4db0-9fc2-e0b0648fe9d0",
+              type: "manga",
+              attributes: {
+                title: { en: "Solo Leveling" },
+                altTitles: [],
+                description: {},
+                links: { al: "105398", mal: "121496", mu: "6z1uqw7", raw: "https://example.invalid/x" },
+                originalLanguage: "ko",
+                lastVolume: null,
+                lastChapter: null,
+                status: "completed",
+                year: 2018,
+                contentRating: "safe",
+                tags: [],
+                updatedAt: "2025-01-01T00:00:00+00:00",
+              },
+              relationships: [],
+            },
+          ],
+        });
+      }
+      throw new Error(`unexpected ${url}`);
+    });
+    const page = await browseCatalog(getMetadataProvider("mangadex"), { q: "links", page: 1, limit: 1 }, { forceRefresh: true });
+    expect(page.result.items[0]!.externalIds).toEqual({
+      mangadex: "32d76d19-8a05-4db0-9fc2-e0b0648fe9d0",
+      anilist: 105398,
+      mal: 121496,
+      mangaupdates: "15180124327",
+    });
+  });
+
+  it("declares which sorts are backed by a real signal", () => {
+    expect(getMetadataProvider("mangadex").capabilities.signals).toMatchObject({ follows: { sort: "popularity" }, chapterUpdates: { sort: "updated" } });
+    expect(getMetadataProvider("mangadex").capabilities.signals?.trending).toBeUndefined();
+    expect(getMetadataProvider("anilist").capabilities.signals).toMatchObject({ readership: { sort: "popularity" }, trending: { sort: "trending" } });
+    // AniList "updated" is the record edit time, not a chapter release
+    expect(getMetadataProvider("anilist").capabilities.signals?.chapterUpdates).toBeUndefined();
+    for (const id of ["anilist", "mangadex", "mangaupdates"]) {
+      const caps = getMetadataProvider(id).capabilities;
+      for (const s of Object.values(caps.signals ?? {})) expect(caps.sorts, id).toContain(s.sort);
+    }
   });
 
   it("refuses to page past the provider's depth limit", async () => {

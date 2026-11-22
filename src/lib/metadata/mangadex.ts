@@ -127,7 +127,21 @@ function toSummary(m: MdManga): TitleSummary {
     description: pick(a.description, ["en"])?.trim() || undefined,
     tagNames: tagNames.filter(Boolean),
     demographic: a.publicationDemographic ?? undefined,
+    externalIds: mdExternalIds(m),
   };
+}
+
+/** Exact tracker ids MangaDex publishes in `links` (al, mal, mu), plus its own id. */
+function mdExternalIds(m: MdManga): TitleMetadata["externalIds"] {
+  const links = m.attributes.links ?? {};
+  const al = Number(links.al);
+  const mal = Number(links.mal);
+  const ids: TitleMetadata["externalIds"] = { mangadex: m.id };
+  if (Number.isInteger(al) && al > 0) ids.anilist = al;
+  if (Number.isInteger(mal) && mal > 0) ids.mal = mal;
+  const mu = links.mu ? muSlugToId(links.mu) : undefined;
+  if (mu) ids.mangaupdates = mu;
+  return ids;
 }
 
 /** MangaDex `links` keys (documented in the Manga model). */
@@ -165,8 +179,6 @@ function toMetadata(m: MdManga): TitleMetadata {
     const url = def.url(v);
     if (/^https:\/\//i.test(url)) links.push({ site: def.site, url, type: def.type });
   }
-  const al = Number(a.links?.al);
-  const mal = Number(a.links?.mal);
   return {
     ...s,
     titles: {
@@ -184,12 +196,7 @@ function toMetadata(m: MdManga): TitleMetadata {
     chapters: s.latestChapter,
     volumes: Number(a.lastVolume) > 0 ? Number(a.lastVolume) : undefined,
     originalLanguage: a.originalLanguage,
-    externalIds: {
-      mangadex: m.id,
-      anilist: Number.isInteger(al) && al > 0 ? al : undefined,
-      mal: Number.isInteger(mal) && mal > 0 ? mal : undefined,
-      mangaupdates: a.links?.mu ? muSlugToId(a.links.mu) : undefined,
-    },
+    externalIds: mdExternalIds(m),
     links,
     updatedAt: a.updatedAt,
   };
@@ -216,6 +223,10 @@ const CAPABILITIES: CatalogCapabilities = {
   formats: ["manga", "manhwa", "manhua", "one_shot", "oel", "doujinshi"],
   statuses: ["ongoing", "completed", "hiatus", "cancelled"],
   demographics: ["shounen", "shoujo", "seinen", "josei", "none"],
+  signals: {
+    follows: { sort: "popularity", basis: "Number of MangaDex users following the title (followedCount)" },
+    chapterUpdates: { sort: "updated", basis: "Most recently uploaded chapter on MangaDex (latestUploadedChapter)" },
+  },
   maxLimit: 100,
   maxDepth: 10_000,
 };

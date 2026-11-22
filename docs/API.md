@@ -357,9 +357,19 @@ curl 'localhost:3000/api/catalog?genre=Action&format=manhwa&status=ongoing&sort=
 
 MangaDex list items also carry `description`, `tagNames` (every tag, genres included) and `demographic`, because MangaDex returns them in its list response. Other providers leave these fields out; use `/api/titles/{ref}` for full metadata.
 
+List items carry `externalIds` with the exact cross-database ids the provider published in its list response: MangaDex items carry their `links` (`anilist`, `mal`, `mangaupdates`) plus `mangadex`, AniList items carry `anilist` and `mal`, MangaUpdates items carry `mangaupdates`. These are never guessed and are what the provider-neutral catalogue uses to deduplicate.
+
 ### GET /api/catalog/filters?provider=
 
 Returns the genres, tags, sorts, formats and statuses the provider supports. Use it to build filter UIs. It is cached for 24 hours.
+
+`capabilities.signals` says which sorts are backed by a real upstream measure. A client must not label a row "Popular" or "Trending" from a sort without an entry here.
+
+| Provider | `follows` | `readership` | `trending` | `chapterUpdates` |
+| --- | --- | --- | --- | --- |
+| MangaDex | `popularity` (followedCount) | | | `updated` (latestUploadedChapter) |
+| AniList | | `popularity` (users with it on their list) | `trending` (TRENDING_DESC) | none: `updated` is the record edit time |
+| MangaUpdates | | `popularity` (list_reading) | `trending` (week_pos) | none |
 
 ### GET /api/catalog/providers
 
