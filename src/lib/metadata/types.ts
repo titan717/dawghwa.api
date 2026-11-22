@@ -53,6 +53,12 @@ export interface TitleSummary {
   tagNames?: string[];
   /** e.g. shounen, seinen, shoujo, josei. */
   demographic?: string;
+  /**
+   * Exact cross-database ids the provider published in the list response
+   * (MangaDex `links`, AniList `idMal`). Never guessed; used for catalogue
+   * deduplication across providers.
+   */
+  externalIds?: ExternalIds;
 }
 
 export interface TitleTag {
@@ -151,8 +157,32 @@ export type CatalogFilter =
   | "sort"
   | "nsfw";
 
+/**
+ * What a provider's ordering actually measures. Only sorts listed here are
+ * backed by a real signal; a client must not label rows "Popular" or
+ * "Trending" from a sort that has no entry.
+ */
+export interface CatalogSignal {
+  sort: CatalogSort;
+  /** Plain-language description of the upstream measure. */
+  basis: string;
+}
+
+export interface CatalogSignals {
+  /** Ordered by how many users follow the title on the provider. */
+  follows?: CatalogSignal;
+  /** Ordered by how many users have the title on a reading list. */
+  readership?: CatalogSignal;
+  /** Ordered by recent activity the provider measures. */
+  trending?: CatalogSignal;
+  /** Ordered by the latest chapter release (not by record edits). */
+  chapterUpdates?: CatalogSignal;
+}
+
 export interface CatalogCapabilities {
   filters: CatalogFilter[];
+  /** Which sorts are backed by a real readership/follow/activity signal. */
+  signals?: CatalogSignals;
   sorts: CatalogSort[];
   formats: TitleFormat[];
   statuses: TitleStatus[];

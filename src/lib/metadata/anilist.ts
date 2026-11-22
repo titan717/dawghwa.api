@@ -126,6 +126,7 @@ function toSummary(m: AlMedia): TitleSummary {
     score: m.averageScore ?? undefined,
     adult: Boolean(m.isAdult),
     latestChapter: m.chapters ?? undefined,
+    externalIds: m.idMal ? { anilist: m.id, mal: m.idMal } : { anilist: m.id },
   };
 }
 
@@ -200,6 +201,11 @@ const CAPABILITIES: CatalogCapabilities = {
   sorts: ["relevance", "popularity", "score", "trending", "updated", "newest", "title"],
   formats: ["manga", "manhwa", "manhua", "one_shot", "novel"],
   statuses: ["ongoing", "completed", "hiatus", "cancelled", "upcoming"],
+  signals: {
+    readership: { sort: "popularity", basis: "Number of AniList users with the title on their list (POPULARITY_DESC)" },
+    trending: { sort: "trending", basis: "AniList's recent-activity trending score (TRENDING_DESC)" },
+    // "updated" sorts by when the AniList record was edited, not by chapter releases.
+  },
   maxLimit: 50,
   maxDepth: 5_000,
 };

@@ -11,6 +11,9 @@ All notable changes to Dawghwa API. The project follows [Semantic Versioning](ht
 - `POST /api/manga` for MangaDex now also returns `coverImage` and `metadata`.
 - New `browse` capability in `/api/sources`.
 - MangaDex catalogue items include optional `description`, `tagNames` and `demographic`. This is additive; other providers omit them.
+- Provider-neutral catalogue model (`src/lib/catalog`): `CatalogEntry`, normalization of AniList/MangaDex/MangaUpdates records, conservative cross-provider deduplication (exact published ids first; otherwise same normalized title + start year + type, across different providers only; any conflicting id blocks a merge), shared genre vocabulary. Canonical ids reuse `canonicalTitleId` from `src/lib/identity`.
+- Catalogue list items carry optional `externalIds` (exact ids from the provider's own list response).
+- `capabilities.signals` on catalogue providers: which sorts are backed by a real follow, readership, trending or chapter-release signal.
 
 ## [1.1.0] - 2026-11-17
 
