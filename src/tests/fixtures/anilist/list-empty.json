@@ -1,0 +1,31 @@
+{
+ "capturedAt": "2026-11-22T13:56:38.596Z",
+ "status": 200,
+ "variables": {
+  "page": 1,
+  "perPage": 5,
+  "sort": [
+   "POPULARITY_DESC"
+  ],
+  "genre_in": [
+   "Mecha"
+  ],
+  "format_in": [
+   "MANGA"
+  ],
+  "country": "KR",
+  "isAdult": false,
+  "startFrom": 19500100,
+  "startTo": 19501232
+ },
+ "body": {
+  "data": {
+   "Page": {
+    "pageInfo": {
+     "hasNextPage": false
+    },
+    "media": []
+   }
+  }
+ }
+}

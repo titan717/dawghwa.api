@@ -1,0 +1,207 @@
+{
+ "capturedAt": "2026-11-22T13:56:30.615Z",
+ "status": 200,
+ "variables": {
+  "page": 1,
+  "perPage": 5,
+  "sort": [
+   "POPULARITY_DESC"
+  ],
+  "format_in": [
+   "MANGA",
+   "ONE_SHOT"
+  ],
+  "isAdult": false,
+  "startFrom": 20251121,
+  "startTo": 20261123
+ },
+ "body": {
+  "data": {
+   "Page": {
+    "pageInfo": {
+     "hasNextPage": true
+    },
+    "media": [
+     {
+      "id": 202986,
+      "idMal": 189030,
+      "title": {
+       "romaji": "Mawanginde Yongsaga Neomu Maneum",
+       "english": "Too Many Heroes for the Demon Lord",
+       "native": "마왕인데 용사가 너무 많음"
+      },
+      "synonyms": [
+       "The Demon King Overrun by Heroes",
+       "I’m the Demon King, but There Are Too Many Heroes",
+       "Le Roi Démon submergé par les héros",
+       "天才魔王的逆襲"
+      ],
+      "format": "MANGA",
+      "status": "RELEASING",
+      "countryOfOrigin": "KR",
+      "startDate": {
+       "year": 2025
+      },
+      "chapters": null,
+      "volumes": null,
+      "genres": [
+       "Action",
+       "Fantasy"
+      ],
+      "averageScore": 77,
+      "popularity": 9054,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx202986-0wn84aV9jlHq.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx202986-0wn84aV9jlHq.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/202986"
+     },
+     {
+      "id": 208208,
+      "idMal": 191370,
+      "title": {
+       "romaji": "Yangchigi Mabeopsa",
+       "english": "The Shepherd Wizard",
+       "native": "양치기 마법사"
+      },
+      "synonyms": [
+       "El pastor hechicero",
+       "牧羊魔法師",
+       "จอมเวทคนเลี้ยงแกะ"
+      ],
+      "format": "MANGA",
+      "status": "RELEASING",
+      "countryOfOrigin": "KR",
+      "startDate": {
+       "year": 2026
+      },
+      "chapters": null,
+      "volumes": null,
+      "genres": [
+       "Action",
+       "Fantasy"
+      ],
+      "averageScore": 78,
+      "popularity": 8154,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx208208-azuHfUiSOUSZ.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx208208-azuHfUiSOUSZ.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/208208"
+     },
+     {
+      "id": 212562,
+      "idMal": 193929,
+      "title": {
+       "romaji": "Goedame Tteoreojyeodo Chulgeuneul Haeya Haneunguna",
+       "english": null,
+       "native": "괴담에 떨어져도 출근을 해야 하는구나"
+      },
+      "synonyms": [
+       "Got Dropped into a Ghost Story, Still Gotta Work",
+       "Even If I Fall Into A Ghost Story, I Still Have To Go To Work",
+       "GSGW",
+       "GDCG",
+       "怪談の世界に落ちても出勤しないといけないんですか"
+      ],
+      "format": "MANGA",
+      "status": "RELEASING",
+      "countryOfOrigin": "KR",
+      "startDate": {
+       "year": 2026
+      },
+      "chapters": null,
+      "volumes": null,
+      "genres": [
+       "Drama",
+       "Fantasy",
+       "Horror",
+       "Supernatural"
+      ],
+      "averageScore": 84,
+      "popularity": 8075,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx212562-huzVxCEUCcfM.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx212562-huzVxCEUCcfM.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/212562"
+     },
+     {
+      "id": 206766,
+      "idMal": 190681,
+      "title": {
+       "romaji": "Sesange Nappeun Yeongaeneun Eopda",
+       "english": "There's No Such Thing as a Bad Lady",
+       "native": "세상에 나쁜 영애는 없다"
+      },
+      "synonyms": [
+       "Noble Lady Reformation Guide",
+       "There Are No Bad Young Ladies in This World",
+       "There Are No Bad Girls In the World",
+       "There Are No Bad Noble Ladies in This World",
+       "Aucune Lady n’est Mauvaise",
+       "世上沒有壞千金",
+       "ไม่มีหรอกนะ คุณหนูนิสัยเสีย"
+      ],
+      "format": "MANGA",
+      "status": "RELEASING",
+      "countryOfOrigin": "KR",
+      "startDate": {
+       "year": 2026
+      },
+      "chapters": null,
+      "volumes": null,
+      "genres": [
+       "Action",
+       "Fantasy"
+      ],
+      "averageScore": 72,
+      "popularity": 7682,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx206766-W5A0TIH5RM0a.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx206766-W5A0TIH5RM0a.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/206766"
+     },
+     {
+      "id": 204974,
+      "idMal": 189901,
+      "title": {
+       "romaji": "Psychopath in Murim",
+       "english": "Murim Psychopath",
+       "native": "싸이코패스 in 무림"
+      },
+      "synonyms": [
+       "武林第一疯子",
+       "武林狂徒"
+      ],
+      "format": "MANGA",
+      "status": "RELEASING",
+      "countryOfOrigin": "KR",
+      "startDate": {
+       "year": 2025
+      },
+      "chapters": null,
+      "volumes": null,
+      "genres": [
+       "Action",
+       "Fantasy"
+      ],
+      "averageScore": 77,
+      "popularity": 7504,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx204974-SZoqdyhxoLRH.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx204974-SZoqdyhxoLRH.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/204974"
+     }
+    ]
+   }
+  }
+ }
+}

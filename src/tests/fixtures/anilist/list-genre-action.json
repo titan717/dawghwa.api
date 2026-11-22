@@ -1,0 +1,243 @@
+{
+ "capturedAt": "2026-11-22T13:56:33.413Z",
+ "status": 200,
+ "variables": {
+  "page": 1,
+  "perPage": 5,
+  "sort": [
+   "POPULARITY_DESC"
+  ],
+  "genre_in": [
+   "Action"
+  ],
+  "format_in": [
+   "MANGA",
+   "ONE_SHOT"
+  ],
+  "isAdult": false
+ },
+ "body": {
+  "data": {
+   "Page": {
+    "pageInfo": {
+     "hasNextPage": true
+    },
+    "media": [
+     {
+      "id": 105778,
+      "idMal": 116778,
+      "title": {
+       "romaji": "Chainsaw Man",
+       "english": "Chainsaw Man",
+       "native": "チェンソーマン"
+      },
+      "synonyms": [
+       "CSM",
+       "رجل المنشار",
+       "Человек-бензопила",
+       "체인소 맨",
+       "鏈鋸人",
+       "电锯人",
+       "มนุษย์เลื่อยยนต์",
+       "Testere Adam"
+      ],
+      "format": "MANGA",
+      "status": "FINISHED",
+      "countryOfOrigin": "JP",
+      "startDate": {
+       "year": 2018
+      },
+      "chapters": 232,
+      "volumes": 24,
+      "genres": [
+       "Action",
+       "Comedy",
+       "Drama",
+       "Horror",
+       "Supernatural"
+      ],
+      "averageScore": 84,
+      "popularity": 338108,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx105778-euxXZEIfDY2u.png",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx105778-euxXZEIfDY2u.png"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/105778"
+     },
+     {
+      "id": 105398,
+      "idMal": 121496,
+      "title": {
+       "romaji": "Na Honjaman Level Up",
+       "english": "Solo Leveling",
+       "native": "나 혼자만 레벨업"
+      },
+      "synonyms": [
+       "I Level Up Alone",
+       "Only I Level Up",
+       "俺だけレベルアップな件",
+       "我獨自升級",
+       "Ore dake Level Up na Ken",
+       "Поднятие уровня в одиночку",
+       "Тільки я візьму новий рівень",
+       "Вебтун. Поднятие уровня в одиночку. Solo Leveling"
+      ],
+      "format": "MANGA",
+      "status": "FINISHED",
+      "countryOfOrigin": "KR",
+      "startDate": {
+       "year": 2018
+      },
+      "chapters": 201,
+      "volumes": 15,
+      "genres": [
+       "Action",
+       "Adventure",
+       "Fantasy"
+      ],
+      "averageScore": 84,
+      "popularity": 289691,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx105398-b673Vt5ZSuz3.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx105398-b673Vt5ZSuz3.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/105398"
+     },
+     {
+      "id": 101517,
+      "idMal": 113138,
+      "title": {
+       "romaji": "Jujutsu Kaisen",
+       "english": "Jujutsu Kaisen",
+       "native": "呪術廻戦"
+      },
+      "synonyms": [
+       "Sorcery Fight",
+       "주술회전",
+       "咒术回战",
+       "Guerra de Hechiceros",
+       "Batalha de Feiticeiros",
+       "JJK",
+       "มหาเวทย์ผนึกมาร",
+       "Chú thuật hồi chiến",
+       "Магическая битва",
+       "La guerra màgica",
+       "Prokleté války",
+       "咒術迴戰",
+       "Contiendas de Brujería",
+       "Lanet Savaşları"
+      ],
+      "format": "MANGA",
+      "status": "FINISHED",
+      "countryOfOrigin": "JP",
+      "startDate": {
+       "year": 2018
+      },
+      "chapters": 272,
+      "volumes": 30,
+      "genres": [
+       "Action",
+       "Drama",
+       "Supernatural"
+      ],
+      "averageScore": 80,
+      "popularity": 257554,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx101517-H3TdM3g5ZUe9.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx101517-H3TdM3g5ZUe9.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/101517"
+     },
+     {
+      "id": 30002,
+      "idMal": 2,
+      "title": {
+       "romaji": "Berserk",
+       "english": "Berserk",
+       "native": "ベルセルク"
+      },
+      "synonyms": [
+       "بيرسيرك",
+       "Beruseruku",
+       "Берсерк",
+       "ברזרק",
+       "برزرک",
+       "เบอร์เซิร์ก",
+       "烙印勇士",
+       "烙印战士",
+       "베르세르크",
+       "Berserk Max",
+       "烙印戰士"
+      ],
+      "format": "MANGA",
+      "status": "RELEASING",
+      "countryOfOrigin": "JP",
+      "startDate": {
+       "year": 1989
+      },
+      "chapters": null,
+      "volumes": null,
+      "genres": [
+       "Action",
+       "Adventure",
+       "Drama",
+       "Fantasy",
+       "Horror",
+       "Psychological"
+      ],
+      "averageScore": 92,
+      "popularity": 249700,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30002-Cul4OeN7bYtn.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30002-Cul4OeN7bYtn.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/30002"
+     },
+     {
+      "id": 30013,
+      "idMal": 13,
+      "title": {
+       "romaji": "ONE PIECE",
+       "english": "One Piece",
+       "native": "ONE PIECE"
+      },
+      "synonyms": [
+       "원피스",
+       "וואן פיס ",
+       "One Piece - Большой куш",
+       "ワンピース",
+       "ONE PIECE～航海王～",
+       "วันพีซ"
+      ],
+      "format": "MANGA",
+      "status": "RELEASING",
+      "countryOfOrigin": "JP",
+      "startDate": {
+       "year": 1997
+      },
+      "chapters": null,
+      "volumes": null,
+      "genres": [
+       "Action",
+       "Adventure",
+       "Comedy",
+       "Fantasy"
+      ],
+      "averageScore": 91,
+      "popularity": 237603,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30013-BeslEMqiPhlk.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30013-BeslEMqiPhlk.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/30013"
+     }
+    ]
+   }
+  }
+ }
+}

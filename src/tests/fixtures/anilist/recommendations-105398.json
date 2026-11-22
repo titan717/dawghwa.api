@@ -1,0 +1,476 @@
+{
+ "capturedAt": "2026-11-22T13:56:41.173Z",
+ "status": 200,
+ "variables": {
+  "id": 105398,
+  "page": 1,
+  "perPage": 10
+ },
+ "body": {
+  "data": {
+   "Media": {
+    "id": 105398,
+    "idMal": 121496,
+    "title": {
+     "romaji": "Na Honjaman Level Up",
+     "english": "Solo Leveling",
+     "native": "나 혼자만 레벨업"
+    },
+    "synonyms": [
+     "I Level Up Alone",
+     "Only I Level Up",
+     "俺だけレベルアップな件",
+     "我獨自升級",
+     "Ore dake Level Up na Ken",
+     "Поднятие уровня в одиночку",
+     "Тільки я візьму новий рівень",
+     "Вебтун. Поднятие уровня в одиночку. Solo Leveling"
+    ],
+    "format": "MANGA",
+    "status": "FINISHED",
+    "countryOfOrigin": "KR",
+    "startDate": {
+     "year": 2018
+    },
+    "chapters": 201,
+    "volumes": 15,
+    "genres": [
+     "Action",
+     "Adventure",
+     "Fantasy"
+    ],
+    "averageScore": 84,
+    "popularity": 289691,
+    "coverImage": {
+     "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx105398-b673Vt5ZSuz3.jpg",
+     "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx105398-b673Vt5ZSuz3.jpg"
+    },
+    "isAdult": false,
+    "siteUrl": "https://anilist.co/manga/105398",
+    "recommendations": {
+     "pageInfo": {
+      "hasNextPage": true
+     },
+     "nodes": [
+      {
+       "rating": 1380,
+       "mediaRecommendation": {
+        "type": "MANGA",
+        "id": 119257,
+        "idMal": 132214,
+        "title": {
+         "romaji": "Jeonjijeok Dokja Sijeom",
+         "english": "Omniscient Reader",
+         "native": "전지적 독자 시점"
+        },
+        "synonyms": [
+         "Omniscient Reader's Viewpoint",
+         "ORV",
+         "Punkt Widzenia Wszechwiedzącego Czytelnika",
+         "Lector omnisciente",
+         "Lecteur Omniscient",
+         "Der allwissende Leser",
+         "전독시",
+         "全知读者",
+         "全知讀者視角",
+         "อ่านชะตาวันสิ้นโลก",
+         "全知的な読者の視点から",
+         "Zenchiteki na Dokusha no Shiten kara",
+         "Всеведущий читатель"
+        ],
+        "format": "MANGA",
+        "status": "RELEASING",
+        "countryOfOrigin": "KR",
+        "startDate": {
+         "year": 2020
+        },
+        "chapters": null,
+        "volumes": null,
+        "genres": [
+         "Action",
+         "Adventure",
+         "Fantasy"
+        ],
+        "averageScore": 86,
+        "popularity": 135674,
+        "coverImage": {
+         "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx119257-Pi21aq3ey9GG.jpg",
+         "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx119257-Pi21aq3ey9GG.jpg"
+        },
+        "isAdult": false,
+        "siteUrl": "https://anilist.co/manga/119257"
+       }
+      },
+      {
+       "rating": 775,
+       "mediaRecommendation": {
+        "type": "MANGA",
+        "id": 85143,
+        "idMal": 122663,
+        "title": {
+         "romaji": "Sinui Tap",
+         "english": "Tower of God",
+         "native": "신의 탑"
+        },
+        "synonyms": [
+         "Kami no Tou",
+         "A Torre de Deus",
+         "ทาวเวอร์ออฟก๊อด หอคอยเทพเจ้า",
+         "神之塔",
+         "Вежа бога"
+        ],
+        "format": "MANGA",
+        "status": "RELEASING",
+        "countryOfOrigin": "KR",
+        "startDate": {
+         "year": 2010
+        },
+        "chapters": null,
+        "volumes": null,
+        "genres": [
+         "Action",
+         "Adventure",
+         "Drama",
+         "Fantasy",
+         "Mystery"
+        ],
+        "averageScore": 81,
+        "popularity": 101454,
+        "coverImage": {
+         "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx85143-23oup3ETbFJk.jpg",
+         "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85143-23oup3ETbFJk.jpg"
+        },
+        "isAdult": false,
+        "siteUrl": "https://anilist.co/manga/85143"
+       }
+      },
+      {
+       "rating": 382,
+       "mediaRecommendation": {
+        "type": "MANGA",
+        "id": 109957,
+        "idMal": 147324,
+        "title": {
+         "romaji": "Dubeon Saneun Ranker",
+         "english": "Second Life Ranker",
+         "native": "두번사는랭커"
+        },
+        "synonyms": [
+         "The Ranker Who Lives Twice",
+         "Ranker Who Lives a Second Time",
+         "二度生きるランカー",
+         "เกมชีวิตที่สอง ของแรงเกอร์",
+         "異界攻塔戰記"
+        ],
+        "format": "MANGA",
+        "status": "RELEASING",
+        "countryOfOrigin": "KR",
+        "startDate": {
+         "year": 2019
+        },
+        "chapters": null,
+        "volumes": null,
+        "genres": [
+         "Action",
+         "Adventure",
+         "Fantasy"
+        ],
+        "averageScore": 77,
+        "popularity": 45898,
+        "coverImage": {
+         "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx109957-EgJWdR7l9TBG.jpg",
+         "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx109957-EgJWdR7l9TBG.jpg"
+        },
+        "isAdult": false,
+        "siteUrl": "https://anilist.co/manga/109957"
+       }
+      },
+      {
+       "rating": 277,
+       "mediaRecommendation": {
+        "type": "MANGA",
+        "id": 105393,
+        "idMal": 132247,
+        "title": {
+         "romaji": "Gwihwanjaui Mabeobeun Teukbyeolhaeya Hamnida",
+         "english": "A Returner's Magic Should Be Special",
+         "native": "귀환자의 마법은 특별해야 합니다"
+        },
+        "synonyms": [
+         "A Magia de Um Retornado Tem de Ser Especial",
+         "พลังขั้นเทพของจอมเวทจุติใหม่",
+         "Returner's Special Magic",
+         "重生者的魔法一定要特別",
+         "Магія поверненого має бути особливою",
+         "帰還者の魔法は特別です",
+         "Kikansha no Mahou wa Tokubetsu desu"
+        ],
+        "format": "MANGA",
+        "status": "FINISHED",
+        "countryOfOrigin": "KR",
+        "startDate": {
+         "year": 2018
+        },
+        "chapters": 268,
+        "volumes": null,
+        "genres": [
+         "Action",
+         "Adventure",
+         "Fantasy"
+        ],
+        "averageScore": 76,
+        "popularity": 51333,
+        "coverImage": {
+         "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx105393-oiHumQoBGKG5.jpg",
+         "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx105393-oiHumQoBGKG5.jpg"
+        },
+        "isAdult": false,
+        "siteUrl": "https://anilist.co/manga/105393"
+       }
+      },
+      {
+       "rating": 211,
+       "mediaRecommendation": {
+        "type": "MANGA",
+        "id": 128067,
+        "idMal": 146909,
+        "title": {
+         "romaji": "SSS-geup Jugeoya Saneun Hunter",
+         "english": "SSS-Class Revival Hunter",
+         "native": "SSS급 죽어야 사는 헌터"
+        },
+        "synonyms": [
+         "SSS-Class Suicide Hunter",
+         "SSS급 자살헌터",
+         "死して生きるSSS級ハンター",
+         "SSS級死而復生的獵人",
+         "นักล่าพลีชีพ ระดับ SSS",
+         "Shishite Ikiru SSS-kyuu Hunter",
+         "SSS-CLASS Revival Hunter ODRODZENIE"
+        ],
+        "format": "MANGA",
+        "status": "RELEASING",
+        "countryOfOrigin": "KR",
+        "startDate": {
+         "year": 2020
+        },
+        "chapters": null,
+        "volumes": null,
+        "genres": [
+         "Action",
+         "Adventure",
+         "Fantasy"
+        ],
+        "averageScore": 83,
+        "popularity": 71208,
+        "coverImage": {
+         "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx128067-wnLBg6Cy1ncs.jpg",
+         "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx128067-wnLBg6Cy1ncs.jpg"
+        },
+        "isAdult": false,
+        "siteUrl": "https://anilist.co/manga/128067"
+       }
+      },
+      {
+       "rating": 162,
+       "mediaRecommendation": {
+        "type": "MANGA",
+        "id": 110462,
+        "idMal": 130216,
+        "title": {
+         "romaji": "Dogul Wang",
+         "english": "Tomb Raider King",
+         "native": "도굴왕"
+        },
+        "synonyms": [
+         "Der König der Grabräuber",
+         "盗掘王",
+         "盜墓王",
+         "我独自盗墓",
+         "El rey saqueador de tumbas"
+        ],
+        "format": "MANGA",
+        "status": "FINISHED",
+        "countryOfOrigin": "KR",
+        "startDate": {
+         "year": 2019
+        },
+        "chapters": 411,
+        "volumes": null,
+        "genres": [
+         "Action",
+         "Adventure",
+         "Fantasy"
+        ],
+        "averageScore": 73,
+        "popularity": 37977,
+        "coverImage": {
+         "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx110462-okQFIoSFvb4L.jpg",
+         "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx110462-okQFIoSFvb4L.jpg"
+        },
+        "isAdult": false,
+        "siteUrl": "https://anilist.co/manga/110462"
+       }
+      },
+      {
+       "rating": 157,
+       "mediaRecommendation": {
+        "type": "MANGA",
+        "id": 110042,
+        "idMal": 148040,
+        "title": {
+         "romaji": "Naneun Madowangida",
+         "english": "I Am the Sorcerer King",
+         "native": "나는 마도왕이다"
+        },
+        "synonyms": [],
+        "format": "MANGA",
+        "status": "FINISHED",
+        "countryOfOrigin": "KR",
+        "startDate": {
+         "year": 2019
+        },
+        "chapters": 143,
+        "volumes": null,
+        "genres": [
+         "Action",
+         "Adventure",
+         "Fantasy"
+        ],
+        "averageScore": 71,
+        "popularity": 19840,
+        "coverImage": {
+         "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx110042-cHMKKa0lxiaJ.png",
+         "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx110042-cHMKKa0lxiaJ.png"
+        },
+        "isAdult": false,
+        "siteUrl": "https://anilist.co/manga/110042"
+       }
+      },
+      {
+       "rating": 133,
+       "mediaRecommendation": {
+        "type": "MANGA",
+        "id": 117460,
+        "idMal": 147727,
+        "title": {
+         "romaji": "Temppal",
+         "english": "Overgeared",
+         "native": "템빨"
+        },
+        "synonyms": [
+         "裝備仔",
+         "装备我最强",
+         "テムパル〜アイテムの力〜",
+         "Sobreequipado"
+        ],
+        "format": "MANGA",
+        "status": "RELEASING",
+        "countryOfOrigin": "KR",
+        "startDate": {
+         "year": 2020
+        },
+        "chapters": null,
+        "volumes": null,
+        "genres": [
+         "Action",
+         "Adventure",
+         "Comedy",
+         "Fantasy"
+        ],
+        "averageScore": 77,
+        "popularity": 41324,
+        "coverImage": {
+         "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx117460-hUdgIZ5fXy9I.jpg",
+         "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx117460-hUdgIZ5fXy9I.jpg"
+        },
+        "isAdult": false,
+        "siteUrl": "https://anilist.co/manga/117460"
+       }
+      },
+      {
+       "rating": 132,
+       "mediaRecommendation": {
+        "type": "MANGA",
+        "id": 130511,
+        "idMal": 147995,
+        "title": {
+         "romaji": "Level-Up Motaneun Player",
+         "english": "The Player Who Can't Level Up",
+         "native": "레벨업 못하는 플레이어"
+        },
+        "synonyms": [
+         "The Player That Can't Level Up",
+         "The Player Who Can't Level Up: O Mestre dos Egos",
+         "เพลเยอร์เลเวลไม่อัป",
+         "无法升级的玩家"
+        ],
+        "format": "MANGA",
+        "status": "RELEASING",
+        "countryOfOrigin": "KR",
+        "startDate": {
+         "year": 2021
+        },
+        "chapters": null,
+        "volumes": null,
+        "genres": [
+         "Action",
+         "Fantasy"
+        ],
+        "averageScore": 72,
+        "popularity": 36447,
+        "coverImage": {
+         "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx130511-4O6dF8oaiVJh.jpg",
+         "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx130511-4O6dF8oaiVJh.jpg"
+        },
+        "isAdult": false,
+        "siteUrl": "https://anilist.co/manga/130511"
+       }
+      },
+      {
+       "rating": 125,
+       "mediaRecommendation": {
+        "type": "MANGA",
+        "id": 137280,
+        "idMal": 147392,
+        "title": {
+         "romaji": "Na Honja Mallep Newbie",
+         "english": "I’m the Max-Level Newbie",
+         "native": "나 혼자 만렙 뉴비"
+        },
+        "synonyms": [
+         "Solo Max-Level Newbie",
+         "I Am The Top Ranker Newbie",
+         "俺だけレベルMAXなビギナー",
+         "ผู้เล่นหน้าใหม่เลเวลแมกซ์",
+         "滿級新手",
+         "我独自满级新手"
+        ],
+        "format": "MANGA",
+        "status": "RELEASING",
+        "countryOfOrigin": "KR",
+        "startDate": {
+         "year": 2021
+        },
+        "chapters": null,
+        "volumes": null,
+        "genres": [
+         "Action",
+         "Fantasy"
+        ],
+        "averageScore": 77,
+        "popularity": 52423,
+        "coverImage": {
+         "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx137280-juUL79K7f9s7.png",
+         "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx137280-juUL79K7f9s7.png"
+        },
+        "isAdult": false,
+        "siteUrl": "https://anilist.co/manga/137280"
+       }
+      }
+     ]
+    }
+   }
+  }
+ }
+}

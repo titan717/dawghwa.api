@@ -21,7 +21,7 @@ import type {
  */
 const ENDPOINT = "https://graphql.anilist.co";
 
-interface AlMedia {
+export interface AlMedia {
   id: number;
   idMal: number | null;
   title: { romaji: string | null; english: string | null; native: string | null };
@@ -47,7 +47,7 @@ interface AlMedia {
   externalLinks?: { site: string; url: string | null; type: string | null }[] | null;
 }
 
-const SUMMARY_FIELDS = `
+export const SUMMARY_FIELDS = `
   id idMal title { romaji english native } synonyms format status countryOfOrigin
   startDate { year } chapters volumes genres averageScore popularity
   coverImage { extraLarge large } isAdult siteUrl`;
@@ -85,7 +85,7 @@ const STATUS_FROM_AL: Record<string, TitleStatus> = {
 };
 
 /** AniList stores manhwa/manhua as format MANGA + country of origin. */
-const FORMAT_TO_AL: Partial<Record<TitleFormat, { format: string; country?: string }>> = {
+export const FORMAT_TO_AL: Partial<Record<TitleFormat, { format: string; country?: string }>> = {
   manga: { format: "MANGA", country: "JP" },
   manhwa: { format: "MANGA", country: "KR" },
   manhua: { format: "MANGA", country: "CN" },
@@ -107,7 +107,7 @@ function preferredTitle(t: AlMedia["title"]): string {
   return t.english || t.romaji || t.native || "";
 }
 
-function toSummary(m: AlMedia): TitleSummary {
+export function toSummary(m: AlMedia): TitleSummary {
   const title = preferredTitle(m.title);
   return {
     ref: `anilist:${m.id}`,
@@ -176,7 +176,7 @@ function toMetadata(m: AlMedia): TitleMetadata {
   };
 }
 
-async function gql<T>(query: string, variables: Record<string, unknown>, notFound?: string): Promise<T> {
+export async function gql<T>(query: string, variables: Record<string, unknown>, notFound?: string): Promise<T> {
   const body = await metaJson<{ data?: T; errors?: { message: string; status?: number }[] }>(
     "anilist",
     ENDPOINT,

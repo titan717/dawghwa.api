@@ -16,6 +16,8 @@ src/
   lib/frontpages/           frontpage adapters (Comix)
   lib/metadata/             catalogue/metadata providers (AniList, MangaDex, MangaUpdates), shared
                             client (rate limits, breaker, error mapping), title matching
+  lib/catalogue/            provider-neutral catalogue lists (facade + backend interface; AniList
+                            backend), exact ref resolution to the catalogue
   lib/services/availability.ts  "which sources carry this title" (fan-out search + matching)
 ```
 

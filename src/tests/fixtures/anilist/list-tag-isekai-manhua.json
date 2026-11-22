@@ -1,0 +1,202 @@
+{
+ "capturedAt": "2026-11-22T13:56:36.039Z",
+ "status": 200,
+ "variables": {
+  "page": 1,
+  "perPage": 5,
+  "sort": [
+   "POPULARITY_DESC"
+  ],
+  "tag_in": [
+   "Isekai"
+  ],
+  "format_in": [
+   "MANGA"
+  ],
+  "country": "CN",
+  "isAdult": false
+ },
+ "body": {
+  "data": {
+   "Page": {
+    "pageInfo": {
+     "hasNextPage": true
+    },
+    "media": [
+     {
+      "id": 142287,
+      "idMal": null,
+      "title": {
+       "romaji": "Wo! Tian Mìng Da Fanpai",
+       "english": "I Am The Fated Villain",
+       "native": "我！天命大反派"
+      },
+      "synonyms": [
+       "악역이지만 즐겁습니다",
+       "我こそは大悪党"
+      ],
+      "format": "MANGA",
+      "status": "RELEASING",
+      "countryOfOrigin": "CN",
+      "startDate": {
+       "year": 2021
+      },
+      "chapters": null,
+      "volumes": null,
+      "genres": [
+       "Action",
+       "Adventure",
+       "Drama",
+       "Fantasy"
+      ],
+      "averageScore": 77,
+      "popularity": 16393,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx142287-nlT7oSUzHnNv.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx142287-nlT7oSUzHnNv.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/142287"
+     },
+     {
+      "id": 107966,
+      "idMal": null,
+      "title": {
+       "romaji": "Wo Laopo Shi Mowang Daren",
+       "english": "My Wife is the Demon Queen",
+       "native": "我老婆是魔王大人"
+      },
+      "synonyms": [
+       "My Wife Is a Demon Queen"
+      ],
+      "format": "MANGA",
+      "status": "FINISHED",
+      "countryOfOrigin": "CN",
+      "startDate": {
+       "year": 2019
+      },
+      "chapters": 460,
+      "volumes": null,
+      "genres": [
+       "Action",
+       "Adventure",
+       "Fantasy",
+       "Romance"
+      ],
+      "averageScore": 72,
+      "popularity": 15912,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx107966-Onmu3ihQNKbO.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx107966-Onmu3ihQNKbO.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/107966"
+     },
+     {
+      "id": 108152,
+      "idMal": 136488,
+      "title": {
+       "romaji": "Fangkai Nage Nüwu",
+       "english": "Release that Witch",
+       "native": "放开那个女巫"
+      },
+      "synonyms": [
+       "마녀를 지켜라"
+      ],
+      "format": "MANGA",
+      "status": "FINISHED",
+      "countryOfOrigin": "CN",
+      "startDate": {
+       "year": 2017
+      },
+      "chapters": 695,
+      "volumes": null,
+      "genres": [
+       "Action",
+       "Adventure",
+       "Fantasy",
+       "Romance"
+      ],
+      "averageScore": 72,
+      "popularity": 14239,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b108152-QG8LtVNX5ox2.png",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b108152-QG8LtVNX5ox2.png"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/108152"
+     },
+     {
+      "id": 146267,
+      "idMal": null,
+      "title": {
+       "romaji": "Wo Jia Laopo Lai Zi Yiqian Nian Qian",
+       "english": "My Wife Is from a thousand Years ago",
+       "native": "我家老婆来自一千年前"
+      },
+      "synonyms": [],
+      "format": "MANGA",
+      "status": "FINISHED",
+      "countryOfOrigin": "CN",
+      "startDate": {
+       "year": 2022
+      },
+      "chapters": 456,
+      "volumes": null,
+      "genres": [
+       "Comedy",
+       "Fantasy",
+       "Romance",
+       "Slice of Life"
+      ],
+      "averageScore": 79,
+      "popularity": 12615,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx146267-m1Ijqd82Vyer.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx146267-m1Ijqd82Vyer.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/146267"
+     },
+     {
+      "id": 108984,
+      "idMal": 134230,
+      "title": {
+       "romaji": "Quanzhi Fashi",
+       "english": "Versatile Mage",
+       "native": "全职法师"
+      },
+      "synonyms": [
+       "Toàn Chức Pháp Sư",
+       "Versatile Magician",
+       "All-Duties Mage",
+       "전직 법사"
+      ],
+      "format": "MANGA",
+      "status": "CANCELLED",
+      "countryOfOrigin": "CN",
+      "startDate": {
+       "year": 2018
+      },
+      "chapters": 1181,
+      "volumes": null,
+      "genres": [
+       "Action",
+       "Comedy",
+       "Drama",
+       "Fantasy"
+      ],
+      "averageScore": 66,
+      "popularity": 11879,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx108984-rVC5mS3vIp2u.png",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx108984-rVC5mS3vIp2u.png"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/108984"
+     }
+    ]
+   }
+  }
+ }
+}

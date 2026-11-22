@@ -18,6 +18,7 @@ Every response carries `X-Request-Id` (echoed if you send a valid one) and `X-Da
 - [GET /api/proxy/html](#get-apiproxyhtml)
 - [Catalogue and metadata](#catalogue-and-metadata): `GET /api/catalog`, `/api/catalog/filters`, `/api/catalog/providers`, `/api/titles/{ref}`
 - [Source availability](#source-availability): `GET /api/titles/{ref}/sources`, `/api/titles/{ref}/chapters`, `POST /api/availability`
+- [Catalogue lists](#catalogue-lists): provider-neutral rows, `GET /api/lists/...`
 - [Error codes](#error-codes)
 - [Caching](#caching)
 - [Rate limits](#rate-limits)
@@ -473,6 +474,45 @@ Runs the same lookup for a free-text title, without a metadata lookup:
 ```
 
 The response has the same shape as `GET /api/titles/{ref}/sources`.
+
+## Catalogue lists
+
+Ready-made, provider-neutral lists for home rows and recommendations. You never pass a provider: one
+catalogue backend serves every list (currently AniList), behind an internal interface that can be
+replaced without changing this contract.
+
+- **Items** use the same shape as `GET /api/catalog` items (`ref`, `title`, `altTitles`, `url`,
+  `coverImage`, `format`, `status`, `year`, `genres`, `score`, `adult`, `latestChapter`). Fields the
+  upstream does not return are left out, never made up.
+- **`ref` is opaque; clients must not parse it.** Pass it back verbatim to any `/api/titles/{ref}/...`
+  route (metadata, sources, unified chapters, identity). `provider` / `providerId` in an item are
+  informational only.
+- **Envelope**: `{ list, basis, items, pageInfo: { page, limit, hasNextPage }, attribution: { name, url }, meta }`.
+  `basis` says how the list was built, so a client can label a row honestly. There is no `total`
+  (upstream totals are capped and approximate); page with `hasNextPage`.
+- **Empty is not an error**: no matching titles is `200` with `items: []` and `hasNextPage: false`.
+  Nothing is filled in to pad a list.
+- **Errors are never empty lists**: an upstream outage, rate limit or timeout is the standard error body
+  (`UPSTREAM_ERROR`, `UPSTREAM_HTTP_ERROR`, `UPSTREAM_RATE_LIMITED`, `UPSTREAM_TIMEOUT`, `SOURCE_UNAVAILABLE`, `SOURCE_CIRCUIT_OPEN`) with
+  `Cache-Control: no-store`, so a client can tell "nothing here" from "couldn't load". Errors are never cached.
+- **Adult entries** are excluded unless `nsfw=true`.
+- **Caching**: results are cached server-side with the catalogue policy (15 min fresh, 1 h stale); each
+  endpoint below states its `Cache-Control`.
+- **Rate budget**: each list is one upstream call per cold cache key. The AniList client is limited to
+  `ANILIST_REQUESTS_PER_MINUTE` (default 30, used at 90%: 27/min, burst 3, 2 in flight, per server
+  instance). Requests above that wait in a bounded queue; a wait that runs out is `UPSTREAM_TIMEOUT`, a full queue
+  `SOURCE_UNAVAILABLE`, an upstream 429 `UPSTREAM_RATE_LIMITED`. A cold home screen with trending, new,
+  popular, three genre rows, two "because you read" seeds and one batch lookup costs 9 upstream calls; warm
+  keys cost none. Clients should ask for at most two "because you read" seeds and load rows below the fold lazily.
+
+### GET /api/lists/genres
+
+Genres and tags accepted by the genre list. Adult genres and tags are left out unless `nsfw=true`.
+`Cache-Control: public, max-age=3600, s-maxage=86400`.
+
+```json
+{ "genres": ["Action", "Adventure", "..."], "tags": [{ "name": "Isekai", "group": "Theme-Fantasy" }, "..."], "attribution": { "name": "AniList", "url": "https://anilist.co" } }
+```
 
 ## Error codes
 

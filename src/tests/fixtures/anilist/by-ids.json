@@ -1,0 +1,144 @@
+{
+ "capturedAt": "2026-11-22T13:56:43.741Z",
+ "status": 200,
+ "variables": {
+  "ids": [
+   105398,
+   119257,
+   85143
+  ],
+  "perPage": 3
+ },
+ "body": {
+  "data": {
+   "Page": {
+    "media": [
+     {
+      "id": 85143,
+      "idMal": 122663,
+      "title": {
+       "romaji": "Sinui Tap",
+       "english": "Tower of God",
+       "native": "신의 탑"
+      },
+      "synonyms": [
+       "Kami no Tou",
+       "A Torre de Deus",
+       "ทาวเวอร์ออฟก๊อด หอคอยเทพเจ้า",
+       "神之塔",
+       "Вежа бога"
+      ],
+      "format": "MANGA",
+      "status": "RELEASING",
+      "countryOfOrigin": "KR",
+      "startDate": {
+       "year": 2010
+      },
+      "chapters": null,
+      "volumes": null,
+      "genres": [
+       "Action",
+       "Adventure",
+       "Drama",
+       "Fantasy",
+       "Mystery"
+      ],
+      "averageScore": 81,
+      "popularity": 101454,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx85143-23oup3ETbFJk.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85143-23oup3ETbFJk.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/85143"
+     },
+     {
+      "id": 105398,
+      "idMal": 121496,
+      "title": {
+       "romaji": "Na Honjaman Level Up",
+       "english": "Solo Leveling",
+       "native": "나 혼자만 레벨업"
+      },
+      "synonyms": [
+       "I Level Up Alone",
+       "Only I Level Up",
+       "俺だけレベルアップな件",
+       "我獨自升級",
+       "Ore dake Level Up na Ken",
+       "Поднятие уровня в одиночку",
+       "Тільки я візьму новий рівень",
+       "Вебтун. Поднятие уровня в одиночку. Solo Leveling"
+      ],
+      "format": "MANGA",
+      "status": "FINISHED",
+      "countryOfOrigin": "KR",
+      "startDate": {
+       "year": 2018
+      },
+      "chapters": 201,
+      "volumes": 15,
+      "genres": [
+       "Action",
+       "Adventure",
+       "Fantasy"
+      ],
+      "averageScore": 84,
+      "popularity": 289691,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx105398-b673Vt5ZSuz3.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx105398-b673Vt5ZSuz3.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/105398"
+     },
+     {
+      "id": 119257,
+      "idMal": 132214,
+      "title": {
+       "romaji": "Jeonjijeok Dokja Sijeom",
+       "english": "Omniscient Reader",
+       "native": "전지적 독자 시점"
+      },
+      "synonyms": [
+       "Omniscient Reader's Viewpoint",
+       "ORV",
+       "Punkt Widzenia Wszechwiedzącego Czytelnika",
+       "Lector omnisciente",
+       "Lecteur Omniscient",
+       "Der allwissende Leser",
+       "전독시",
+       "全知读者",
+       "全知讀者視角",
+       "อ่านชะตาวันสิ้นโลก",
+       "全知的な読者の視点から",
+       "Zenchiteki na Dokusha no Shiten kara",
+       "Всеведущий читатель"
+      ],
+      "format": "MANGA",
+      "status": "RELEASING",
+      "countryOfOrigin": "KR",
+      "startDate": {
+       "year": 2020
+      },
+      "chapters": null,
+      "volumes": null,
+      "genres": [
+       "Action",
+       "Adventure",
+       "Fantasy"
+      ],
+      "averageScore": 86,
+      "popularity": 135674,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx119257-Pi21aq3ey9GG.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx119257-Pi21aq3ey9GG.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/119257"
+     }
+    ]
+   }
+  }
+ }
+}

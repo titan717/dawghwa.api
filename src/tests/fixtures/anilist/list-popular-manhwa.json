@@ -1,0 +1,233 @@
+{
+ "capturedAt": "2026-11-22T13:56:28.004Z",
+ "status": 200,
+ "variables": {
+  "page": 1,
+  "perPage": 5,
+  "sort": [
+   "POPULARITY_DESC"
+  ],
+  "format_in": [
+   "MANGA"
+  ],
+  "country": "KR",
+  "isAdult": false
+ },
+ "body": {
+  "data": {
+   "Page": {
+    "pageInfo": {
+     "hasNextPage": true
+    },
+    "media": [
+     {
+      "id": 105398,
+      "idMal": 121496,
+      "title": {
+       "romaji": "Na Honjaman Level Up",
+       "english": "Solo Leveling",
+       "native": "나 혼자만 레벨업"
+      },
+      "synonyms": [
+       "I Level Up Alone",
+       "Only I Level Up",
+       "俺だけレベルアップな件",
+       "我獨自升級",
+       "Ore dake Level Up na Ken",
+       "Поднятие уровня в одиночку",
+       "Тільки я візьму новий рівень",
+       "Вебтун. Поднятие уровня в одиночку. Solo Leveling"
+      ],
+      "format": "MANGA",
+      "status": "FINISHED",
+      "countryOfOrigin": "KR",
+      "startDate": {
+       "year": 2018
+      },
+      "chapters": 201,
+      "volumes": 15,
+      "genres": [
+       "Action",
+       "Adventure",
+       "Fantasy"
+      ],
+      "averageScore": 84,
+      "popularity": 289691,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx105398-b673Vt5ZSuz3.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx105398-b673Vt5ZSuz3.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/105398"
+     },
+     {
+      "id": 119257,
+      "idMal": 132214,
+      "title": {
+       "romaji": "Jeonjijeok Dokja Sijeom",
+       "english": "Omniscient Reader",
+       "native": "전지적 독자 시점"
+      },
+      "synonyms": [
+       "Omniscient Reader's Viewpoint",
+       "ORV",
+       "Punkt Widzenia Wszechwiedzącego Czytelnika",
+       "Lector omnisciente",
+       "Lecteur Omniscient",
+       "Der allwissende Leser",
+       "전독시",
+       "全知读者",
+       "全知讀者視角",
+       "อ่านชะตาวันสิ้นโลก",
+       "全知的な読者の視点から",
+       "Zenchiteki na Dokusha no Shiten kara",
+       "Всеведущий читатель"
+      ],
+      "format": "MANGA",
+      "status": "RELEASING",
+      "countryOfOrigin": "KR",
+      "startDate": {
+       "year": 2020
+      },
+      "chapters": null,
+      "volumes": null,
+      "genres": [
+       "Action",
+       "Adventure",
+       "Fantasy"
+      ],
+      "averageScore": 86,
+      "popularity": 135674,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx119257-Pi21aq3ey9GG.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx119257-Pi21aq3ey9GG.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/119257"
+     },
+     {
+      "id": 85143,
+      "idMal": 122663,
+      "title": {
+       "romaji": "Sinui Tap",
+       "english": "Tower of God",
+       "native": "신의 탑"
+      },
+      "synonyms": [
+       "Kami no Tou",
+       "A Torre de Deus",
+       "ทาวเวอร์ออฟก๊อด หอคอยเทพเจ้า",
+       "神之塔",
+       "Вежа бога"
+      ],
+      "format": "MANGA",
+      "status": "RELEASING",
+      "countryOfOrigin": "KR",
+      "startDate": {
+       "year": 2010
+      },
+      "chapters": null,
+      "volumes": null,
+      "genres": [
+       "Action",
+       "Adventure",
+       "Drama",
+       "Fantasy",
+       "Mystery"
+      ],
+      "averageScore": 81,
+      "popularity": 101454,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx85143-23oup3ETbFJk.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85143-23oup3ETbFJk.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/85143"
+     },
+     {
+      "id": 86964,
+      "idMal": 111213,
+      "title": {
+       "romaji": "Hurejasik",
+       "english": "Bastard",
+       "native": "후레자식"
+      },
+      "synonyms": [
+       "BASTARD",
+       "不肖子",
+       "Bâtard",
+       "Bastardo",
+       "バスタード",
+       "Kopile",
+       "Bastard. Сволочь."
+      ],
+      "format": "MANGA",
+      "status": "FINISHED",
+      "countryOfOrigin": "KR",
+      "startDate": {
+       "year": 2014
+      },
+      "chapters": 94,
+      "volumes": 5,
+      "genres": [
+       "Drama",
+       "Horror",
+       "Mystery",
+       "Psychological",
+       "Romance",
+       "Thriller"
+      ],
+      "averageScore": 83,
+      "popularity": 78153,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b86964-vTdn1Esqw3va.jpg",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b86964-vTdn1Esqw3va.jpg"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/86964"
+     },
+     {
+      "id": 140407,
+      "idMal": 147272,
+      "title": {
+       "romaji": "Yeokdaegeum Yeongji Seolgyesa",
+       "english": "The Greatest Estate Developer",
+       "native": "역대급 영지 설계사"
+      },
+      "synonyms": [
+       "The World's Best Engineer",
+       "The Greatest Estate Designer",
+       "El mejor desarrollador inmobiliario",
+       "史詩級領地設計師",
+       "史上最高の領地設計士",
+       "史诗级领地设计师",
+       "ยอดสถาปนิกผู้พิทักษ์อาณาจักร",
+       "Niezrównany Inżynier"
+      ],
+      "format": "MANGA",
+      "status": "FINISHED",
+      "countryOfOrigin": "KR",
+      "startDate": {
+       "year": 2021
+      },
+      "chapters": 222,
+      "volumes": null,
+      "genres": [
+       "Adventure",
+       "Comedy",
+       "Fantasy"
+      ],
+      "averageScore": 90,
+      "popularity": 72861,
+      "coverImage": {
+       "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx140407-fJQr0fmqq1IO.png",
+       "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx140407-fJQr0fmqq1IO.png"
+      },
+      "isAdult": false,
+      "siteUrl": "https://anilist.co/manga/140407"
+     }
+    ]
+   }
+  }
+ }
+}
