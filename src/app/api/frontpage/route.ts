@@ -3,17 +3,24 @@ import { booleanish, json, readJson, route, sourceIdSchema } from "@/lib/api/han
 import { DawghwaError } from "@/lib/core/errors";
 import { getRegistry } from "@/lib/providers/registry";
 import { getFrontpageSection } from "@/lib/services/catalog";
-import { getAllFrontpageInfo, getFrontpageSourceIds } from "@/lib/frontpages";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 /** GET /api/frontpage - sources with frontpage support and their sections. */
 export const GET = route(async (_req, ctx) => {
-  return json({ sources: getAllFrontpageInfo(), sourceIds: getFrontpageSourceIds() }, ctx, {
+  const frontpages = frontpageProviders();
+  return json({ sources: frontpages.map((p) => p.frontpage!.getInfo()), sourceIds: frontpages.map((p) => p.id) }, ctx, {
     cacheControl: "public, max-age=300",
   });
 });
+
+/** Frontpage-capable providers registered on this server (respects EXPERIMENTAL_PROVIDERS). */
+function frontpageProviders() {
+  return getRegistry()
+    .all()
+    .filter((p) => p.frontpage);
+}
 
 const bodySchema = z.object({
   source: sourceIdSchema,
@@ -31,7 +38,7 @@ export const POST = route(async (req, ctx) => {
   if (!provider?.frontpage) {
     throw new DawghwaError(
       provider ? "UNSUPPORTED_CAPABILITY" : "SOURCE_NOT_FOUND",
-      `Source "${body.source}" does not have frontpage support. Available sources: ${getFrontpageSourceIds().join(", ")}`,
+      `Source "${body.source}" does not have frontpage support. Available sources: ${frontpageProviders().map((p) => p.id).join(", ") || "none"}`,
     );
   }
   const sections = provider.frontpage.getAvailableSections();

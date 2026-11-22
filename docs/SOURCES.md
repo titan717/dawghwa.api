@@ -19,7 +19,7 @@ Live reachability from a specific machine is in [SOURCE_STATUS.md](./SOURCE_STAT
 | BaeToon | `baetoon` | https://baetoon.com | aggregator | Active | search, chapters |  |
 | Bato | `bato` | https://bato.to | aggregator | Shut down | search, chapters | Adapter no longer works (upstream) |
 | Chikari | `chikari` | https://chikari.moe | aggregator | Active | search, chapters |  |
-| Comix | `comix` | https://comix.to | aggregator | Unstable | search, chapters, frontpage |  |
+| Comix | `comix` | https://comix.to | aggregator | Unstable | search, chapters, frontpage | Experimental, off by default (`EXPERIMENTAL_PROVIDERS`); blocked: 403 anti-bot, terms unreadable. See [providers/comix-study.md](./providers/comix-study.md) |
 | Danke fürs Lesen | `danke-furs-lesen` | https://danke.moe | scanlator | Active | search, chapters |  |
 | DemonicScans | `demonicscans` | https://demonicscans.org | scanlator | Active | search, chapters |  |
 | Diva Scans | `diva-scans` | https://divascans.org | scanlator | Unstable | search, chapters |  |

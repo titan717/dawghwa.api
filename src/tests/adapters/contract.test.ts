@@ -1,7 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getAllScrapers } from "@/lib/scrapers";
 import { DawghwaError } from "@/lib/core/errors";
-import { getRegistry } from "@/lib/providers/registry";
+import { resetConfig } from "@/lib/core/config";
+import { getRegistry, resetRegistry } from "@/lib/providers/registry";
+import { EXPERIMENTAL_SOURCE_IDS } from "@/lib/providers/status";
 import { ADAPTER_DOMAINS } from "@/lib/providers/manifest.generated";
 import { htmlResponse, mockFetch } from "../helpers";
 
@@ -29,6 +31,13 @@ describe("adapter registry", () => {
     expect(getRegistry().get("MangaDex")?.id).toBe("mangadex");
   });
 
+  it("leaves experimental adapters out unless EXPERIMENTAL_PROVIDERS names them", () => {
+    const experimental = ids.filter((id) => EXPERIMENTAL_SOURCE_IDS.has(id));
+    expect(experimental).toEqual(["comix"]);
+    expect(getRegistry().all().length).toBe(96 - experimental.length);
+    for (const id of experimental) expect(getRegistry().get(id), id).toBeUndefined();
+  });
+
   it("orders providers by priority", () => {
     expect(getRegistry().all()[0].id).toBe("mangadex");
   });
@@ -36,6 +45,14 @@ describe("adapter registry", () => {
 
 describe.each(ids.map((id) => [id]))("adapter %s", (id) => {
   const provider = () => getRegistry().get(id)!;
+
+  // Contract-test experimental adapters too (network is mocked), with the flag on.
+  beforeEach(() => {
+    if (!EXPERIMENTAL_SOURCE_IDS.has(id)) return;
+    process.env.EXPERIMENTAL_PROVIDERS = id;
+    resetConfig();
+    resetRegistry();
+  });
 
   it("owns its base URL and rejects look-alike hosts", () => {
     const p = provider();

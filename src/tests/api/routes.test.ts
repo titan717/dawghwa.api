@@ -7,22 +7,39 @@ import { GET as healthGET } from "@/app/api/health/route";
 import { GET as frontpageGET, POST as frontpagePOST } from "@/app/api/frontpage/route";
 import { GET as indexGET } from "@/app/api/route";
 import { resetConfig } from "@/lib/core/config";
+import { resetRegistry } from "@/lib/providers/registry";
 import { hangingResponse, jsonResponse, mockFetch } from "../helpers";
 import { get, ndjson, post } from "./request";
 
 const MANGA = "37f5cce0-8070-4ada-96e5-fa24b1bd4ff9";
+
+/** Turn on experimental providers for one test (setup.ts clears the flag before each test). */
+function enableExperimental(ids: string): void {
+  process.env.EXPERIMENTAL_PROVIDERS = ids;
+  resetConfig();
+  resetRegistry();
+}
 
 describe("GET /api and /api/sources", () => {
   it("lists sources with status and capabilities (upstream fields kept)", async () => {
     const res = await sourcesGET(get("/api/sources"));
     expect(res.status).toBe(200);
     const body = await res.json();
-    expect(body.sources.length).toBe(96);
+    expect(body.sources.length).toBe(95); // 96 adapters minus experimental comix
     const md = body.sources.find((s: { id: string }) => s.id === "mangadex");
     expect(md).toMatchObject({ id: "mangadex", name: "MangaDex", baseUrl: "https://mangadex.org", status: "active" });
     expect(md.capabilities.chapterPages).toBe(true);
     expect(res.headers.get("x-request-id")).toBeTruthy();
     expect(body.sources.find((s: { id: string }) => s.id === "mangapark").status).toBe("shutdown");
+  });
+
+  it("excludes experimental providers by default and lists them when EXPERIMENTAL_PROVIDERS names them", async () => {
+    const off = await (await sourcesGET(get("/api/sources"))).json();
+    expect(off.sources.some((s: { id: string }) => s.id === "comix")).toBe(false);
+    enableExperimental("comix");
+    const on = await (await sourcesGET(get("/api/sources"))).json();
+    expect(on.sources.length).toBe(96);
+    expect(on.sources.find((s: { id: string }) => s.id === "comix")).toMatchObject({ id: "comix", baseUrl: "https://comix.to" });
   });
 
   it("index describes endpoints", async () => {
@@ -133,7 +150,7 @@ describe("POST /api/chapters", () => {
   });
 
   it("rejects a URL that does not belong to the hinted source", async () => {
-    const res = await chaptersPOST(post("/api/chapters", { url: `https://mangadex.org/title/${MANGA}`, source: "comix" }));
+    const res = await chaptersPOST(post("/api/chapters", { url: `https://mangadex.org/title/${MANGA}`, source: "webtoon" }));
     expect(res.status).toBe(400);
   });
 
@@ -172,7 +189,14 @@ describe("POST /api/chapters", () => {
 });
 
 describe("POST /api/pages", () => {
+  it("returns 404 for an experimental source that is not enabled", async () => {
+    const res = await pagesPOST(post("/api/pages", { source: "comix", chapterId: "abc" }));
+    expect(res.status).toBe(404);
+    expect((await res.json()).code).toBe("SOURCE_NOT_FOUND");
+  });
+
   it("returns 501 for sources without a documented page API", async () => {
+    enableExperimental("comix");
     const res = await pagesPOST(post("/api/pages", { source: "comix", chapterId: "abc" }));
     expect(res.status).toBe(501);
     expect((await res.json()).code).toBe("UNSUPPORTED_CAPABILITY");
@@ -220,7 +244,15 @@ describe("GET /api/health", () => {
 });
 
 describe("/api/frontpage", () => {
+  it("lists no frontpage sources while comix is experimental and off", async () => {
+    const list = await (await frontpageGET(get("/api/frontpage"))).json();
+    expect(list.sourceIds).toEqual([]);
+    const res = await frontpagePOST(post("/api/frontpage", { source: "comix", section: "trending" }));
+    expect(res.status).toBe(404);
+  });
+
   it("lists frontpage-capable sources and validates section requests", async () => {
+    enableExperimental("comix");
     const list = await (await frontpageGET(get("/api/frontpage"))).json();
     expect(list.sourceIds).toContain("comix");
     const bad = await frontpagePOST(post("/api/frontpage", { source: "comix", section: "nope" }));

@@ -95,7 +95,7 @@ Every variable is optional. [`.env.example`](../.env.example) lists all of them 
 | Group | Variables |
 | --- | --- |
 | Outbound HTTP | `UPSTREAM_USER_AGENT`, `UPSTREAM_TIMEOUT_MS`, `UPSTREAM_RETRIES`, `UPSTREAM_RETRY_BASE_MS`, `UPSTREAM_RETRY_MAX_MS`, `UPSTREAM_MAX_RESPONSE_BYTES`, `CONDITIONAL_CACHE_ENTRIES`, `CONDITIONAL_CACHE_MAX_BYTES` |
-| Source isolation | `SOURCE_OPERATION_TIMEOUT_MS`, `SOURCE_DEFAULT_RPS`, `SOURCE_DEFAULT_BURST`, `SOURCE_DEFAULT_MAX_CONCURRENT`, `BREAKER_FAILURE_THRESHOLD`, `BREAKER_COOLDOWN_MS`, `DISABLED_SOURCES`, `SOURCE_PRIORITY` |
+| Source isolation | `SOURCE_OPERATION_TIMEOUT_MS`, `SOURCE_DEFAULT_RPS`, `SOURCE_DEFAULT_BURST`, `SOURCE_DEFAULT_MAX_CONCURRENT`, `BREAKER_FAILURE_THRESHOLD`, `BREAKER_COOLDOWN_MS`, `DISABLED_SOURCES`, `SOURCE_PRIORITY`, `EXPERIMENTAL_PROVIDERS` |
 | Search / health | `SEARCH_CONCURRENCY`, `SEARCH_SOURCE_TIMEOUT_MS`, `SEARCH_OVERALL_TIMEOUT_MS`, `HEALTH_CONCURRENCY`, `HEALTH_SOURCE_TIMEOUT_MS`, `HEALTH_OVERALL_TIMEOUT_MS` |
 | Cache | `CACHE_ENABLED`, `CACHE_MEMORY_MAX_ENTRIES`, `CACHE_MEMORY_MAX_BYTES`, `REDIS_REST_URL`/`UPSTASH_REDIS_REST_URL`, `REDIS_REST_TOKEN`/`UPSTASH_REDIS_REST_TOKEN`, `REDIS_PREFIX`, `CACHE_{SEARCH,CHAPTERS,METADATA,FRONTPAGE,HEALTH}_{TTL,SWR}`, `CACHE_PAGES_TTL` |
 | Metadata / catalogue | `METADATA_PROVIDERS`, `METADATA_DEFAULT_PROVIDER`, `METADATA_TIMEOUT_MS`, `ANILIST_REQUESTS_PER_MINUTE`, `CACHE_CATALOG_TTL`, `CACHE_CATALOG_SWR` |
@@ -109,5 +109,6 @@ Never commit `.env` files. `.gitignore` excludes them except `.env.example`.
 
 - **Monitoring**: `GET /api/health` gives a summary, and `GET /api/sources?verbose=true` shows circuit-breaker state and per-source success/failure counters. Errors with status 500 and above are logged as one JSON line each, with `requestId`, so client reports can be matched to logs.
 - **Turning off a broken source** without a deploy: set `DISABLED_SOURCES=id1,id2` and restart. Requests to it then return `SOURCE_UNAVAILABLE`.
+- **Experimental sources** (listed in `EXPERIMENTAL_SOURCE_IDS` in `src/lib/providers/status.ts`, currently `comix`) are not registered at all unless named in `EXPERIMENTAL_PROVIDERS` (empty by default). Requests to them return `SOURCE_NOT_FOUND`. Do not set this in production without a recorded terms review; see `skills/site-structure-study/SKILL.md`.
 - **Status report**: the `Source Health Report` GitHub workflow regenerates `docs/SOURCE_STATUS.md` weekly. Results come from GitHub's datacenter network and will show more anti-bot blocks than a residential host.
 - **Upgrading from upstream code**: the `upstream` git remote points at GooglyBlox/comick-source-api. New upstream adapters can be cherry-picked; then run `npm run manifest`, `npm run docs:sources` and `npm test`.

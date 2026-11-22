@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { resetConfig } from "@/lib/core/config";
 import { upstreamText } from "@/lib/core/http";
-import { getRegistry, resetRegistry } from "@/lib/providers/registry";
+import { getRegistry, isSourceEnabled, resetRegistry } from "@/lib/providers/registry";
 import { normalizeChapters, normalizeSearchResults } from "@/lib/providers/normalize";
 import { hangingResponse, mockFetch } from "../helpers";
 
@@ -97,6 +97,18 @@ describe("Provider.run", () => {
     resetRegistry();
     expect(getRegistry().get("mangadex")!.operational).toBe(false);
     delete process.env.DISABLED_SOURCES;
+  });
+
+  it("keeps experimental providers out of the registry unless EXPERIMENTAL_PROVIDERS names them", () => {
+    expect(getRegistry().get("comix")).toBeUndefined();
+    expect(getRegistry().operational().some((p) => p.id === "comix")).toBe(false);
+    expect(getRegistry().forUrl(new URL("https://comix.to/title/x"))).toBeUndefined();
+    process.env.EXPERIMENTAL_PROVIDERS = " Comix ";
+    resetConfig();
+    resetRegistry();
+    expect(getRegistry().get("comix")?.operational).toBe(true);
+    expect(isSourceEnabled("comix", [])).toBe(false);
+    expect(isSourceEnabled("mangadex", [])).toBe(true);
   });
 });
 

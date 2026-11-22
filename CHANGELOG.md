@@ -11,6 +11,11 @@ All notable changes to Dawghwa API. The project follows [Semantic Versioning](ht
 - `POST /api/manga` for MangaDex now also returns `coverImage` and `metadata`.
 - New `browse` capability in `/api/sources`.
 - MangaDex catalogue items include optional `description`, `tagNames` and `demographic`. This is additive; other providers omit them.
+- `EXPERIMENTAL_PROVIDERS` (empty by default): experimental sources are left out of the registry unless named here.
+- `skills/site-structure-study`: a guide for studying a site's public structure (terms first, robots.txt, 1 req/s, stop on 403 or challenge pages) and a dependency-free `polite-fetch.mjs` helper.
+
+### Changed
+- `comix` is now experimental and off by default. comix.to and comix.ws served a Cloudflare 403 block, and no terms could be read (see `docs/providers/comix-study.md`). With the flag off it is missing from `/api/sources`, search, availability, catalog and health, and `/api/frontpage` lists no sources. Requests naming `comix` return `SOURCE_NOT_FOUND`.
 
 ## [1.1.0] - 2026-11-17
 

@@ -64,6 +64,12 @@ export interface DawghwaConfig {
     disabled: string[];
     /** Source ids searched first in "all" searches (comma separated SOURCE_PRIORITY). */
     priority: string[];
+    /**
+     * Experimental source ids explicitly enabled on this server (comma separated
+     * EXPERIMENTAL_PROVIDERS). Empty by default: experimental sources are left
+     * out of the registry entirely.
+     */
+    experimental: string[];
   };
   search: {
     concurrency: number;
@@ -150,6 +156,7 @@ export function getConfig(): DawghwaConfig {
       breakerCooldownMs: num("BREAKER_COOLDOWN_MS", 60_000, 1_000, 3_600_000),
       disabled: list("DISABLED_SOURCES"),
       priority: list("SOURCE_PRIORITY"),
+      experimental: list("EXPERIMENTAL_PROVIDERS"),
     },
     search: {
       concurrency: num("SEARCH_CONCURRENCY", 16, 1, 200),

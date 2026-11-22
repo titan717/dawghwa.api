@@ -49,6 +49,18 @@ export const STATUS_NOTES: Record<string, string> = {
   "yaksha-scans": "Site shut down (upstream)",
 };
 
+/**
+ * Experimental sources: excluded from the registry (sources, search,
+ * availability, catalog, frontpage, health) unless listed in
+ * EXPERIMENTAL_PROVIDERS. Off by default; enabling one for users is a human
+ * decision.
+ *
+ *  comix - blocked: comix.to and comix.ws serve a Cloudflare 403 block page to
+ *          automated clients and no terms could be read (2026-11-22, see
+ *          docs/providers/comix-study.md).
+ */
+export const EXPERIMENTAL_SOURCE_IDS: ReadonlySet<string> = new Set(["comix"]);
+
 /** Additional ids accepted for a source (backwards compatible spellings). */
 export const SOURCE_ALIASES: Record<string, string[]> = {
   "writers'-scans": ["writers-scans", "writerscans"],

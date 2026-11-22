@@ -26,6 +26,8 @@ export function resetAll(): void {
 beforeEach(() => {
   process.env.UPSTREAM_RETRY_BASE_MS = process.env.UPSTREAM_RETRY_BASE_MS ?? "1";
   process.env.UPSTREAM_RETRY_MAX_MS = process.env.UPSTREAM_RETRY_MAX_MS ?? "5";
+  // Experimental providers are off unless a test turns them on explicitly.
+  delete process.env.EXPERIMENTAL_PROVIDERS;
   resetAll();
   if (!live) {
     // Adapters log their own failures; keep offline test output readable.
