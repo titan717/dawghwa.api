@@ -144,14 +144,18 @@ describe("GET /api/v2/chapter (no provider details anywhere)", () => {
     expect(await assertNoLeak(res)).toBe('{"error":"Chapter unavailable"}');
   });
 
-  it("IMAGE_PROXY off keeps the current relay page URLs; everything else stays clean", async () => {
-    delete process.env.IMAGE_PROXY;
+  it("IMAGE_PROXY off or misconfigured: 503 {error: 'Chapter unavailable'}, no upstream URL anywhere", async () => {
     serve(ALL);
-    const body = await (await chapter(`title=${encodeURIComponent(CANON)}&n=1`)).json();
-    expect(new URL(body.pages[0].url).pathname).toBe("/api/image");
-    const { pages, ...rest } = body;
-    void pages;
-    expect(findProviderTerm(JSON.stringify(rest))).toBeUndefined();
+    for (const env of [{ IMAGE_PROXY: undefined }, { IMAGE_PROXY: "1", IMAGE_PROXY_SECRET: "short" }]) {
+      for (const [k, v] of Object.entries(env)) {
+        if (v === undefined) delete process.env[k];
+        else process.env[k] = v;
+      }
+      const res = await chapter(`title=${encodeURIComponent(CANON)}&n=1`);
+      expect(res.status).toBe(503);
+      expect(await assertNoLeak(res)).toBe('{"error":"Chapter unavailable"}');
+      expect(vi.mocked(getRegistry().get("mangadex")!.scraper.getChapterPages!)).not.toHaveBeenCalled();
+    }
   });
 
   it("client rate limit applies and its response does not leak", async () => {

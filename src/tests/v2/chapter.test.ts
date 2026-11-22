@@ -6,6 +6,7 @@ import { getRegistry } from "@/lib/providers/registry";
 import { SourceBreakers } from "@/lib/v2/breaker";
 import { HostPacer } from "@/lib/v2/pacer";
 import { canonicalNumber, parseCanonicalTitle, resolveChapter, V2Error, type ResolveDeps } from "@/lib/v2/chapter";
+import { resetImageProxyWarning } from "@/lib/v2/config";
 import { meta } from "../chapters/fixtures";
 import { CANON, pagesFor, rows, SECRET, type Upload } from "./fixtures";
 
@@ -35,8 +36,9 @@ const fail403 = () => {
 const priority = (id: string) => getRegistry().get(id)!.descriptor.priority;
 
 beforeEach(() => {
-  delete process.env.IMAGE_PROXY;
-  delete process.env.IMAGE_PROXY_SECRET;
+  process.env.IMAGE_PROXY = "1";
+  process.env.IMAGE_PROXY_SECRET = SECRET;
+  resetImageProxyWarning();
 });
 
 describe("GET /api/v2/chapter resolution: fallback order", () => {
@@ -196,30 +198,53 @@ describe("inputs", () => {
   });
 });
 
-describe("page URLs", () => {
-  it("IMAGE_PROXY off: existing /api/image relay URLs (current behaviour)", async () => {
+describe("page URLs and the IMAGE_PROXY gate", () => {
+  it("IMAGE_PROXY off: v2 is inert (503, generic) and never touches a source", async () => {
+    delete process.env.IMAGE_PROXY;
     const h = harness([{ source: "mangadex", number: "1" }], {});
-    const r = await resolveChapter({ title: CANON, n: "1", lang: "en" }, h.deps);
-    expect(new URL(r.pages[0]!.url).pathname).toBe("/api/image");
-    expect(r.pagesExpireAt).toBeUndefined();
+    const loadMeta = vi.fn(async () => meta());
+    const e = await resolveChapter({ title: CANON, n: "1", lang: "en" }, { ...h.deps, loadMeta }).catch((x) => x);
+    expect(e).toMatchObject({ status: 503, publicMessage: "Chapter unavailable" });
+    expect(h.calls).toEqual([]);
+    expect(loadMeta).not.toHaveBeenCalled();
   });
 
-  it("IMAGE_PROXY on without a secret falls back to current behaviour", async () => {
-    process.env.IMAGE_PROXY = "1";
+  it("IMAGE_PROXY on without a usable secret: 503 and one IMAGE_PROXY_MISCONFIGURED log per instance", async () => {
+    delete process.env.IMAGE_PROXY_SECRET;
+    const log = vi.mocked(console.error);
+    log.mockClear();
     const h = harness([{ source: "mangadex", number: "1" }], {});
-    const r = await resolveChapter({ title: CANON, n: "1", lang: "en" }, h.deps);
-    expect(new URL(r.pages[0]!.url).pathname).toBe("/api/image");
+    for (const secret of [undefined, "too-short"]) {
+      if (secret) process.env.IMAGE_PROXY_SECRET = secret;
+      await expect(resolveChapter({ title: CANON, n: "1", lang: "en" }, h.deps)).rejects.toMatchObject({ status: 503 });
+    }
+    expect(h.calls).toEqual([]);
+    const lines = log.mock.calls.map((c) => String(c[0])).filter((l) => l.includes("IMAGE_PROXY_MISCONFIGURED"));
+    expect(lines).toEqual([JSON.stringify({ level: "error", code: "IMAGE_PROXY_MISCONFIGURED" })]);
   });
 
   it("IMAGE_PROXY on with a secret: opaque /api/v2/img/<token> URLs with an expiry", async () => {
-    process.env.IMAGE_PROXY = "true";
-    process.env.IMAGE_PROXY_SECRET = SECRET;
     const h = harness([{ source: "mangadex", number: "1" }], {});
     const r = await resolveChapter({ title: CANON, n: "1", lang: "en" }, h.deps);
     for (const p of r.pages) {
       expect(new URL(p.url).pathname).toMatch(/^\/api\/v2\/img\/[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/);
       expect(p.url).not.toContain("mangadex");
+      expect(p.url).not.toContain("/api/image");
     }
-    expect(Date.parse(r.pagesExpireAt!)).toBeGreaterThan(Date.now());
+    expect(Date.parse(r.pagesExpireAt)).toBeGreaterThan(Date.now());
+  });
+
+  it("manifest pacing: a cache hit does not take a host slot", async () => {
+    const reserved: string[] = [];
+    const pacer = new HostPacer(1_000, () => 0, async () => {});
+    const orig = pacer.reserve.bind(pacer);
+    pacer.reserve = (host, max) => (reserved.push(host), orig(host, max));
+    const p = getRegistry().get("mangadex")!;
+    vi.spyOn(p.scraper, "getChapterPages").mockImplementation(async () => pagesFor("mangadex") as never);
+    const h = harness([{ source: "mangadex", number: "1" }], {}, { pacer });
+    delete h.deps.loadPages;
+    await resolveChapter({ title: CANON, n: "1", lang: "en" }, h.deps);
+    await resolveChapter({ title: CANON, n: "1", lang: "en" }, h.deps);
+    expect(reserved).toEqual(["mangadex.org"]);
   });
 });

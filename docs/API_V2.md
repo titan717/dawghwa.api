@@ -6,6 +6,10 @@ Internal document (may name providers). Additive: every v1 route (`/api/pages`, 
 Code: `src/lib/v2/*`, routes `src/app/api/v2/chapter/route.ts` and `src/app/api/v2/img/[token]/route.ts`.
 Tests: `src/tests/v2/*`.
 
+> **v2 is inert until `IMAGE_PROXY=1` and `IMAGE_PROXY_SECRET` (>= 32 chars) are set.** Without them
+> `GET /api/v2/chapter` answers `503 {"error":"Chapter unavailable"}` before any metadata or source request, and
+> `GET /api/v2/img/*` answers 404. v2 never hands out `/api/image?url=<upstream>&source=<id>` URLs.
+
 ## GET /api/v2/chapter
 
 ```
@@ -14,7 +18,7 @@ GET /api/v2/chapter?title=<canonicalTitleId>&n=<chapterNumber>[&lang=<lang>][&al
 
 | Param | Required | Meaning |
 |---|---|---|
-| `title` | yes | Canonical title id from `chapters/all` (`dwg:md:<uuid>`, `dwg:al:<id>`, `dwg:mu:<id>`). Metadata refs (`al:105398`, `anilist:105398`, `md:<uuid>`) are also accepted. Max 96 chars. |
+| `title` | yes | Canonical title id from `chapters/all` (`dwg:md:<uuid>`, `dwg:al:<id>`, `dwg:mu:<id>`). Metadata refs (`al:105398`, `anilist:105398`, `md:<uuid>`) are also accepted. Max 96 chars. Canonical ids carry short namespace prefixes (`md`/`al`/`mu`) of the metadata database they came from; they are opaque keys and the app must never render them. |
 | `n` | yes | Chapter number, normalised like the merge (`10.0` = `10`, `010.5` = `10.5`, `1.10` != `1.1`). Regular chapters only; a numbered special ("Bonus Episode 2") never answers `n=2`. |
 | `lang` | no (`en`) | Translation language (`[a-z]{2,3}(-[a-z0-9]{2,8})?`). Never changed by fallback. |
 | `alt` | no | Version index (0..99) to start from: "Try another version". Pass the previous response's `version.next`. |
@@ -51,7 +55,7 @@ Every error body is exactly `{"error":"Chapter unavailable"}`:
 | 400 | Missing/invalid `title`, `n`, `lang` or `alt` |
 | 404 | Title unknown, no regular chapter with that number in that language, or `alt` >= version count |
 | 502 | Every version that was allowed to be tried failed (or metadata/aggregation failed) |
-| 503 | Versions exist but every source is currently circuit-open |
+| 503 | Image proxy not enabled/misconfigured (v2 inert), or every source is currently circuit-open |
 | 429 | Client rate limit (body is the shared limiter's generic "Too many requests" message, `Retry-After` set) |
 
 ### How a version is chosen
@@ -84,11 +88,11 @@ Controlled by env (read per request):
 | `IMAGE_PROXY_TTL_SECONDS` | 1800 | Token lifetime (300..86400), rounded up to a 10-minute bucket |
 | `IMAGE_PROXY_RATE_PER_MINUTE` | 600 | Per-client image requests per minute |
 
-* **Off** (default) or **on without a usable secret**: page URLs are the existing relay URLs exactly as `POST /api/pages`
-  issues them (`/api/image?url=<upstream>&source=<id>`), i.e. current behaviour. These URLs do contain the upstream URL
-  and source id; the v2 "no provider details" guarantee for page URLs holds only with the proxy on. Everything else in
-  the v2 body is provider-free either way (tested). A per-instance random secret is deliberately not used as a
-  fallback: on serverless, tokens would fail whenever a request lands on another instance.
+* **Off** (default) or **on without a usable secret**: v2 is inert. `/api/v2/chapter` returns
+  `503 {"error":"Chapter unavailable"}` without contacting metadata or any source, and `/api/v2/img/*` returns 404. A
+  misconfiguration (flag on, secret missing or shorter than 32 chars) is logged once per instance as
+  `{"level":"error","code":"IMAGE_PROXY_MISCONFIGURED"}`. A per-instance random secret is deliberately not used: on
+  serverless, tokens would fail whenever a request lands on another instance.
 * **On**: `pages[].url = <origin>/api/v2/img/<token>`.
 
 Token: `b64url(0x01 | iv[12] | AES-256-GCM(payload) | tag[16]) "." b64url(HMAC-SHA256(macKey, part1))`, payload
@@ -108,6 +112,9 @@ HMAC of the plaintext) so the same page gets the same URL and browser/CDN caches
 | 502 / 504 | `{"error":"Image unavailable"}` | Upstream non-200 (incl. 403/challenge, no retry), not an image, over the size limit, timeout (12 s) |
 | 503 | `{"error":"Image unavailable"}` | Host pacing budget exceeded (`Retry-After: 2`) |
 
+The image route sets `maxDuration = 60` so the worst case (20 s pacing wait + 12 s upstream timeout + body read) fits
+the function budget.
+
 Limits: re-validation with `allowPageImage` (per-provider host/path allowlist), public-destination check, redirects only
 within the provider's page hosts (max 3, existing `fetchPageImage`), 20 MB cap checked against `Content-Length` and while
 streaming, bytes must sniff as an allowed raster type (SVG and HTML refused even if labelled `image/*`). MangaDex@Home
@@ -124,7 +131,8 @@ resolutions: source failures (`isSourceFailure`: HTTP errors incl. 403, blocked/
 ## Politeness
 
 * `src/lib/v2/pacer.ts`: at most 1 request/second per upstream host from v2 paths (chapter manifests keyed by the chapter
-  URL host, images by the image host). A request whose slot is further away than the budget (5 s manifests, 20 s images)
+  URL host, images by the image host). Manifest cache hits (fresh or stale-while-revalidate) are answered from the
+  cache and do not take a slot. A request whose slot is further away than the budget (5 s manifests, 20 s images)
   is refused, not queued indefinitely, and counts as a failure for that attempt.
 * The title aggregation reused from `chapters/all` keeps its existing per-provider limiters (`RATE_LIMITS`), which are
   not changed here.
@@ -145,5 +153,6 @@ reads.
 
 `src/lib/v2/leak.ts` builds the term list from the registry (every provider id, name, alias, domain, base-URL host and
 declared page-image host, plus code-validated image hosts and the metadata database ids). Chapter titles containing a
-term are dropped. `src/tests/v2/routes-leak.test.ts` asserts that success, fallback, `alt`, every error status, rate
-limited, and image responses (bodies and headers) contain none of the terms.
+term are dropped. `src/tests/v2/routes-leak.test.ts` asserts that success (including every page URL), fallback, `alt`,
+every error status, proxy-off/misconfigured, rate limited, and image responses (bodies and headers) contain none of the
+terms. There is no exemption for page URLs.

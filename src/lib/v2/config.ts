@@ -7,8 +7,9 @@
  *   IMAGE_PROXY_TTL_SECONDS     token lifetime (default 1800, 300..86400)
  *   IMAGE_PROXY_RATE_PER_MINUTE per-client image requests per minute (default 600)
  *
- * IMAGE_PROXY without a usable secret is treated as disabled (current
- * behaviour) rather than signing with a per-instance random key, which would
+ * IMAGE_PROXY without a usable secret is treated as disabled (v2 chapter
+ * endpoint answers 503) and logged once per instance as
+ * IMAGE_PROXY_MISCONFIGURED. A per-instance random key is never used: it would
  * break images whenever a request lands on another serverless instance.
  */
 
@@ -32,10 +33,21 @@ export interface ImageProxySettings {
   ratePerMinute: number;
 }
 
+let warned = false;
+
+/** Test helper. */
+export function resetImageProxyWarning(): void {
+  warned = false;
+}
+
 export function imageProxySettings(): ImageProxySettings {
   const flag = truthy(process.env.IMAGE_PROXY);
   const secret = process.env.IMAGE_PROXY_SECRET?.trim();
   const usable = Boolean(secret && secret.length >= MIN_SECRET_LENGTH);
+  if (flag && !usable && !warned) {
+    warned = true; // once per instance
+    console.error(JSON.stringify({ level: "error", code: "IMAGE_PROXY_MISCONFIGURED" }));
+  }
   return {
     enabled: flag && usable,
     misconfigured: flag && !usable,

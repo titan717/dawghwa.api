@@ -4,6 +4,8 @@ import { deliverImage, takeImageRate } from "@/lib/v2/image";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+/** Pacing wait (up to 20 s) + upstream timeout (12 s) must fit inside the function budget. */
+export const maxDuration = 60;
 
 function fail(status: number, retryAfter?: number): Response {
   const headers: Record<string, string> = { "Cache-Control": "no-store" };

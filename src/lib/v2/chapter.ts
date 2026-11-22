@@ -61,8 +61,8 @@ export interface V2ChapterResponse {
   pages: V2Page[];
   totalPages: number;
   version: { index: number; count: number; next: number | null; edition: Edition };
-  /** ISO time after which page URLs stop working (only with the image proxy). */
-  pagesExpireAt?: string;
+  /** ISO time after which page URLs stop working. */
+  pagesExpireAt: string;
 }
 
 export interface ResolveDeps {
@@ -158,9 +158,10 @@ function pickRow(chapters: UnifiedChapter[], number: string, lang: string): Unif
 
 async function defaultLoadPages(provider: Provider, variant: ChapterVariant, pacer: HostPacer, maxWaitMs: number, signal?: AbortSignal) {
   const ref = { chapterId: variant.providerChapterId, url: variant.url };
-  // Pace only when the manifest really goes upstream (fresh cache hits do not).
+  // Pace only when the manifest really goes upstream on this request: fresh and
+  // stale-while-revalidate hits are answered from the cache, so they skip pacing.
   const entry = await getCache().get(cacheKey("pages", provider.id, ref.url ?? ref.chapterId, "full"));
-  const fresh = entry && (Date.now() - entry.storedAt) / 1000 < entry.ttl;
+  const fresh = entry && (Date.now() - entry.storedAt) / 1000 < entry.ttl + entry.swr;
   if (!fresh) {
     let host: string;
     try {
@@ -175,20 +176,17 @@ async function defaultLoadPages(provider: Provider, variant: ChapterVariant, pac
   return (await getChapterPages(provider, ref)).pages;
 }
 
-export function pageUrl(provider: Provider, upstream: URL, origin: string, nowMs: number): { url: string; exp?: number } {
-  const s = imageProxySettings();
-  if (s.enabled && s.secret) {
-    const { token, exp } = signImageToken({ sourceId: provider.id, url: upstream.toString() }, s.secret, s.ttlSeconds, nowMs);
-    return { url: new URL(`/api/v2/img/${token}`, origin).toString(), exp };
-  }
-  // IMAGE_PROXY off: the existing relay, exactly as POST /api/pages issues it.
-  const image = new URL("/api/image", origin);
-  image.searchParams.set("url", upstream.toString());
-  image.searchParams.set("source", provider.id);
-  return { url: image.toString() };
+/** Opaque, signed page URL. Only called once the image proxy is known to be enabled. */
+export function pageUrl(provider: Provider, upstream: URL, origin: string, nowMs: number, secret: string, ttlSeconds: number): { url: string; exp: number } {
+  const { token, exp } = signImageToken({ sourceId: provider.id, url: upstream.toString() }, secret, ttlSeconds, nowMs);
+  return { url: new URL(`/api/v2/img/${token}`, origin).toString(), exp };
 }
 
 export async function resolveChapter(q: ChapterQuery, deps: ResolveDeps): Promise<V2ChapterResponse> {
+  // v2 never hands out upstream URLs: without the opaque image proxy it is inert.
+  const proxy = imageProxySettings();
+  if (!proxy.enabled || !proxy.secret) throw new V2Error(503);
+  const secret = proxy.secret;
   const ref = parseCanonicalTitle(q.title);
   const number = canonicalNumber(q.n);
   if (number === null) throw new V2Error(400);
@@ -233,10 +231,10 @@ export async function resolveChapter(q: ChapterQuery, deps: ResolveDeps): Promis
       const allowed = pages.map((p) => provider.scraper.allowPageImage(p.url));
       if (allowed.some((u) => !u)) throw new DawghwaError("PAGE_FORMAT_CHANGED", "page outside declared hosts");
       const t = now();
-      let exp: number | undefined;
+      let exp = 0;
       const out: V2Page[] = pages.map((p, i) => {
-        const r = pageUrl(provider, allowed[i]!, deps.origin, t);
-        if (r.exp !== undefined) exp = r.exp;
+        const r = pageUrl(provider, allowed[i]!, deps.origin, t, secret, proxy.ttlSeconds);
+        exp = r.exp;
         return { index: i, url: r.url, ...(p.width ? { width: p.width } : {}), ...(p.height ? { height: p.height } : {}) };
       });
       breakers.success(provider.id);
@@ -253,7 +251,7 @@ export async function resolveChapter(q: ChapterQuery, deps: ResolveDeps): Promis
         pages: out,
         totalPages: out.length,
         version: { index, count: ordered.length, next: ordered.length > 1 ? (index + 1) % ordered.length : null, edition: variant.edition },
-        ...(exp !== undefined ? { pagesExpireAt: new Date(exp * 1000).toISOString() } : {}),
+        pagesExpireAt: new Date(exp * 1000).toISOString(),
       };
     } catch (e) {
       const err = toDawghwaError(e);
