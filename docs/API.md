@@ -4,6 +4,8 @@ Base path: `/api`. Request bodies are JSON (`Content-Type: application/json`; `t
 
 Every response carries `X-Request-Id` (echoed if you send a valid one) and `X-Dawghwa-Version`. Rate-limited endpoints also send `RateLimit-Limit`, `RateLimit-Remaining` and `RateLimit-Policy`, plus `Retry-After` when you are limited.
 
+> Reader v2 (canonical chapter endpoint, opaque image URLs): see [API_V2.md](API_V2.md).
+
 - [Conventions](#conventions)
 - [GET /api/sources](#get-apisources)
 - [GET /api/sources/{id}](#get-apisourcesid)
