@@ -4,7 +4,7 @@ A self-hostable API that searches manga/manhwa sources, lists chapters, reads so
 
 Dawghwa API is a fork of [GooglyBlox/comick-source-api](https://github.com/GooglyBlox/comick-source-api) (MIT). It started from the upstream source code at commit [`086d006`](https://github.com/GooglyBlox/comick-source-api/commit/086d006) (tag `upstream-baseline` in this repository) and keeps all 96 upstream source adapters, their behaviour and the original endpoints, on top of a rebuilt runtime: shared HTTP client, per-source isolation, caching, validation and SSRF protection. Dawghwa does not call the upstream hosted API at runtime; the upstream repository is only a code reference.
 
-> Status: **1.2.0**. 636 offline tests pass (plus opt-in live tests), lint/typecheck/build are clean. Source reachability changes constantly: see [docs/SOURCE_STATUS.md](docs/SOURCE_STATUS.md) for the latest probe.
+> Status: **1.3.0**. 636 offline tests pass (plus opt-in live tests), lint/typecheck/build are clean. Source reachability changes constantly: see [docs/SOURCE_STATUS.md](docs/SOURCE_STATUS.md) for the latest probe.
 
 ## Contents
 
