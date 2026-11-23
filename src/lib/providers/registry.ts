@@ -1,6 +1,7 @@
 import { getAllScrapers } from "@/lib/scrapers";
 import { getAllFrontpages } from "@/lib/frontpages";
 import { getConfig } from "@/lib/core/config";
+import { isProviderServed } from "@/lib/gate/flags";
 import { ADAPTER_DOMAINS } from "./manifest.generated";
 import { Provider } from "./provider";
 import { DEFAULT_PRIORITIES, RATE_LIMITS, SOURCE_ALIASES, STATUS_NOTES, statusFor } from "./status";
@@ -84,7 +85,8 @@ export function buildRegistry(): ProviderRegistry {
       },
       scraper,
       frontpages.get(id),
-      disabled.has(id),
+      // PROVIDER_GATES=enforce serves only sources whose PROVIDER_<ID> flag is on (docs/adr/0002-provider-gating.md).
+      disabled.has(id) || !isProviderServed(id),
     );
   });
   return new ProviderRegistry(providers);

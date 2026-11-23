@@ -14,7 +14,8 @@
     "manifest": "node scripts/generate-source-manifest.mjs",
     "health:report": "tsx scripts/update-readme-health.ts",
     "bench": "node scripts/benchmark.mjs",
-    "docs:sources": "tsx scripts/generate-source-docs.ts"
+    "docs:sources": "tsx scripts/generate-source-docs.ts",
+    "gate:provider": "tsx scripts/providers/gate.ts"
   },
   "dependencies": {
     "cheerio": "^1.1.2",
