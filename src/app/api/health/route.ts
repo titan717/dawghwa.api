@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { ApiContext, json, parseWith, route, sourceIdSchema } from "@/lib/api/handler";
 import { cacheKey, getCache } from "@/lib/core/cache";
 import { DawghwaError } from "@/lib/core/errors";
+import { isProviderServed, providerGatesMode } from "@/lib/gate/flags";
 import { getRegistry } from "@/lib/providers/registry";
 import { getHealth, probeProvider, SourceHealthResult, SourceStatus } from "@/lib/services/health";
 
@@ -26,7 +27,17 @@ function shutdownList() {
   return getRegistry()
     .all()
     .filter((p) => !p.operational)
-    .map((p) => ({ id: p.id, status: p.isDisabled ? "disabled" : p.descriptor.status, note: p.descriptor.statusNote }));
+    .map((p) => ({
+      id: p.id,
+      status: p.isDisabled ? (isProviderServed(p.id) ? "disabled" : "gated") : p.descriptor.status,
+      note: p.descriptor.statusNote,
+    }));
+}
+
+/** Provider gating (docs/adr/0002-provider-gating.md): the mode and how many sources are served. */
+function gateSummary() {
+  const all = getRegistry().all();
+  return { mode: providerGatesMode(), served: all.filter((p) => isProviderServed(p.id) && p.operational).length, total: all.length };
 }
 
 async function payload(forceRefresh: boolean) {
@@ -38,6 +49,7 @@ async function payload(forceRefresh: boolean) {
     stale: r.cache === "stale",
     summary: summarize(r.sources),
     unavailable: shutdownList(),
+    gates: gateSummary(),
   };
 }
 

@@ -175,6 +175,11 @@ export function setGuardedFetchImpl(fn: FetchImpl | null): void {
   fetchImpl = fn;
 }
 
+/** The currently installed override (null = production undici path), so callers can restore it. */
+export function getGuardedFetchImpl(): FetchImpl | null {
+  return fetchImpl;
+}
+
 export function guardedFetch(input: string | URL, init: RequestInit = {}): Promise<Response> {
   if (fetchImpl) return fetchImpl(input, { ...init, dispatcher: guardedDispatcher() } as RequestInit);
   // undici's own fetch, not the global one: the Agent above comes from the undici

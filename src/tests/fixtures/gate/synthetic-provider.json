@@ -1,0 +1,2484 @@
+{
+ "id": "synthetic-reader",
+ "hosts": [
+  "synthetic-reader.example"
+ ],
+ "imageHosts": [
+  "img.synthetic-reader.example"
+ ],
+ "paths": [
+  "/search",
+  "/series/*",
+  "/read/*"
+ ],
+ "robots": {
+  "status": 200,
+  "body": "User-agent: *\nDisallow: /account/\nAllow: /\nContent-Signal: search=yes, ai-train=no\n\nUser-agent: DawghwaBot\nDisallow: /account/\nCrawl-delay: 1\n"
+ },
+ "review": {
+  "provider": "synthetic-reader",
+  "reviewedBy": "WEAVER (fixture)",
+  "reviewedAt": "2026-11-23",
+  "termsUrl": "https://synthetic-reader.example/terms",
+  "termsSummary": "Synthetic fixture terms: automated reading by identified bots is allowed; saving is not mentioned.",
+  "forbidsAutomation": false,
+  "rightsContactUrl": "https://synthetic-reader.example/rights",
+  "rightsContactWorks": true,
+  "licensedExclusions": [],
+  "offline": "unclear",
+  "siteLanguage": "en"
+ },
+ "titles": [
+  {
+   "name": "Lantern Harbor",
+   "kind": "manga",
+   "popularity": "popular",
+   "state": "ongoing",
+   "language": "en",
+   "referenceChapters": 48
+  },
+  {
+   "name": "Paper Crane Garden",
+   "kind": "manga",
+   "popularity": "niche",
+   "state": "finished",
+   "language": "en",
+   "referenceChapters": 22
+  },
+  {
+   "name": "Iron Orchard",
+   "kind": "manga",
+   "popularity": "popular",
+   "state": "finished",
+   "language": "en",
+   "referenceChapters": 60
+  },
+  {
+   "name": "Quiet Comet Club",
+   "kind": "manga",
+   "popularity": "niche",
+   "state": "ongoing",
+   "language": "en",
+   "referenceChapters": 15
+  },
+  {
+   "name": "Ninth Floor Hunter",
+   "kind": "manhwa",
+   "popularity": "popular",
+   "state": "ongoing",
+   "language": "en",
+   "referenceChapters": 55
+  },
+  {
+   "name": "Saltwind Academy",
+   "kind": "manhwa",
+   "popularity": "niche",
+   "state": "finished",
+   "language": "en",
+   "referenceChapters": 30
+  },
+  {
+   "name": "Glass Tower Heir",
+   "kind": "manhwa",
+   "popularity": "popular",
+   "state": "finished",
+   "language": "en",
+   "referenceChapters": 40
+  },
+  {
+   "name": "Morning Static",
+   "kind": "manhwa",
+   "popularity": "niche",
+   "state": "ongoing",
+   "language": "en",
+   "referenceChapters": 12
+  },
+  {
+   "name": "Jade River Sword",
+   "kind": "manhua",
+   "popularity": "popular",
+   "state": "ongoing",
+   "language": "en",
+   "referenceChapters": 58
+  },
+  {
+   "name": "Cloud Kiln",
+   "kind": "manhua",
+   "popularity": "niche",
+   "state": "finished",
+   "language": "en",
+   "referenceChapters": 26
+  },
+  {
+   "name": "Thousand Lamp Sect",
+   "kind": "manhua",
+   "popularity": "popular",
+   "state": "ongoing",
+   "language": "en",
+   "referenceChapters": 45
+  },
+  {
+   "name": "Ember Scroll",
+   "kind": "manhua",
+   "popularity": "niche",
+   "state": "finished",
+   "language": "en",
+   "referenceChapters": 18
+  }
+ ],
+ "search": {
+  "Lantern Harbor": [
+   {
+    "ref": "https://synthetic-reader.example/series/lantern-harbor",
+    "title": "Lantern Harbor"
+   },
+   {
+    "ref": "https://synthetic-reader.example/series/lantern-harbor-side-stories",
+    "title": "Lantern Harbor: Side Stories"
+   }
+  ],
+  "Paper Crane Garden": [
+   {
+    "ref": "https://synthetic-reader.example/series/paper-crane-garden",
+    "title": "Paper Crane Garden"
+   },
+   {
+    "ref": "https://synthetic-reader.example/series/paper-crane-garden-side-stories",
+    "title": "Paper Crane Garden: Side Stories"
+   }
+  ],
+  "Iron Orchard": [
+   {
+    "ref": "https://synthetic-reader.example/series/iron-orchard",
+    "title": "Iron Orchard"
+   },
+   {
+    "ref": "https://synthetic-reader.example/series/iron-orchard-side-stories",
+    "title": "Iron Orchard: Side Stories"
+   }
+  ],
+  "Quiet Comet Club": [
+   {
+    "ref": "https://synthetic-reader.example/series/quiet-comet-club",
+    "title": "Quiet Comet Club"
+   },
+   {
+    "ref": "https://synthetic-reader.example/series/quiet-comet-club-side-stories",
+    "title": "Quiet Comet Club: Side Stories"
+   }
+  ],
+  "Ninth Floor Hunter": [
+   {
+    "ref": "https://synthetic-reader.example/series/ninth-floor-hunter",
+    "title": "Ninth Floor Hunter"
+   },
+   {
+    "ref": "https://synthetic-reader.example/series/ninth-floor-hunter-side-stories",
+    "title": "Ninth Floor Hunter: Side Stories"
+   }
+  ],
+  "Saltwind Academy": [
+   {
+    "ref": "https://synthetic-reader.example/series/saltwind-academy",
+    "title": "Saltwind Academy"
+   },
+   {
+    "ref": "https://synthetic-reader.example/series/saltwind-academy-side-stories",
+    "title": "Saltwind Academy: Side Stories"
+   }
+  ],
+  "Glass Tower Heir": [
+   {
+    "ref": "https://synthetic-reader.example/series/glass-tower-heir",
+    "title": "Glass Tower Heir"
+   },
+   {
+    "ref": "https://synthetic-reader.example/series/glass-tower-heir-side-stories",
+    "title": "Glass Tower Heir: Side Stories"
+   }
+  ],
+  "Morning Static": [
+   {
+    "ref": "https://synthetic-reader.example/series/morning-static",
+    "title": "Morning Static"
+   },
+   {
+    "ref": "https://synthetic-reader.example/series/morning-static-side-stories",
+    "title": "Morning Static: Side Stories"
+   }
+  ],
+  "Jade River Sword": [
+   {
+    "ref": "https://synthetic-reader.example/series/jade-river-sword",
+    "title": "Jade River Sword"
+   },
+   {
+    "ref": "https://synthetic-reader.example/series/jade-river-sword-side-stories",
+    "title": "Jade River Sword: Side Stories"
+   }
+  ],
+  "Cloud Kiln": [
+   {
+    "ref": "https://synthetic-reader.example/series/cloud-kiln",
+    "title": "Cloud Kiln"
+   },
+   {
+    "ref": "https://synthetic-reader.example/series/cloud-kiln-side-stories",
+    "title": "Cloud Kiln: Side Stories"
+   }
+  ],
+  "Thousand Lamp Sect": [
+   {
+    "ref": "https://synthetic-reader.example/series/thousand-lamp-sect",
+    "title": "Thousand Lamp Sect"
+   },
+   {
+    "ref": "https://synthetic-reader.example/series/thousand-lamp-sect-side-stories",
+    "title": "Thousand Lamp Sect: Side Stories"
+   }
+  ],
+  "Ember Scroll": [
+   {
+    "ref": "https://synthetic-reader.example/series/ember-scroll",
+    "title": "Ember Scroll"
+   },
+   {
+    "ref": "https://synthetic-reader.example/series/ember-scroll-side-stories",
+    "title": "Ember Scroll: Side Stories"
+   }
+  ]
+ },
+ "chapters": {
+  "https://synthetic-reader.example/series/lantern-harbor": [
+   {
+    "n": 1,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/1",
+    "lang": "en"
+   },
+   {
+    "n": 2,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/2",
+    "lang": "en"
+   },
+   {
+    "n": 3,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/3",
+    "lang": "en"
+   },
+   {
+    "n": 4,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/4",
+    "lang": "en"
+   },
+   {
+    "n": 5,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/5",
+    "lang": "en"
+   },
+   {
+    "n": 6,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/6",
+    "lang": "en"
+   },
+   {
+    "n": 7,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/7",
+    "lang": "en"
+   },
+   {
+    "n": 8,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/8",
+    "lang": "en"
+   },
+   {
+    "n": 9,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/9",
+    "lang": "en"
+   },
+   {
+    "n": 10,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/10",
+    "lang": "en"
+   },
+   {
+    "n": 11,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/11",
+    "lang": "en"
+   },
+   {
+    "n": 12,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/12",
+    "lang": "en"
+   },
+   {
+    "n": 13,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/13",
+    "lang": "en"
+   },
+   {
+    "n": 14,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/14",
+    "lang": "en"
+   },
+   {
+    "n": 15,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/15",
+    "lang": "en"
+   },
+   {
+    "n": 16,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/16",
+    "lang": "en"
+   },
+   {
+    "n": 17,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/17",
+    "lang": "en"
+   },
+   {
+    "n": 18,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/18",
+    "lang": "en"
+   },
+   {
+    "n": 19,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/19",
+    "lang": "en"
+   },
+   {
+    "n": 20,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/20",
+    "lang": "en"
+   },
+   {
+    "n": 21,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/21",
+    "lang": "en"
+   },
+   {
+    "n": 22,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/22",
+    "lang": "en"
+   },
+   {
+    "n": 23,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/23",
+    "lang": "en"
+   },
+   {
+    "n": 24,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/24",
+    "lang": "en"
+   },
+   {
+    "n": 25,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/25",
+    "lang": "en"
+   },
+   {
+    "n": 26,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/26",
+    "lang": "en"
+   },
+   {
+    "n": 27,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/27",
+    "lang": "en"
+   },
+   {
+    "n": 28,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/28",
+    "lang": "en"
+   },
+   {
+    "n": 29,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/29",
+    "lang": "en"
+   },
+   {
+    "n": 30,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/30",
+    "lang": "en"
+   },
+   {
+    "n": 31,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/31",
+    "lang": "en"
+   },
+   {
+    "n": 32,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/32",
+    "lang": "en"
+   },
+   {
+    "n": 33,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/33",
+    "lang": "en"
+   },
+   {
+    "n": 34,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/34",
+    "lang": "en"
+   },
+   {
+    "n": 35,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/35",
+    "lang": "en"
+   },
+   {
+    "n": 36,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/36",
+    "lang": "en"
+   },
+   {
+    "n": 37,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/37",
+    "lang": "en"
+   },
+   {
+    "n": 38,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/38",
+    "lang": "en"
+   },
+   {
+    "n": 39,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/39",
+    "lang": "en"
+   },
+   {
+    "n": 40,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/40",
+    "lang": "en"
+   },
+   {
+    "n": 41,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/41",
+    "lang": "en"
+   },
+   {
+    "n": 42,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/42",
+    "lang": "en"
+   },
+   {
+    "n": 43,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/43",
+    "lang": "en"
+   },
+   {
+    "n": 44,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/44",
+    "lang": "en"
+   },
+   {
+    "n": 45,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/45",
+    "lang": "en"
+   },
+   {
+    "n": 46,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/46",
+    "lang": "en"
+   },
+   {
+    "n": 47,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/47",
+    "lang": "en"
+   },
+   {
+    "n": 48,
+    "ref": "https://synthetic-reader.example/read/lantern-harbor/48",
+    "lang": "en"
+   }
+  ],
+  "https://synthetic-reader.example/series/paper-crane-garden": [
+   {
+    "n": 1,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/1",
+    "lang": "en"
+   },
+   {
+    "n": 2,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/2",
+    "lang": "en"
+   },
+   {
+    "n": 3,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/3",
+    "lang": "en"
+   },
+   {
+    "n": 4,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/4",
+    "lang": "en"
+   },
+   {
+    "n": 5,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/5",
+    "lang": "en"
+   },
+   {
+    "n": 6,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/6",
+    "lang": "en"
+   },
+   {
+    "n": 7,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/7",
+    "lang": "en"
+   },
+   {
+    "n": 8,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/8",
+    "lang": "en"
+   },
+   {
+    "n": 9,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/9",
+    "lang": "en"
+   },
+   {
+    "n": 10,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/10",
+    "lang": "en"
+   },
+   {
+    "n": 11,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/11",
+    "lang": "en"
+   },
+   {
+    "n": 12,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/12",
+    "lang": "en"
+   },
+   {
+    "n": 13,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/13",
+    "lang": "en"
+   },
+   {
+    "n": 14,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/14",
+    "lang": "en"
+   },
+   {
+    "n": 15,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/15",
+    "lang": "en"
+   },
+   {
+    "n": 16,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/16",
+    "lang": "en"
+   },
+   {
+    "n": 17,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/17",
+    "lang": "en"
+   },
+   {
+    "n": 18,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/18",
+    "lang": "en"
+   },
+   {
+    "n": 19,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/19",
+    "lang": "en"
+   },
+   {
+    "n": 20,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/20",
+    "lang": "en"
+   },
+   {
+    "n": 21,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/21",
+    "lang": "en"
+   },
+   {
+    "n": 22,
+    "ref": "https://synthetic-reader.example/read/paper-crane-garden/22",
+    "lang": "en"
+   }
+  ],
+  "https://synthetic-reader.example/series/iron-orchard": [
+   {
+    "n": 1,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/1",
+    "lang": "en"
+   },
+   {
+    "n": 2,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/2",
+    "lang": "en"
+   },
+   {
+    "n": 3,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/3",
+    "lang": "en"
+   },
+   {
+    "n": 4,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/4",
+    "lang": "en"
+   },
+   {
+    "n": 5,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/5",
+    "lang": "en"
+   },
+   {
+    "n": 6,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/6",
+    "lang": "en"
+   },
+   {
+    "n": 7,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/7",
+    "lang": "en"
+   },
+   {
+    "n": 8,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/8",
+    "lang": "en"
+   },
+   {
+    "n": 9,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/9",
+    "lang": "en"
+   },
+   {
+    "n": 10,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/10",
+    "lang": "en"
+   },
+   {
+    "n": 11,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/11",
+    "lang": "en"
+   },
+   {
+    "n": 12,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/12",
+    "lang": "en"
+   },
+   {
+    "n": 13,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/13",
+    "lang": "en"
+   },
+   {
+    "n": 14,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/14",
+    "lang": "en"
+   },
+   {
+    "n": 15,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/15",
+    "lang": "en"
+   },
+   {
+    "n": 16,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/16",
+    "lang": "en"
+   },
+   {
+    "n": 17,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/17",
+    "lang": "en"
+   },
+   {
+    "n": 18,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/18",
+    "lang": "en"
+   },
+   {
+    "n": 19,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/19",
+    "lang": "en"
+   },
+   {
+    "n": 20,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/20",
+    "lang": "en"
+   },
+   {
+    "n": 21,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/21",
+    "lang": "en"
+   },
+   {
+    "n": 22,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/22",
+    "lang": "en"
+   },
+   {
+    "n": 23,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/23",
+    "lang": "en"
+   },
+   {
+    "n": 24,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/24",
+    "lang": "en"
+   },
+   {
+    "n": 25,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/25",
+    "lang": "en"
+   },
+   {
+    "n": 26,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/26",
+    "lang": "en"
+   },
+   {
+    "n": 27,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/27",
+    "lang": "en"
+   },
+   {
+    "n": 28,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/28",
+    "lang": "en"
+   },
+   {
+    "n": 29,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/29",
+    "lang": "en"
+   },
+   {
+    "n": 30,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/30",
+    "lang": "en"
+   },
+   {
+    "n": 31,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/31",
+    "lang": "en"
+   },
+   {
+    "n": 32,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/32",
+    "lang": "en"
+   },
+   {
+    "n": 33,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/33",
+    "lang": "en"
+   },
+   {
+    "n": 34,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/34",
+    "lang": "en"
+   },
+   {
+    "n": 35,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/35",
+    "lang": "en"
+   },
+   {
+    "n": 36,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/36",
+    "lang": "en"
+   },
+   {
+    "n": 37,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/37",
+    "lang": "en"
+   },
+   {
+    "n": 38,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/38",
+    "lang": "en"
+   },
+   {
+    "n": 39,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/39",
+    "lang": "en"
+   },
+   {
+    "n": 40,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/40",
+    "lang": "en"
+   },
+   {
+    "n": 41,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/41",
+    "lang": "en"
+   },
+   {
+    "n": 42,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/42",
+    "lang": "en"
+   },
+   {
+    "n": 43,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/43",
+    "lang": "en"
+   },
+   {
+    "n": 44,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/44",
+    "lang": "en"
+   },
+   {
+    "n": 45,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/45",
+    "lang": "en"
+   },
+   {
+    "n": 46,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/46",
+    "lang": "en"
+   },
+   {
+    "n": 47,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/47",
+    "lang": "en"
+   },
+   {
+    "n": 48,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/48",
+    "lang": "en"
+   },
+   {
+    "n": 49,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/49",
+    "lang": "en"
+   },
+   {
+    "n": 50,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/50",
+    "lang": "en"
+   },
+   {
+    "n": 51,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/51",
+    "lang": "en"
+   },
+   {
+    "n": 52,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/52",
+    "lang": "en"
+   },
+   {
+    "n": 53,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/53",
+    "lang": "en"
+   },
+   {
+    "n": 54,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/54",
+    "lang": "en"
+   },
+   {
+    "n": 55,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/55",
+    "lang": "en"
+   },
+   {
+    "n": 56,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/56",
+    "lang": "en"
+   },
+   {
+    "n": 57,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/57",
+    "lang": "en"
+   },
+   {
+    "n": 58,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/58",
+    "lang": "en"
+   },
+   {
+    "n": 59,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/59",
+    "lang": "en"
+   },
+   {
+    "n": 60,
+    "ref": "https://synthetic-reader.example/read/iron-orchard/60",
+    "lang": "en"
+   }
+  ],
+  "https://synthetic-reader.example/series/quiet-comet-club": [
+   {
+    "n": 1,
+    "ref": "https://synthetic-reader.example/read/quiet-comet-club/1",
+    "lang": "en"
+   },
+   {
+    "n": 2,
+    "ref": "https://synthetic-reader.example/read/quiet-comet-club/2",
+    "lang": "en"
+   },
+   {
+    "n": 3,
+    "ref": "https://synthetic-reader.example/read/quiet-comet-club/3",
+    "lang": "en"
+   },
+   {
+    "n": 4,
+    "ref": "https://synthetic-reader.example/read/quiet-comet-club/4",
+    "lang": "en"
+   },
+   {
+    "n": 5,
+    "ref": "https://synthetic-reader.example/read/quiet-comet-club/5",
+    "lang": "en"
+   },
+   {
+    "n": 6,
+    "ref": "https://synthetic-reader.example/read/quiet-comet-club/6",
+    "lang": "en"
+   },
+   {
+    "n": 7,
+    "ref": "https://synthetic-reader.example/read/quiet-comet-club/7",
+    "lang": "en"
+   },
+   {
+    "n": 8,
+    "ref": "https://synthetic-reader.example/read/quiet-comet-club/8",
+    "lang": "en"
+   },
+   {
+    "n": 9,
+    "ref": "https://synthetic-reader.example/read/quiet-comet-club/9",
+    "lang": "en"
+   },
+   {
+    "n": 10,
+    "ref": "https://synthetic-reader.example/read/quiet-comet-club/10",
+    "lang": "en"
+   },
+   {
+    "n": 11,
+    "ref": "https://synthetic-reader.example/read/quiet-comet-club/11",
+    "lang": "en"
+   },
+   {
+    "n": 12,
+    "ref": "https://synthetic-reader.example/read/quiet-comet-club/12",
+    "lang": "en"
+   },
+   {
+    "n": 13,
+    "ref": "https://synthetic-reader.example/read/quiet-comet-club/13",
+    "lang": "en"
+   },
+   {
+    "n": 14,
+    "ref": "https://synthetic-reader.example/read/quiet-comet-club/14",
+    "lang": "en"
+   },
+   {
+    "n": 15,
+    "ref": "https://synthetic-reader.example/read/quiet-comet-club/15",
+    "lang": "en"
+   }
+  ],
+  "https://synthetic-reader.example/series/ninth-floor-hunter": [
+   {
+    "n": 1,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/1",
+    "lang": "en"
+   },
+   {
+    "n": 2,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/2",
+    "lang": "en"
+   },
+   {
+    "n": 3,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/3",
+    "lang": "en"
+   },
+   {
+    "n": 4,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/4",
+    "lang": "en"
+   },
+   {
+    "n": 5,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/5",
+    "lang": "en"
+   },
+   {
+    "n": 6,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/6",
+    "lang": "en"
+   },
+   {
+    "n": 7,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/7",
+    "lang": "en"
+   },
+   {
+    "n": 8,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/8",
+    "lang": "en"
+   },
+   {
+    "n": 9,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/9",
+    "lang": "en"
+   },
+   {
+    "n": 10,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/10",
+    "lang": "en"
+   },
+   {
+    "n": 11,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/11",
+    "lang": "en"
+   },
+   {
+    "n": 12,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/12",
+    "lang": "en"
+   },
+   {
+    "n": 13,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/13",
+    "lang": "en"
+   },
+   {
+    "n": 14,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/14",
+    "lang": "en"
+   },
+   {
+    "n": 15,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/15",
+    "lang": "en"
+   },
+   {
+    "n": 16,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/16",
+    "lang": "en"
+   },
+   {
+    "n": 17,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/17",
+    "lang": "en"
+   },
+   {
+    "n": 18,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/18",
+    "lang": "en"
+   },
+   {
+    "n": 19,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/19",
+    "lang": "en"
+   },
+   {
+    "n": 20,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/20",
+    "lang": "en"
+   },
+   {
+    "n": 21,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/21",
+    "lang": "en"
+   },
+   {
+    "n": 22,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/22",
+    "lang": "en"
+   },
+   {
+    "n": 23,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/23",
+    "lang": "en"
+   },
+   {
+    "n": 24,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/24",
+    "lang": "en"
+   },
+   {
+    "n": 25,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/25",
+    "lang": "en"
+   },
+   {
+    "n": 26,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/26",
+    "lang": "en"
+   },
+   {
+    "n": 27,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/27",
+    "lang": "en"
+   },
+   {
+    "n": 28,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/28",
+    "lang": "en"
+   },
+   {
+    "n": 29,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/29",
+    "lang": "en"
+   },
+   {
+    "n": 30,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/30",
+    "lang": "en"
+   },
+   {
+    "n": 31,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/31",
+    "lang": "en"
+   },
+   {
+    "n": 32,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/32",
+    "lang": "en"
+   },
+   {
+    "n": 33,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/33",
+    "lang": "en"
+   },
+   {
+    "n": 34,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/34",
+    "lang": "en"
+   },
+   {
+    "n": 35,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/35",
+    "lang": "en"
+   },
+   {
+    "n": 36,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/36",
+    "lang": "en"
+   },
+   {
+    "n": 37,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/37",
+    "lang": "en"
+   },
+   {
+    "n": 38,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/38",
+    "lang": "en"
+   },
+   {
+    "n": 39,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/39",
+    "lang": "en"
+   },
+   {
+    "n": 40,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/40",
+    "lang": "en"
+   },
+   {
+    "n": 41,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/41",
+    "lang": "en"
+   },
+   {
+    "n": 42,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/42",
+    "lang": "en"
+   },
+   {
+    "n": 43,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/43",
+    "lang": "en"
+   },
+   {
+    "n": 44,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/44",
+    "lang": "en"
+   },
+   {
+    "n": 45,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/45",
+    "lang": "en"
+   },
+   {
+    "n": 46,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/46",
+    "lang": "en"
+   },
+   {
+    "n": 47,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/47",
+    "lang": "en"
+   },
+   {
+    "n": 48,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/48",
+    "lang": "en"
+   },
+   {
+    "n": 49,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/49",
+    "lang": "en"
+   },
+   {
+    "n": 50,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/50",
+    "lang": "en"
+   },
+   {
+    "n": 51,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/51",
+    "lang": "en"
+   },
+   {
+    "n": 52,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/52",
+    "lang": "en"
+   },
+   {
+    "n": 53,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/53",
+    "lang": "en"
+   },
+   {
+    "n": 54,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/54",
+    "lang": "en"
+   },
+   {
+    "n": 55,
+    "ref": "https://synthetic-reader.example/read/ninth-floor-hunter/55",
+    "lang": "en"
+   }
+  ],
+  "https://synthetic-reader.example/series/saltwind-academy": [
+   {
+    "n": 1,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/1",
+    "lang": "en"
+   },
+   {
+    "n": 2,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/2",
+    "lang": "en"
+   },
+   {
+    "n": 3,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/3",
+    "lang": "en"
+   },
+   {
+    "n": 4,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/4",
+    "lang": "en"
+   },
+   {
+    "n": 5,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/5",
+    "lang": "en"
+   },
+   {
+    "n": 6,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/6",
+    "lang": "en"
+   },
+   {
+    "n": 7,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/7",
+    "lang": "en"
+   },
+   {
+    "n": 8,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/8",
+    "lang": "en"
+   },
+   {
+    "n": 9,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/9",
+    "lang": "en"
+   },
+   {
+    "n": 10,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/10",
+    "lang": "en"
+   },
+   {
+    "n": 11,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/11",
+    "lang": "en"
+   },
+   {
+    "n": 12,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/12",
+    "lang": "en"
+   },
+   {
+    "n": 13,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/13",
+    "lang": "en"
+   },
+   {
+    "n": 14,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/14",
+    "lang": "en"
+   },
+   {
+    "n": 15,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/15",
+    "lang": "en"
+   },
+   {
+    "n": 16,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/16",
+    "lang": "en"
+   },
+   {
+    "n": 17,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/17",
+    "lang": "en"
+   },
+   {
+    "n": 18,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/18",
+    "lang": "en"
+   },
+   {
+    "n": 19,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/19",
+    "lang": "en"
+   },
+   {
+    "n": 20,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/20",
+    "lang": "en"
+   },
+   {
+    "n": 21,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/21",
+    "lang": "en"
+   },
+   {
+    "n": 22,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/22",
+    "lang": "en"
+   },
+   {
+    "n": 23,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/23",
+    "lang": "en"
+   },
+   {
+    "n": 24,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/24",
+    "lang": "en"
+   },
+   {
+    "n": 25,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/25",
+    "lang": "en"
+   },
+   {
+    "n": 26,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/26",
+    "lang": "en"
+   },
+   {
+    "n": 27,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/27",
+    "lang": "en"
+   },
+   {
+    "n": 28,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/28",
+    "lang": "en"
+   },
+   {
+    "n": 29,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/29",
+    "lang": "en"
+   },
+   {
+    "n": 30,
+    "ref": "https://synthetic-reader.example/read/saltwind-academy/30",
+    "lang": "en"
+   }
+  ],
+  "https://synthetic-reader.example/series/glass-tower-heir": [
+   {
+    "n": 1,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/1",
+    "lang": "en"
+   },
+   {
+    "n": 2,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/2",
+    "lang": "en"
+   },
+   {
+    "n": 3,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/3",
+    "lang": "en"
+   },
+   {
+    "n": 4,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/4",
+    "lang": "en"
+   },
+   {
+    "n": 5,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/5",
+    "lang": "en"
+   },
+   {
+    "n": 6,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/6",
+    "lang": "en"
+   },
+   {
+    "n": 7,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/7",
+    "lang": "en"
+   },
+   {
+    "n": 8,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/8",
+    "lang": "en"
+   },
+   {
+    "n": 9,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/9",
+    "lang": "en"
+   },
+   {
+    "n": 10,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/10",
+    "lang": "en"
+   },
+   {
+    "n": 11,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/11",
+    "lang": "en"
+   },
+   {
+    "n": 12,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/12",
+    "lang": "en"
+   },
+   {
+    "n": 13,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/13",
+    "lang": "en"
+   },
+   {
+    "n": 14,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/14",
+    "lang": "en"
+   },
+   {
+    "n": 15,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/15",
+    "lang": "en"
+   },
+   {
+    "n": 16,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/16",
+    "lang": "en"
+   },
+   {
+    "n": 17,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/17",
+    "lang": "en"
+   },
+   {
+    "n": 18,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/18",
+    "lang": "en"
+   },
+   {
+    "n": 19,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/19",
+    "lang": "en"
+   },
+   {
+    "n": 20,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/20",
+    "lang": "en"
+   },
+   {
+    "n": 21,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/21",
+    "lang": "en"
+   },
+   {
+    "n": 22,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/22",
+    "lang": "en"
+   },
+   {
+    "n": 23,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/23",
+    "lang": "en"
+   },
+   {
+    "n": 24,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/24",
+    "lang": "en"
+   },
+   {
+    "n": 25,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/25",
+    "lang": "en"
+   },
+   {
+    "n": 26,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/26",
+    "lang": "en"
+   },
+   {
+    "n": 27,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/27",
+    "lang": "en"
+   },
+   {
+    "n": 28,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/28",
+    "lang": "en"
+   },
+   {
+    "n": 29,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/29",
+    "lang": "en"
+   },
+   {
+    "n": 30,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/30",
+    "lang": "en"
+   },
+   {
+    "n": 31,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/31",
+    "lang": "en"
+   },
+   {
+    "n": 32,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/32",
+    "lang": "en"
+   },
+   {
+    "n": 33,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/33",
+    "lang": "en"
+   },
+   {
+    "n": 34,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/34",
+    "lang": "en"
+   },
+   {
+    "n": 35,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/35",
+    "lang": "en"
+   },
+   {
+    "n": 36,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/36",
+    "lang": "en"
+   },
+   {
+    "n": 37,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/37",
+    "lang": "en"
+   },
+   {
+    "n": 38,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/38",
+    "lang": "en"
+   },
+   {
+    "n": 39,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/39",
+    "lang": "en"
+   },
+   {
+    "n": 40,
+    "ref": "https://synthetic-reader.example/read/glass-tower-heir/40",
+    "lang": "en"
+   }
+  ],
+  "https://synthetic-reader.example/series/morning-static": [
+   {
+    "n": 1,
+    "ref": "https://synthetic-reader.example/read/morning-static/1",
+    "lang": "en"
+   },
+   {
+    "n": 2,
+    "ref": "https://synthetic-reader.example/read/morning-static/2",
+    "lang": "en"
+   },
+   {
+    "n": 3,
+    "ref": "https://synthetic-reader.example/read/morning-static/3",
+    "lang": "en"
+   },
+   {
+    "n": 4,
+    "ref": "https://synthetic-reader.example/read/morning-static/4",
+    "lang": "en"
+   },
+   {
+    "n": 5,
+    "ref": "https://synthetic-reader.example/read/morning-static/5",
+    "lang": "en"
+   },
+   {
+    "n": 6,
+    "ref": "https://synthetic-reader.example/read/morning-static/6",
+    "lang": "en"
+   },
+   {
+    "n": 7,
+    "ref": "https://synthetic-reader.example/read/morning-static/7",
+    "lang": "en"
+   },
+   {
+    "n": 8,
+    "ref": "https://synthetic-reader.example/read/morning-static/8",
+    "lang": "en"
+   },
+   {
+    "n": 9,
+    "ref": "https://synthetic-reader.example/read/morning-static/9",
+    "lang": "en"
+   },
+   {
+    "n": 10,
+    "ref": "https://synthetic-reader.example/read/morning-static/10",
+    "lang": "en"
+   },
+   {
+    "n": 11,
+    "ref": "https://synthetic-reader.example/read/morning-static/11",
+    "lang": "en"
+   },
+   {
+    "n": 12,
+    "ref": "https://synthetic-reader.example/read/morning-static/12",
+    "lang": "en"
+   }
+  ],
+  "https://synthetic-reader.example/series/jade-river-sword": [
+   {
+    "n": 1,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/1",
+    "lang": "en"
+   },
+   {
+    "n": 2,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/2",
+    "lang": "en"
+   },
+   {
+    "n": 3,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/3",
+    "lang": "en"
+   },
+   {
+    "n": 4,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/4",
+    "lang": "en"
+   },
+   {
+    "n": 5,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/5",
+    "lang": "en"
+   },
+   {
+    "n": 6,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/6",
+    "lang": "en"
+   },
+   {
+    "n": 7,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/7",
+    "lang": "en"
+   },
+   {
+    "n": 8,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/8",
+    "lang": "en"
+   },
+   {
+    "n": 9,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/9",
+    "lang": "en"
+   },
+   {
+    "n": 10,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/10",
+    "lang": "en"
+   },
+   {
+    "n": 11,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/11",
+    "lang": "en"
+   },
+   {
+    "n": 12,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/12",
+    "lang": "en"
+   },
+   {
+    "n": 13,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/13",
+    "lang": "en"
+   },
+   {
+    "n": 14,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/14",
+    "lang": "en"
+   },
+   {
+    "n": 15,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/15",
+    "lang": "en"
+   },
+   {
+    "n": 16,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/16",
+    "lang": "en"
+   },
+   {
+    "n": 17,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/17",
+    "lang": "en"
+   },
+   {
+    "n": 18,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/18",
+    "lang": "en"
+   },
+   {
+    "n": 19,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/19",
+    "lang": "en"
+   },
+   {
+    "n": 20,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/20",
+    "lang": "en"
+   },
+   {
+    "n": 21,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/21",
+    "lang": "en"
+   },
+   {
+    "n": 22,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/22",
+    "lang": "en"
+   },
+   {
+    "n": 23,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/23",
+    "lang": "en"
+   },
+   {
+    "n": 24,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/24",
+    "lang": "en"
+   },
+   {
+    "n": 25,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/25",
+    "lang": "en"
+   },
+   {
+    "n": 26,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/26",
+    "lang": "en"
+   },
+   {
+    "n": 27,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/27",
+    "lang": "en"
+   },
+   {
+    "n": 28,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/28",
+    "lang": "en"
+   },
+   {
+    "n": 29,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/29",
+    "lang": "en"
+   },
+   {
+    "n": 30,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/30",
+    "lang": "en"
+   },
+   {
+    "n": 31,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/31",
+    "lang": "en"
+   },
+   {
+    "n": 32,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/32",
+    "lang": "en"
+   },
+   {
+    "n": 33,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/33",
+    "lang": "en"
+   },
+   {
+    "n": 34,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/34",
+    "lang": "en"
+   },
+   {
+    "n": 35,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/35",
+    "lang": "en"
+   },
+   {
+    "n": 36,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/36",
+    "lang": "en"
+   },
+   {
+    "n": 37,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/37",
+    "lang": "en"
+   },
+   {
+    "n": 38,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/38",
+    "lang": "en"
+   },
+   {
+    "n": 39,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/39",
+    "lang": "en"
+   },
+   {
+    "n": 40,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/40",
+    "lang": "en"
+   },
+   {
+    "n": 41,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/41",
+    "lang": "en"
+   },
+   {
+    "n": 42,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/42",
+    "lang": "en"
+   },
+   {
+    "n": 43,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/43",
+    "lang": "en"
+   },
+   {
+    "n": 44,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/44",
+    "lang": "en"
+   },
+   {
+    "n": 45,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/45",
+    "lang": "en"
+   },
+   {
+    "n": 46,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/46",
+    "lang": "en"
+   },
+   {
+    "n": 47,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/47",
+    "lang": "en"
+   },
+   {
+    "n": 48,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/48",
+    "lang": "en"
+   },
+   {
+    "n": 49,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/49",
+    "lang": "en"
+   },
+   {
+    "n": 50,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/50",
+    "lang": "en"
+   },
+   {
+    "n": 51,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/51",
+    "lang": "en"
+   },
+   {
+    "n": 52,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/52",
+    "lang": "en"
+   },
+   {
+    "n": 53,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/53",
+    "lang": "en"
+   },
+   {
+    "n": 54,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/54",
+    "lang": "en"
+   },
+   {
+    "n": 55,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/55",
+    "lang": "en"
+   },
+   {
+    "n": 56,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/56",
+    "lang": "en"
+   },
+   {
+    "n": 57,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/57",
+    "lang": "en"
+   },
+   {
+    "n": 58,
+    "ref": "https://synthetic-reader.example/read/jade-river-sword/58",
+    "lang": "en"
+   }
+  ],
+  "https://synthetic-reader.example/series/cloud-kiln": [
+   {
+    "n": 1,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/1",
+    "lang": "en"
+   },
+   {
+    "n": 2,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/2",
+    "lang": "en"
+   },
+   {
+    "n": 3,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/3",
+    "lang": "en"
+   },
+   {
+    "n": 4,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/4",
+    "lang": "en"
+   },
+   {
+    "n": 5,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/5",
+    "lang": "en"
+   },
+   {
+    "n": 6,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/6",
+    "lang": "en"
+   },
+   {
+    "n": 7,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/7",
+    "lang": "en"
+   },
+   {
+    "n": 8,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/8",
+    "lang": "en"
+   },
+   {
+    "n": 9,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/9",
+    "lang": "en"
+   },
+   {
+    "n": 10,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/10",
+    "lang": "en"
+   },
+   {
+    "n": 11,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/11",
+    "lang": "en"
+   },
+   {
+    "n": 12,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/12",
+    "lang": "en"
+   },
+   {
+    "n": 13,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/13",
+    "lang": "en"
+   },
+   {
+    "n": 14,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/14",
+    "lang": "en"
+   },
+   {
+    "n": 15,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/15",
+    "lang": "en"
+   },
+   {
+    "n": 16,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/16",
+    "lang": "en"
+   },
+   {
+    "n": 17,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/17",
+    "lang": "en"
+   },
+   {
+    "n": 18,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/18",
+    "lang": "en"
+   },
+   {
+    "n": 19,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/19",
+    "lang": "en"
+   },
+   {
+    "n": 20,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/20",
+    "lang": "en"
+   },
+   {
+    "n": 21,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/21",
+    "lang": "en"
+   },
+   {
+    "n": 22,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/22",
+    "lang": "en"
+   },
+   {
+    "n": 23,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/23",
+    "lang": "en"
+   },
+   {
+    "n": 24,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/24",
+    "lang": "en"
+   },
+   {
+    "n": 25,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/25",
+    "lang": "en"
+   },
+   {
+    "n": 26,
+    "ref": "https://synthetic-reader.example/read/cloud-kiln/26",
+    "lang": "en"
+   }
+  ],
+  "https://synthetic-reader.example/series/thousand-lamp-sect": [
+   {
+    "n": 1,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/1",
+    "lang": "en"
+   },
+   {
+    "n": 2,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/2",
+    "lang": "en"
+   },
+   {
+    "n": 3,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/3",
+    "lang": "en"
+   },
+   {
+    "n": 4,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/4",
+    "lang": "en"
+   },
+   {
+    "n": 5,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/5",
+    "lang": "en"
+   },
+   {
+    "n": 6,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/6",
+    "lang": "en"
+   },
+   {
+    "n": 7,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/7",
+    "lang": "en"
+   },
+   {
+    "n": 8,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/8",
+    "lang": "en"
+   },
+   {
+    "n": 9,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/9",
+    "lang": "en"
+   },
+   {
+    "n": 10,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/10",
+    "lang": "en"
+   },
+   {
+    "n": 11,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/11",
+    "lang": "en"
+   },
+   {
+    "n": 12,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/12",
+    "lang": "en"
+   },
+   {
+    "n": 13,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/13",
+    "lang": "en"
+   },
+   {
+    "n": 14,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/14",
+    "lang": "en"
+   },
+   {
+    "n": 15,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/15",
+    "lang": "en"
+   },
+   {
+    "n": 16,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/16",
+    "lang": "en"
+   },
+   {
+    "n": 17,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/17",
+    "lang": "en"
+   },
+   {
+    "n": 18,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/18",
+    "lang": "en"
+   },
+   {
+    "n": 19,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/19",
+    "lang": "en"
+   },
+   {
+    "n": 20,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/20",
+    "lang": "en"
+   },
+   {
+    "n": 21,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/21",
+    "lang": "en"
+   },
+   {
+    "n": 22,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/22",
+    "lang": "en"
+   },
+   {
+    "n": 23,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/23",
+    "lang": "en"
+   },
+   {
+    "n": 24,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/24",
+    "lang": "en"
+   },
+   {
+    "n": 25,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/25",
+    "lang": "en"
+   },
+   {
+    "n": 26,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/26",
+    "lang": "en"
+   },
+   {
+    "n": 27,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/27",
+    "lang": "en"
+   },
+   {
+    "n": 28,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/28",
+    "lang": "en"
+   },
+   {
+    "n": 29,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/29",
+    "lang": "en"
+   },
+   {
+    "n": 30,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/30",
+    "lang": "en"
+   },
+   {
+    "n": 31,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/31",
+    "lang": "en"
+   },
+   {
+    "n": 32,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/32",
+    "lang": "en"
+   },
+   {
+    "n": 33,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/33",
+    "lang": "en"
+   },
+   {
+    "n": 34,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/34",
+    "lang": "en"
+   },
+   {
+    "n": 35,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/35",
+    "lang": "en"
+   },
+   {
+    "n": 36,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/36",
+    "lang": "en"
+   },
+   {
+    "n": 37,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/37",
+    "lang": "en"
+   },
+   {
+    "n": 38,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/38",
+    "lang": "en"
+   },
+   {
+    "n": 39,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/39",
+    "lang": "en"
+   },
+   {
+    "n": 40,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/40",
+    "lang": "en"
+   },
+   {
+    "n": 41,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/41",
+    "lang": "en"
+   },
+   {
+    "n": 42,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/42",
+    "lang": "en"
+   },
+   {
+    "n": 43,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/43",
+    "lang": "en"
+   },
+   {
+    "n": 44,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/44",
+    "lang": "en"
+   },
+   {
+    "n": 45,
+    "ref": "https://synthetic-reader.example/read/thousand-lamp-sect/45",
+    "lang": "en"
+   }
+  ],
+  "https://synthetic-reader.example/series/ember-scroll": [
+   {
+    "n": 1,
+    "ref": "https://synthetic-reader.example/read/ember-scroll/1",
+    "lang": "en"
+   },
+   {
+    "n": 2,
+    "ref": "https://synthetic-reader.example/read/ember-scroll/2",
+    "lang": "en"
+   },
+   {
+    "n": 3,
+    "ref": "https://synthetic-reader.example/read/ember-scroll/3",
+    "lang": "en"
+   },
+   {
+    "n": 4,
+    "ref": "https://synthetic-reader.example/read/ember-scroll/4",
+    "lang": "en"
+   },
+   {
+    "n": 5,
+    "ref": "https://synthetic-reader.example/read/ember-scroll/5",
+    "lang": "en"
+   },
+   {
+    "n": 6,
+    "ref": "https://synthetic-reader.example/read/ember-scroll/6",
+    "lang": "en"
+   },
+   {
+    "n": 7,
+    "ref": "https://synthetic-reader.example/read/ember-scroll/7",
+    "lang": "en"
+   },
+   {
+    "n": 8,
+    "ref": "https://synthetic-reader.example/read/ember-scroll/8",
+    "lang": "en"
+   },
+   {
+    "n": 9,
+    "ref": "https://synthetic-reader.example/read/ember-scroll/9",
+    "lang": "en"
+   },
+   {
+    "n": 10,
+    "ref": "https://synthetic-reader.example/read/ember-scroll/10",
+    "lang": "en"
+   },
+   {
+    "n": 11,
+    "ref": "https://synthetic-reader.example/read/ember-scroll/11",
+    "lang": "en"
+   },
+   {
+    "n": 12,
+    "ref": "https://synthetic-reader.example/read/ember-scroll/12",
+    "lang": "en"
+   },
+   {
+    "n": 13,
+    "ref": "https://synthetic-reader.example/read/ember-scroll/13",
+    "lang": "en"
+   },
+   {
+    "n": 14,
+    "ref": "https://synthetic-reader.example/read/ember-scroll/14",
+    "lang": "en"
+   },
+   {
+    "n": 15,
+    "ref": "https://synthetic-reader.example/read/ember-scroll/15",
+    "lang": "en"
+   },
+   {
+    "n": 16,
+    "ref": "https://synthetic-reader.example/read/ember-scroll/16",
+    "lang": "en"
+   },
+   {
+    "n": 17,
+    "ref": "https://synthetic-reader.example/read/ember-scroll/17",
+    "lang": "en"
+   },
+   {
+    "n": 18,
+    "ref": "https://synthetic-reader.example/read/ember-scroll/18",
+    "lang": "en"
+   }
+  ]
+ },
+ "pages": {
+  "https://synthetic-reader.example/read/lantern-harbor/1": [
+   "https://img.synthetic-reader.example/lantern-harbor/1/1.png",
+   "https://img.synthetic-reader.example/lantern-harbor/1/2.png",
+   "https://img.synthetic-reader.example/lantern-harbor/1/3.png"
+  ],
+  "https://synthetic-reader.example/read/paper-crane-garden/1": [
+   "https://img.synthetic-reader.example/paper-crane-garden/1/1.png",
+   "https://img.synthetic-reader.example/paper-crane-garden/1/2.png",
+   "https://img.synthetic-reader.example/paper-crane-garden/1/3.png"
+  ],
+  "https://synthetic-reader.example/read/iron-orchard/1": [
+   "https://img.synthetic-reader.example/iron-orchard/1/1.png",
+   "https://img.synthetic-reader.example/iron-orchard/1/2.png",
+   "https://img.synthetic-reader.example/iron-orchard/1/3.png"
+  ],
+  "https://synthetic-reader.example/read/quiet-comet-club/1": [
+   "https://img.synthetic-reader.example/quiet-comet-club/1/1.png",
+   "https://img.synthetic-reader.example/quiet-comet-club/1/2.png",
+   "https://img.synthetic-reader.example/quiet-comet-club/1/3.png"
+  ],
+  "https://synthetic-reader.example/read/ninth-floor-hunter/1": [
+   "https://img.synthetic-reader.example/ninth-floor-hunter/1/1.png",
+   "https://img.synthetic-reader.example/ninth-floor-hunter/1/2.png",
+   "https://img.synthetic-reader.example/ninth-floor-hunter/1/3.png"
+  ],
+  "https://synthetic-reader.example/read/saltwind-academy/1": [
+   "https://img.synthetic-reader.example/saltwind-academy/1/1.png",
+   "https://img.synthetic-reader.example/saltwind-academy/1/2.png",
+   "https://img.synthetic-reader.example/saltwind-academy/1/3.png"
+  ],
+  "https://synthetic-reader.example/read/glass-tower-heir/1": [
+   "https://img.synthetic-reader.example/glass-tower-heir/1/1.png",
+   "https://img.synthetic-reader.example/glass-tower-heir/1/2.png",
+   "https://img.synthetic-reader.example/glass-tower-heir/1/3.png"
+  ],
+  "https://synthetic-reader.example/read/morning-static/1": [
+   "https://img.synthetic-reader.example/morning-static/1/1.png",
+   "https://img.synthetic-reader.example/morning-static/1/2.png",
+   "https://img.synthetic-reader.example/morning-static/1/3.png"
+  ],
+  "https://synthetic-reader.example/read/jade-river-sword/1": [
+   "https://img.synthetic-reader.example/jade-river-sword/1/1.png",
+   "https://img.synthetic-reader.example/jade-river-sword/1/2.png",
+   "https://img.synthetic-reader.example/jade-river-sword/1/3.png"
+  ],
+  "https://synthetic-reader.example/read/cloud-kiln/1": [
+   "https://img.synthetic-reader.example/cloud-kiln/1/1.png",
+   "https://img.synthetic-reader.example/cloud-kiln/1/2.png",
+   "https://img.synthetic-reader.example/cloud-kiln/1/3.png"
+  ],
+  "https://synthetic-reader.example/read/thousand-lamp-sect/1": [
+   "https://img.synthetic-reader.example/thousand-lamp-sect/1/1.png",
+   "https://img.synthetic-reader.example/thousand-lamp-sect/1/2.png",
+   "https://img.synthetic-reader.example/thousand-lamp-sect/1/3.png"
+  ],
+  "https://synthetic-reader.example/read/ember-scroll/1": [
+   "https://img.synthetic-reader.example/ember-scroll/1/1.png",
+   "https://img.synthetic-reader.example/ember-scroll/1/2.png",
+   "https://img.synthetic-reader.example/ember-scroll/1/3.png"
+  ]
+ }
+}

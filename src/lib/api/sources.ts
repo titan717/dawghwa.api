@@ -1,3 +1,4 @@
+import { providerGateStatus } from "@/lib/gate/flags";
 import type { Provider } from "@/lib/providers/provider";
 
 /** Public JSON description of a provider (upstream SourceInfo fields first). */
@@ -15,6 +16,8 @@ export function describeProvider(p: Provider, verbose = false) {
     ...(d.statusNote ? { statusNote: d.statusNote } : {}),
     priority: d.priority,
     capabilities: p.capabilities,
+    /** Internal gate status (section 11): flag on, and whether the registry serves it under PROVIDER_GATES. */
+    gate: providerGateStatus(d.id),
     ...(verbose
       ? {
           aliases: d.aliases,
