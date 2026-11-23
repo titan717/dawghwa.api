@@ -16,7 +16,7 @@ Baseline release for the current production build. It covers everything merged s
 - Catalogue filters: multi-value status and format, demographic, and AND/OR tag modes ([#7](https://github.com/titan717/dawghwa.api/pull/7)).
 - Catalogue browse endpoint (`GET` and `POST /api/browse`) with optional metadata on search, browse and title results ([#1](https://github.com/titan717/dawghwa.api/pull/1)); synopsis, tag names and demographic on list items ([#2](https://github.com/titan717/dawghwa.api/pull/2)).
 - `GET /api/image`: CDN-cacheable relay for cover images from an allow-listed host ([#3](https://github.com/titan717/dawghwa.api/pull/3)).
-- Release note categories (`.github/release.yml`) and the release process in `docs/RELEASE.md` ([#12](https://github.com/titan717/dawghwa.api/pull/12)).
+- Release note categories (`.github/release.yml`) and the release process in `docs/RELEASE.md` ([#13](https://github.com/titan717/dawghwa.api/pull/13)).
 
 ### Fixed
 - Production metadata failures: the guarded HTTP agent now uses undici's own fetch ([#8](https://github.com/titan717/dawghwa.api/pull/8)).
