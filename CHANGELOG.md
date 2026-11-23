@@ -4,16 +4,28 @@ All notable changes to Dawghwa API. The project follows [Semantic Versioning](ht
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-11-23
+
+Baseline release for the current production build. It covers everything merged since `v1.1.0`, including the work that was declared as 1.2.0 in `package.json` ([#5](https://github.com/titan717/dawghwa.api/pull/5)) but never tagged. All changes are additive: every v1 request and response shape still works.
+
 ### Added
-- `GET /api/image`: CDN-cacheable relay for MangaDex cover images (`uploads.mangadex.org/covers/...` only), because that host now challenges browser requests.
-- `POST /api/browse` and `GET /api/browse`: filtered and ordered catalogue listing (tags, kinds, status, demographic, year, recency) through MangaDex's documented API, with rating and follows from its statistics API. Unknown tags are rejected rather than ignored.
-- Optional `metadata` on search, browse and manga results (genres, themes, formats, authors, artists, status, year, demographic, kind, long strip, rating, follows, description, alternative titles). Sanitised by `normalizeMetadata`.
-- `POST /api/manga` for MangaDex now also returns `coverImage` and `metadata`.
-- New `browse` capability in `/api/sources`.
-- MangaDex catalogue items include optional `description`, `tagNames` and `demographic`. This is additive; other providers omit them.
-- Provider-neutral catalogue model (`src/lib/catalog`): `CatalogEntry`, normalization of AniList/MangaDex/MangaUpdates records, conservative cross-provider deduplication (exact published ids first; otherwise same normalized title + start year + type, across different providers only; any conflicting id blocks a merge), shared genre vocabulary. Canonical ids reuse `canonicalTitleId` from `src/lib/identity`.
-- Catalogue list items carry optional `externalIds` (exact ids from the provider's own list response).
-- `capabilities.signals` on catalogue providers: which sorts are backed by a real follow, readership, trending or chapter-release signal.
+- API v2: `GET /api/v2/chapter` (canonical chapter endpoint with silent version fallback, a per-source circuit breaker and "Try another version" via `alt`) and `GET /api/v2/img/<token>` (opaque, signed image proxy). Both are inert until the owner sets `IMAGE_PROXY` and `IMAGE_PROXY_SECRET`: the chapter endpoint answers 503 and the image route 404. Contract in `docs/API_V2.md` ([#11](https://github.com/titan717/dawghwa.api/pull/11)).
+- Source-neutral catalogue model: normalization, conservative cross-catalogue deduplication, a shared genre vocabulary, optional `externalIds` on list items and `capabilities.signals` for sorts backed by real signals ([#10](https://github.com/titan717/dawghwa.api/pull/10)).
+- Unified reading engine: canonical title identity, a deterministic merged chapter list across sources and native page delivery ([#4](https://github.com/titan717/dawghwa.api/pull/4), [#5](https://github.com/titan717/dawghwa.api/pull/5)).
+- Chapter page extraction for more sources, with recorded-response tests and a live verifier ([#6](https://github.com/titan717/dawghwa.api/pull/6)).
+- Catalogue filters: multi-value status and format, demographic, and AND/OR tag modes ([#7](https://github.com/titan717/dawghwa.api/pull/7)).
+- Catalogue browse endpoint (`GET` and `POST /api/browse`) with optional metadata on search, browse and title results ([#1](https://github.com/titan717/dawghwa.api/pull/1)); synopsis, tag names and demographic on list items ([#2](https://github.com/titan717/dawghwa.api/pull/2)).
+- `GET /api/image`: CDN-cacheable relay for cover images from an allow-listed host ([#3](https://github.com/titan717/dawghwa.api/pull/3)).
+- Release note categories (`.github/release.yml`) and the release process in `docs/RELEASE.md` ([#13](https://github.com/titan717/dawghwa.api/pull/13)).
+
+### Fixed
+- Production metadata failures: the guarded HTTP agent now uses undici's own fetch ([#8](https://github.com/titan717/dawghwa.api/pull/8)).
+- Background cache refreshes stay alive on Vercel, and suspended health runs are not cached ([#9](https://github.com/titan717/dawghwa.api/pull/9)).
+
+### Security
+- Page extraction fails closed: HTTPS only, a connect-time DNS guard, and robots.txt and CDN blocks are honoured ([#6](https://github.com/titan717/dawghwa.api/pull/6)).
+- Image relay responses are streamed within size limits and their DNS destinations are validated ([#4](https://github.com/titan717/dawghwa.api/pull/4)).
+- v2 image tokens are signed and expire; tampered or expired tokens are refused, and v2 never returns upstream image URLs ([#11](https://github.com/titan717/dawghwa.api/pull/11)).
 
 ## [1.1.0] - 2026-11-17
 
@@ -76,3 +88,8 @@ First Dawghwa release. It is forked from [GooglyBlox/comick-source-api](https://
 ## Upstream
 
 For history before the fork, see the upstream repository and this repository's git log up to the `upstream-baseline` tag.
+
+[Unreleased]: https://github.com/titan717/dawghwa.api/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/titan717/dawghwa.api/compare/v1.1.0...v1.3.0
+[1.1.0]: https://github.com/titan717/dawghwa.api/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/titan717/dawghwa.api/releases/tag/v1.0.0
